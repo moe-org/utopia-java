@@ -6,6 +6,12 @@
 # * Copyright (c) 2020-2021 MingMoe All rights reserved.    *
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+# 增加编译函数
+function(add_utopia_options utopia_options)
+    target_compile_options(${PROJECT_NAME} PRIVATE ${utopia_options})
+endfunction(add_utopia_options)
+
+
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
     if(MSVC)
@@ -49,7 +55,7 @@ if(MSVC)
 #==========================================================
 
     # 开启C++20支持
-    target_compile_options(${PROJECT_NAME} PRIVATE "/std:c++latest")
+    add_utopia_options("/std:c++latest")
 
 
 #==========================================================
@@ -57,15 +63,15 @@ else()  #               gcc/clang   全局选项
 #==========================================================
 
     # 开启警告
-    target_compile_options(${PROJECT_NAME} "-Wall")
+    add_utopia_options("-Wall")
 
     
     # 开启C++20支持
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "11.0.0")
-            target_compile_options(${PROJECT_NAME} PRIVATE "-std=c++20" )
+            add_utopia_options("-std=c++20")
         else()
-            target_compile_options(${PROJECT_NAME} PRIVATE "-std=c++2a" )
+            add_utopia_options("-std=c++2a")
         endif()
     else()
         message(FATAL_ERROR "NOT SUPPORT EXCEPT GCC")
