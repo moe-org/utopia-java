@@ -1,6 +1,6 @@
 ﻿/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * @file:  The utopia servrer Entity define header file
- * Using GOSCPSv3 License
+ * Using MIT License
  * Copyright (c) 2020-2021 GOSCPS 保留所有权利.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #pragma once
@@ -37,7 +37,7 @@ namespace utopia {
 			virtual bool collideable() const = 0;
 
 			/// @brief			实体更新
-			virtual void update();
+			virtual void update() = 0;
 		private:
 
 

@@ -1,17 +1,12 @@
 ﻿/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * @file:  The utopia servrer main source cpp
- * Using GOSCPSv3 License
+ * Using MIT License
  * Copyright (c) 2020-2021 GOSCPS 保留所有权利.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #include <string>
 #include <iostream>
-#include "config.hpp"
-#include "logo.hpp"
-#include "game/map/block.hpp"
-#include "game/entity/entity.hpp"
-#include "game/map/world.hpp"
-#include <mimalloc/include/mimalloc-new-delete.h>
 #include <backward-cpp/backward.hpp>
+#include "logo.hpp"
 
 using namespace std;
 using namespace utopia;
@@ -23,7 +18,6 @@ using namespace utopia;
 int main(int argc, char* argv[]) {
 	print_logo();
 
-	World world(Pos2d(1024, 1024), 1);
 
 	
 	while(true){}

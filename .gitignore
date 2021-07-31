@@ -1,2 +1,11 @@
+# Part of UtopiaServer Project
+# Use MIT license
+
+# 忽略构架目录
 package/
 build/
+out/
+
+# 忽略编辑器配置文件
+.vs/
+.vscode/

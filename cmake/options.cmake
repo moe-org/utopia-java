@@ -1,6 +1,6 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # * THIS FILE IS FROM MingMoe(me@kawayi.moe)                *
-# * IS LICENSED UNDER GOSCPSv3                              *
+# * IS LICENSED UNDER MIT                                   *
 # * File:     options.cmake                                 *
 # * Content:  Cmake Module                                  *
 # * Copyright (c) 2020-2021 MingMoe All rights reserved.    *
@@ -21,7 +21,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
     #==========================================================
     endif()
-elseif(${CMAKE_BUILD_TYPR} STREQUAL "Release")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     if(MSVC)
     #==========================================================
     #                   MSVC        RELEASE选项

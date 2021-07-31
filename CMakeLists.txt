@@ -1,6 +1,6 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # * THIS FILE IS FROM MingMoe(me@kawayi.moe)                *
-# * IS LICENSED UNDER GOSCPSv3                              *
+# * IS LICENSED UNDER MIT                                   *
 # * File:     CMakeLists.txt                                *
 # * Content:  Cmake File                                    *
 # * Copyright (c) 2020-2021 MingMoe All rights reserved.    *
@@ -14,6 +14,7 @@ cmake_minimum_required (VERSION 3.20)
 # 使用最新的C++20
 # set(CMAKE_CXX_STANDARD_REQUIRED True)
 # set(CMAKE_CXX_STANDARD 20)
+# 已在cmake/options.cmake中配置
 
 # 设置项目
 project (UtopiaServer VERSION 0.1.0.0 LANGUAGES CXX)
@@ -78,11 +79,11 @@ function(add_third_library_func third_lib_name link_name)
         "${UTOPIA_LIBRARY}/${third_lib_name}" 
         "${PROJECT_BINARY_DIR}/${third_lib_name}"
 
-        # 我们不安装依赖
+        # 不添加到all target
         EXCLUDE_FROM_ALL)
 
     # 链接库
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${link_name})
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${link_name})
 
 endfunction(add_third_library_func)
 #==========================================================
@@ -95,8 +96,9 @@ add_third_library_func("mimalloc" "mimalloc-static")
 add_subdirectory(
     "${UTOPIA_LIBRARY}/backward-cpp" 
     "${PROJECT_BINARY_DIR}/backward-cpp"
-    EXCLUDE_FROM_ALL)
-target_sources(${PROJECT_NAME} PRIVATE ${BACKWARD_ENABLE} ${UTOPIA_SOURCE_FILES})
+    EXCLUDE_FROM_ALL    # 不添加到all target
+    )
+target_sources(${PROJECT_NAME} PUBLIC ${BACKWARD_ENABLE} ${UTOPIA_SOURCE_FILES})
 add_backward(${PROJECT_NAME})
 
 #==========================================================
@@ -105,14 +107,17 @@ add_backward(${PROJECT_NAME})
 # 组件名称
 set(UTOPIA_COMPONENT_NAME UtopiaServerMain)
 
-install(TARGETS ${PROJECT_NAME}
-# 安装到bin目录下
-    RUNTIME 
-    DESTINATION bin
-# 组件
-    COMPONENT ${UTOPIA_COMPONENT_NAME}
-)
+# 安装到package目录下
+if(${CMAKE_INSTALL_PREFIX})
+    message(WARNING "The CMAKE_INSTALL_PREFIX was set up.But always cover to ${PROJECT_SOURCE_DIR}/package")
+endif()
 
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/package)
+
+# 安装
+install(TARGETS ${PROJECT_NAME}
+        RUNTIME DESTINATION bin
+        COMPONENT ${UTOPIA_COMPONENT_NAME})
 #==========================================================
 # 引入cmake
 #==========================================================
