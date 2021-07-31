@@ -18,5 +18,5 @@ jobs:
 
     - name: Build
       # 执行构建脚本
-      run: powershell ./build.ps1
+      run: pwsh ./build.ps1
     
