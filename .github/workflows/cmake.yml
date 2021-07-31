@@ -1,0 +1,22 @@
+# 之前名称
+name: CMake
+
+# 设置触发器
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    # 使用最新ubuntu镜像
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      # 执行构建脚本
+      run: powershell ./build.ps1
+    
