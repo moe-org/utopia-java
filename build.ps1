@@ -91,7 +91,7 @@ New-Item -ItemType Directory -Path "./build" -Force
 Set-Location "./build"
 
 # 构建
-&"cmake" ".." "-DCMAKE_BUILD_TYPE=${build_type}"
+&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}"
 test-command($?)
 &"cmake" "--build" "." "--config" "${build_type}"
 test-command($?)
@@ -99,10 +99,10 @@ test-command($?)
 Write-Host " - Build success -" -ForegroundColor Green
 
 # 打包
-&"cpack" "--config" "CPackConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}"
+&"cpack" "--config" "CPackConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
 test-command($?)
 
-&"cpack" "--config" "CPackSourceConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}"
+&"cpack" "--config" "CPackSourceConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
 test-command($?)
 
 Write-Host " - pack done -" -ForegroundColor Green

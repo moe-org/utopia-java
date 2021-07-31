@@ -56,9 +56,20 @@ if(MSVC)
 else()  #               gcc/clang   全局选项
 #==========================================================
 
-    # 开启C++20支持
     # 开启警告
-    target_compile_options(${PROJECT_NAME} PRIVATE "-std=c++20" "-Wall")
+    target_compile_options(${PROJECT_NAME} "-Wall")
+
+    
+    # 开启C++20支持
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "11.0.0")
+            target_compile_options(${PROJECT_NAME} PRIVATE "-std=c++20" )
+        else()
+            target_compile_options(${PROJECT_NAME} PRIVATE "-std=c++2a" )
+        endif()
+    else()
+        message(FATAL_ERROR "NOT SUPPORT EXCEPT GCC")
+    endif()
 
 
 
