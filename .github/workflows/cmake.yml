@@ -1,5 +1,5 @@
-# 之前名称
-name: CMake
+# 设置名称
+name: CMake Build And Test
 
 # 设置触发器
 on:
@@ -9,14 +9,37 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  # 在linux下构建
+  linux-build:
     # 使用最新ubuntu镜像
     runs-on: ubuntu-latest
 
     steps:
+    # 签出代码
     - uses: actions/checkout@v2
 
-    - name: Build
-      # 执行构建脚本
-      run: pwsh ./build.ps1 Debug
+    # 执行构建脚本
+    - name: Build on linux
+      run: pwsh ./build.ps1 Debug Nopack
     
+   
+  # 在mac下构建
+  mac-build:
+    # 使用最新macos镜像
+    runs-on: macos-latest
+
+    steps:
+    # 签出代码
+    - uses: actions/checkout@v2
+
+    # 执行构建脚本
+    - name: Build on macos
+      run: pwsh ./build.ps1 Debug Nopack
+
+
+
+
+
+
+
+

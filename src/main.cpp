@@ -17,9 +17,7 @@ using namespace utopia;
 /// @return			程序返回值
 int main(int argc, char* argv[]) {
 	print_logo();
-
-
-	
+	throw 1;
 	while(true){}
 
 

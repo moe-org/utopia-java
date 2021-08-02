@@ -1,10 +1,15 @@
 # Part of UtopiaServer Project
 # Use MIT license
 
-# 忽略构架目录
-package/
+# 忽略构建缓存目录
 build/
 out/
+
+# 忽略依赖
+library/
+
+# 忽略包输出目录
+package/
 
 # 忽略编辑器配置文件
 .vs/

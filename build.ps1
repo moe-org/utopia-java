@@ -51,29 +51,47 @@ function clean_dir($dir){
 }
 
 # 检查参数
-# 支持Debug和Release两种参数
+# args[0] - 支持Debug和Release两种参数
+# args[1] - 支持Pack和Nopack两种参数
 $build_type
+$pack_type
 
-if($args.Count -eq 1){
-    if($args[0] -eq "Debug"){
-        $build_type = "Debug"
-    }
-    elseif($args[0] -eq "Release"){
-        $build_type = "Release"
-    } 
-    else{
-        Write-Error "Unknown parameter:" + $args[0]
-        Write-Error "Accepted parameters:Debug or Release"
-        failed_exit
-    }
-}
-else{
-    Write-Error "Miss or too many parameter"
-    Write-Error "Accepted parameters:Debug or Release"
+if($args.Count -ne 2){
+    Write-Error "Miss or too many parameters"
+    Write-Error "Accepted two parameters:"
+    Write-Error "Accepted parameter 1:'Debug' or 'Release'"
+    Write-Error "Accepted parameter 2:'Pack' or 'Nopack'"
+    Write-Error "Such as './build.ps1 Debug Nopack'"
     failed_exit
 }
 
-Write-Host "Build ${build_type}" -ForegroundColor Green
+# 检查构建类型
+if($args[0] -eq "Debug"){
+    $build_type = "Debug"
+}
+elseif($args[0] -eq "Release"){
+    $build_type = "Release"
+} 
+else{
+    Write-Error "Unknown parameter:" + $args[0]
+    Write-Error "Accepted parameters:'Debug' or 'Release'"
+    failed_exit
+}
+
+# 检查打包类型
+if($args[1] -eq "Pack"){
+    $pack_type = "Pack"
+}
+elseif($args[1] -eq "Nopack"){
+    $pack_type = "Nopack"
+}
+else{
+    Write-Error "Unknown parameter:" + $args[1]
+    Write-Error "Accepted parameters:'Pack' or 'Nopack'"
+    failed_exit
+}
+
+Write-Host "Build ${build_type} -> ${pack_type}" -ForegroundColor Green
 
 # 检查
 # cmake
@@ -90,22 +108,30 @@ clean_dir("./package")
 New-Item -ItemType Directory -Path "./build" -Force
 Set-Location "./build"
 
+# 获取cpu线程数
+$build_thread_count = [System.Environment]::ProcessorCount;
+
 # 构建
 &"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}"
 test-command($?)
-&"cmake" "--build" "." "--config" "${build_type}"
+&"cmake" "--build" "." "--config" "${build_type}" "-j" "${build_thread_count}"
 test-command($?)
 
 Write-Host " - Build success -" -ForegroundColor Green
 
 # 打包
-&"cpack" "--config" "CPackConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
-test-command($?)
+if($pack_type -eq "Pack"){
+    &"cpack" "--config" "CPackConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
+    test-command($?)
 
-&"cpack" "--config" "CPackSourceConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
-test-command($?)
+    &"cpack" "--config" "CPackSourceConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
+    test-command($?)
 
-Write-Host " - pack done -" -ForegroundColor Green
+    Write-Host " - pack done -" -ForegroundColor Green
+}
+else{
+    Write-Host " - skip pack -" -ForegroundColor Green
+}
 
 # 完成
 well_done
