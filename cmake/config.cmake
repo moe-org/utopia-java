@@ -7,7 +7,7 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 #==========================================================#
-# ÉèÖÃÅäÖÃÍ·ÎÄ¼þÂ·¾¶
+# è®¾ç½®é…ç½®å¤´æ–‡ä»¶è·¯å¾„
 #==========================================================#
 set(CP_UTOPIASERVER_CONFIG_HEADER_IN_DIR    "${CP_UTOPIASERVER_SOURCE_DIR}")
 set(CP_UTOPIASERVER_CONFIG_HEADER_IN_NAME   "config.hpp.in")
@@ -15,14 +15,19 @@ set(CP_UTOPIASERVER_CONFIG_HEADER_IN_NAME   "config.hpp.in")
 set(CP_UTOPIASERVER_CONFIG_HEADER_OPT_DIR   "${CP_UTOPIASERVER_BINARY_DIR}/config")
 set(CP_UTOPIASERVER_CONFIG_HEADER_OPT_NAME  "config.hpp")
 
-# Ìí¼ÓÅäÖÃÍ·ÎÄ¼þ
+# æ·»åŠ é…ç½®å¤´æ–‡ä»¶
 configure_file (
   "${CP_UTOPIASERVER_CONFIG_HEADER_IN_DIR}/${CP_UTOPIASERVER_CONFIG_HEADER_IN_NAME}"
   "${CP_UTOPIASERVER_CONFIG_HEADER_OPT_DIR}/${CP_UTOPIASERVER_CONFIG_HEADER_OPT_NAME}"
   )
-# ÉèÖÃconfigÍ·ÎÄ¼þÒýÓÃÂ·¾¶
+
+# è®¾ç½®configå¤´æ–‡ä»¶å¼•ç”¨è·¯å¾„
 target_include_directories(
     ${CP_UTOPIASERVER_EXECUTABLE}
+    PUBLIC ${CP_UTOPIASERVER_CONFIG_HEADER_OPT_DIR})
+
+target_include_directories(
+    ${CP_UTOPIASERVER_TEST}
     PUBLIC ${CP_UTOPIASERVER_CONFIG_HEADER_OPT_DIR})
 
 

@@ -53,15 +53,20 @@ function clean_dir($dir){
 # 检查参数
 # args[0] - 支持Debug和Release两种参数
 # args[1] - 支持Pack和Nopack两种参数
+# args[2] - 支持Test和Notest两种参数
 $build_type
 $pack_type
+$test_type
 
-if($args.Count -ne 2){
-    Write-Error "Miss or too many parameters"
-    Write-Error "Accepted two parameters:"
+if($args.Count -ne 3){
+    $argCount = $args.Count;
+
+    Write-Error "Miss or too many parameters:${argCount} arg(s)"
+    Write-Error "Accepted three parameters:"
     Write-Error "Accepted parameter 1:'Debug' or 'Release'"
     Write-Error "Accepted parameter 2:'Pack' or 'Nopack'"
-    Write-Error "Such as './build.ps1 Debug Nopack'"
+    Write-Error "Accepted parameter 3:'Test' or 'Notest'"
+    Write-Error "Such as './build.ps1 Debug Nopack Test'"
     failed_exit
 }
 
@@ -73,7 +78,8 @@ elseif($args[0] -eq "Release"){
     $build_type = "Release"
 } 
 else{
-    Write-Error "Unknown parameter:" + $args[0]
+    $wrongArg = $args[0]
+    Write-Error "Unknown parameter:${wrongArg}"
     Write-Error "Accepted parameters:'Debug' or 'Release'"
     failed_exit
 }
@@ -86,18 +92,35 @@ elseif($args[1] -eq "Nopack"){
     $pack_type = "Nopack"
 }
 else{
-    Write-Error "Unknown parameter:" + $args[1]
+    $wrongArg = $args[1]
+    Write-Error "Unknown parameter:${wrongArg}"
     Write-Error "Accepted parameters:'Pack' or 'Nopack'"
     failed_exit
 }
 
-Write-Host "Build ${build_type} -> ${pack_type}" -ForegroundColor Green
+# 检查测试类型
+if($args[2] -eq "Test"){
+    $test_type = "Test"
+}
+elseif($args[2] -eq "Notest"){
+    $test_type = "Notest"
+}
+else{
+    $wrongArg = $args[2]
+    Write-Error "Unknown parameter:${wrongArg}"
+    Write-Error "Accepted parameters:'Test' or 'Notest'"
+    failed_exit
+}
+
+#======================================================================
+Write-Host "Build ${build_type} -> ${pack_type} && ${test_type}" -ForegroundColor Green
 
 # 检查
 # cmake
 # cpack
 Write-Output "Checking depends ..."
 test-program("cmake")
+test-program("ctest")
 test-program("cpack")
 
 # 删除老的构建缓存目录
@@ -108,24 +131,41 @@ clean_dir("./package")
 New-Item -ItemType Directory -Path "./build" -Force
 Set-Location "./build"
 
+# 生成cmake
+&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}"
+test-command($?)
+
 # 获取cpu线程数
 $build_thread_count = [System.Environment]::ProcessorCount;
 
-# 构建
-&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}"
-test-command($?)
+# 构建代码
 &"cmake" "--build" "." "--config" "${build_type}" "-j" "${build_thread_count}"
 test-command($?)
 
-Write-Host " - Build success -" -ForegroundColor Green
+Write-Host " - build done -" -ForegroundColor Green
+
+# 测试
+if($test_type -eq "Test"){
+    &"ctest" "-C" "${build_type}" "-j" "${build_thread_count}"
+    test-command($?)
+
+
+    Write-Host " - test done -" -ForegroundColor Green
+}
+else{
+    Write-Host " - skip test -" -ForegroundColor Green
+}
 
 # 打包
 if($pack_type -eq "Pack"){
+    # 打包二进制包
     &"cpack" "--config" "CPackConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
     test-command($?)
 
+    # 打包源码包
     &"cpack" "--config" "CPackSourceConfig.cmake" "-D" "CMAKE_INSTALL_CONFIG_NAME=${build_type}" "-D" "CPACK_BUILD_CONFIG=${build_type}"
     test-command($?)
+
 
     Write-Host " - pack done -" -ForegroundColor Green
 }

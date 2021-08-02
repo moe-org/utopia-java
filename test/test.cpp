@@ -1,12 +1,13 @@
 ﻿/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia servrer print logo header file
+ * @file:  The utopia servrer main test cpp
  * Using MIT License
  * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#pragma once
 
-namespace utopia {
+#include <gtest/gtest.h>
 
-	void print_logo();
-
+TEST(UtopiaServer, FirstTest) {
+  EXPECT_STRNE("hello", "world");
+  EXPECT_EQ(7 * 6, 42);
 }
+

@@ -1,7 +1,7 @@
 ﻿/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * @file:  The utopia servrer print logo source cpp
  * Using MIT License
- * Copyright (c) 2020-2021 GOSCPS 保留所有权利.
+ * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <string>
@@ -67,7 +67,7 @@ namespace utopia {
 		print_white("                                               __/ |             ");
 
 		print_pink("                                              |___/              ");
-		print_pink("GOSCPS Team and its leader:                                      ");
+		print_pink("Moe-Org Team and its leader:                                      ");
 		print_pink("             __  __ _             __  __                         ");
 		print_pink("            |  \\/  (_)           |  \\/  |                        ");
 		print_pink("            | \\  / |_ _ __   __ _| \\  / | ___   ___              ");

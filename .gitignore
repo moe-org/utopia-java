@@ -2,15 +2,16 @@
 # Use MIT license
 
 # 忽略构建缓存目录
-build/
-out/
+/build/
+/out/
 
 # 忽略依赖
-library/
+/library/
 
 # 忽略包输出目录
-package/
+/package/
 
 # 忽略编辑器配置文件
-.vs/
-.vscode/
+/.vs/
+/.vscode/
+/.CMakeSettings.json

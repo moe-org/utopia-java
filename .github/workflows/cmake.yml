@@ -20,7 +20,7 @@ jobs:
 
     # 执行构建脚本
     - name: Build on linux
-      run: pwsh ./build.ps1 Debug Nopack
+      run: pwsh ./build.ps1 Debug Nopack Test
     
    
   # 在mac下构建
@@ -34,12 +34,18 @@ jobs:
 
     # 执行构建脚本
     - name: Build on macos
-      run: pwsh ./build.ps1 Debug Nopack
+      run: pwsh ./build.ps1 Debug Nopack Test
 
+  # 在Windows下构建
+  windows-build:
+    # 使用最新windows镜像
+    runs-on: windows-latest
 
+    steps:
+    # 签出代码
+    - uses: actions/checkout@v2
 
-
-
-
-
+    # 执行构建脚本
+    - name: Build on windows
+      run: pwsh ./setup_msvc.ps1 Debug Nopack Test
 

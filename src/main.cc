@@ -1,11 +1,15 @@
 ﻿/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * @file:  The utopia servrer main source cpp
  * Using MIT License
- * Copyright (c) 2020-2021 GOSCPS 保留所有权利.
+ * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// NOTE:这个文件不会成为测试可执行文件UtopiaServer-Test的一部分
+// 因其使用了.cc后缀，不被Cmake捕获
+// 仅作为main定义文件使用
+
 #include <string>
 #include <iostream>
-#include <backward-cpp/backward.hpp>
+#include <backward/backward.hpp>
 #include "logo.hpp"
 
 using namespace std;

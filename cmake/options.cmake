@@ -8,10 +8,13 @@
 
 # 增加编译选项的函数
 function(add_utopia_options utopia_options)
-    target_compile_options(${CP_UTOPIASERVER_EXECUTABLE} PUBLIC ${utopia_options})
+    target_compile_options(${CP_UTOPIASERVER_EXECUTABLE}    PUBLIC  ${utopia_options})
+    target_compile_options(${CP_UTOPIASERVER_TEST}          PUBLIC  ${utopia_options})
+
     message(STATUS "Add compile options:${utopia_options}")
 endfunction(add_utopia_options)
 
+#==========================================================#
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
@@ -63,9 +66,8 @@ if(MSVC)
 else()  #               gcc/clang   全局选项
 #==========================================================#
 
-    # 开启警告
+    # 开启所有警告
     add_utopia_options("-Wall")
-
     
     # 开启C++20支持
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

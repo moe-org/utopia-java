@@ -1,6 +1,7 @@
 ---
 # Utopia Style
 # Ref:https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# Suit fot CLANG 12
 # 设置语言
 Language:        Cpp
 
@@ -90,7 +91,7 @@ AttributeMacros:
   - __capability
 
 # 函数参数各占一行或全占一行
-BinPackArguments: false,
+BinPackArguments: false
 
 # 函数声明各占一行或全占一行
 BinPackParameters: false
@@ -129,7 +130,7 @@ BreakBeforeBraces: Attach
 BreakBeforeInheritanceComma: false
 
 # 在逗号之后中断继承列表
-BreakInheritanceList: AfterComma
+BreakInheritanceList: AfterColon
 
 # 将三元运算符放置在换行符之后
 BreakBeforeTernaryOperators: true
@@ -280,7 +281,7 @@ PointerAlignment: Right
 ReflowComments:  false
 
 # 按字符排序
-SortIncludes:    CaseSensitive
+SortIncludes:    true
 
 # 我们不关心Java
 SortJavaStaticImport: Before
@@ -331,7 +332,7 @@ SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
 
 # 删除模板<>前后的的空格
-SpacesInAngles:  Never
+SpacesInAngles:  false
 
 # 不在if、while周围添加空格
 SpacesInConditionalStatement: false

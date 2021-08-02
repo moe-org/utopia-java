@@ -1,4 +1,4 @@
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+﻿# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # * THIS FILE IS FROM MingMoe(me@kawayi.moe)                *
 # * IS LICENSED UNDER MIT                                   *
 # * File:     packing.cmake                                 *
@@ -14,7 +14,7 @@
 set(CPACK_PACKAGE_NAME					${CP_UTOPIASERVER_EXECUTABLE})
 
 # 设置开发商名称
-set(CPACK_PACKAGE_VENDOR				"MingMoe and Contributors")
+set(CPACK_PACKAGE_VENDOR				"Moe-Org and Contributors")
 
 # 打包输出目录
 set(CP_UTOPIASERVER_PACKAGE_DIR_NAME	"package")

@@ -1,4 +1,4 @@
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ï»¿# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 # * THIS FILE IS FROM MingMoe(me@kawayi.moe)                *
 # * IS LICENSED UNDER MIT                                   *
 # * File:     library.cmake                                 *
@@ -7,14 +7,14 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 #==========================================================#
-# ¼¸¸ö¼òµ¥µÄ¸¨Öúº¯Êı
+# å‡ ä¸ªç®€å•çš„è¾…åŠ©å‡½æ•°
 #==========================================================#
-# ÒıÈë¿â
+# å¼•å…¥åº“
 include(FetchContent)
 
 function(cp_utopiaserver_add_git_library lib_name git_repo git_tag )
 
-    # Declare
+    # è®¾ç½®åº“
     FetchContent_Declare(
                             ${lib_name}
         GIT_REPOSITORY      ${git_repo}
@@ -22,16 +22,18 @@ function(cp_utopiaserver_add_git_library lib_name git_repo git_tag )
         SOURCE_DIR          ${CP_UTOPIASERVER_LIBRARY_DIR}/${lib_name}
         )
 
-    # È·±£ÎÒÃÇÖ»µ÷ÓÃFetchContent_PopulateÒ»´Î
-    # ·ñÔò»áÔì³É´íÎó
+    # ç¡®ä¿æˆ‘ä»¬åªè°ƒç”¨FetchContent_Populateä¸€æ¬¡
+    # å¦åˆ™ä¼šé€ æˆé”™è¯¯
     FetchContent_GetProperties(${lib_name})
+
     if(NOT ${lib_name}_POPULATED)
         FetchContent_Populate(${lib_name})
         
+        # æ·»åŠ åˆ°å­ç›®å½•
         add_subdirectory(
-            ${CP_UTOPIASERVER_LIBRARY_DIR}/${lib_name}  # ÉèÖÃÔ´ÎÄ¼şÂ·¾¶
-            ${CP_UTOPIASERVER_BINARY_DIR}/${lib_name}   # ÉèÖÃÊä³öÂ·¾¶
-            EXCLUDE_FROM_ALL                            # ²»°üº¬ÔÚÄ¿±êµ±ÖĞ
+            ${CP_UTOPIASERVER_LIBRARY_DIR}/${lib_name}  # è®¾ç½®æºæ–‡ä»¶è·¯å¾„
+            ${CP_UTOPIASERVER_BINARY_DIR}/${lib_name}   # è®¾ç½®è¾“å‡ºè·¯å¾„
+            EXCLUDE_FROM_ALL                            # ä¸åŒ…å«åœ¨ç›®æ ‡å½“ä¸­
             )
 
     endif()
@@ -39,23 +41,22 @@ function(cp_utopiaserver_add_git_library lib_name git_repo git_tag )
 endfunction(cp_utopiaserver_add_git_library)
 
 #==========================================================#
-# ÒıÈë¿â
+# å¼•å…¥åº“
 #==========================================================#
-# backward-cpp
-cp_utopiaserver_add_git_library(
-    "backward"
-    "https://github.com/bombela/backward-cpp.git"
-    "v1.5"
-)
+set(CP_UTOPIASERVER_LIBRARY_CMAKE_MODULE_DIR ${CP_UTOPIASERVER_CMAKE_MODULE_DIR}/library)
 
-target_sources(${CP_UTOPIASERVER_EXECUTABLE} PUBLIC ${BACKWARD_ENABLE})
-add_backward(${CP_UTOPIASERVER_EXECUTABLE})
+include(${CP_UTOPIASERVER_LIBRARY_CMAKE_MODULE_DIR}/backward.cmake)
+include(${CP_UTOPIASERVER_LIBRARY_CMAKE_MODULE_DIR}/googletest.cmake)
 
 #==========================================================#
-# Ìí¼ÓÍ·ÎÄ¼şÂ·¾¶
+# æ·»åŠ å¤´æ–‡ä»¶è·¯å¾„
 #==========================================================#
 target_include_directories(
-    ${CP_UTOPIASERVER_EXECUTABLE} 
+    ${CP_UTOPIASERVER_EXECUTABLE}
     PUBLIC ${CP_UTOPIASERVER_LIBRARY_DIR})
-    
+
+target_include_directories(
+    ${CP_UTOPIASERVER_TEST}
+    PUBLIC ${CP_UTOPIASERVER_LIBRARY_DIR})
+
 message(STATUS "Include 3rd library header directory:${CP_UTOPIASERVER_LIBRARY_DIR}")
