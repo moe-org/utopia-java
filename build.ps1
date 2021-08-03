@@ -133,7 +133,7 @@ New-Item -ItemType Directory -Path "./build" -Force
 Set-Location "./build"
 
 # 生成cmake
-&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}" "-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "UTOPIASERVER_GOOGLE_TEST_GITEE_MIRROR=True"
+&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}" "-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON"
 test-command($?)
 
 # 获取cpu线程数
