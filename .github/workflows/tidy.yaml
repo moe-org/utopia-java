@@ -20,6 +20,6 @@ jobs:
 
     # 执行检查脚本
     - name: clang-tidy checking
-      run: pwsh ./build.ps1 Debug Nopack Notest && python3 ./script/run-clang-tidy.py -j 12 -p ./build ./src/* && python3 ./script/run-clang-tidy.py -j 12 -p ./build ./test/*
+      run: python ./build.py debug && python3 ./script/run-clang-tidy.py -j 12 -p ./build ./src/* && python3 ./script/run-clang-tidy.py -j 12 -p ./build ./test/*
       
     

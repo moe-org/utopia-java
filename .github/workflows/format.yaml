@@ -20,6 +20,6 @@ jobs:
 
     # 执行检查脚本
     - name: format checking
-      run: pwsh ./script/check-format.ps1 ./src/ false && pwsh ./script/check-format.ps1 ./test/ false
+      run: python ./script/check-format.py ./src/ false && python ./script/check-format.py ./test/ false
 
     

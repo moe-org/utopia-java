@@ -20,7 +20,7 @@ jobs:
 
     # 执行构建脚本
     - name: build on linux
-      run: pwsh ./build.ps1 Debug Pack Test
+      run: python ./build.py debug test
     
    
   # 在mac下构建
@@ -34,7 +34,7 @@ jobs:
 
     # 执行构建脚本
     - name: build on macos
-      run: pwsh ./build.ps1 Debug Pack Test
+      run: python ./build.py debug test
 
 
   # 在Windows下构建
@@ -48,4 +48,4 @@ jobs:
 
     # 执行构建脚本
     - name: build on windows
-      run: pwsh ./setup_msvc.ps1 Debug Pack Test
+      run: pwsh ./setup_msvc.ps1 debug test
