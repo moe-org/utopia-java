@@ -1,0 +1,19 @@
+---
+# 用于设置clang tidy的配置文件
+
+# 检查
+Checks:          'clang-diagnostic-*,clang-analyzer-*,modernize-*,performance-*,portability-*,readability-*,concurrency-*,bugprone-*,misc-*'
+
+# 将警告升级为错误
+WarningsAsErrors: '*'
+
+# 头文件筛查正则表达式
+# 检查所有src/test下的文件
+HeaderFilterRegex: '(src|test)/.*'
+
+# 格式配置文件
+FormatStyle:     'file'
+
+CheckOptions:
+  # UNKNOWN FOR SETTING
+...

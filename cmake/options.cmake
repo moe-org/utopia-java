@@ -23,10 +23,22 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     #                   MSVC        DEBUG选项
     #==========================================================#
 
+        # 生成调试信息
+        add_utopia_options("/DEBUG:FULL")
+        add_utopia_options("/Z7")
+
+        # 禁止优化
+        add_utopia_options("/Od")
 
     #==========================================================#
     else() #            gcc/clang   DEBUG选项
     #==========================================================#
+
+        # 生成调试信息
+        add_utopia_options("-g")
+
+        # 使用不影响调试的优化选项
+        add_utopia_options("-Og")
 
 
     #==========================================================#
@@ -37,13 +49,17 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     #                   MSVC        RELEASE选项
     #==========================================================#
 
+        # 生成快速代码
+        add_utopia_options("/Ox")
+
 
 
     #==========================================================#
     else() #            gcc/clang   RELEASE选项
     #==========================================================#
 
-
+        # 优化代码
+        add_utopia_options("-O3")
 
     #==========================================================#
     endif() #           未知编译器  未知构建类型
@@ -61,6 +77,9 @@ if(MSVC)
     # 开启C++20支持
     add_utopia_options("/std:c++latest")
 
+    # 开启utf-8支持
+    add_utopia_options("/utf-8")
+
 
 #==========================================================#
 else()  #               gcc/clang   全局选项
@@ -68,8 +87,11 @@ else()  #               gcc/clang   全局选项
 
     # 开启所有警告
     add_utopia_options("-Wall")
+    add_utopia_options("-Wextra")
     
     # 开启C++20支持
+    # GCC11以上使用-std=c++20
+    # 否则使用-std=c++2a
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "11.0.0")
             add_utopia_options("-std=c++20")
@@ -77,9 +99,9 @@ else()  #               gcc/clang   全局选项
             add_utopia_options("-std=c++2a")
         endif()
     else()
-        message(FATAL_ERROR "NOT SUPPORT EXCEPT GCC")
+        # 对于其他编译器 一律使用-std=c++20
+        add_utopia_options("-std=c++20")
     endif()
-
 
 
 #==========================================================#

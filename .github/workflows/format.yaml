@@ -1,0 +1,25 @@
+# 检查代码格式
+name: Clang-Fotmat Checking
+
+# 设置触发器
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # 在linux下检查代码
+  linux-build:
+    # 使用最新ubuntu镜像
+    runs-on: ubuntu-latest
+
+    steps:
+    # 签出代码
+    - uses: actions/checkout@v2
+
+    # 执行检查脚本
+    - name: format checking
+      run: pwsh ./script/check-format.ps1 ./src/ false && pwsh ./script/check-format.ps1 ./test/ false
+
+    

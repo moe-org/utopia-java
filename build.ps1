@@ -6,14 +6,14 @@ $home_dir = Get-Location
 
 # 构建失败以退出函数
 function failed_exit(){
-    Write-Host "Exit" -ForegroundColor Red
+    Write-Host "退出" -ForegroundColor Red
     Set-Location $home_dir
     exit 1
 }
 
 # 构建成功以成功函数
 function well_done(){
-    Write-Host "All done" -ForegroundColor Green
+    Write-Host "所有操作完成" -ForegroundColor Green
     Set-Location $home_dir
     exit 0
 }
@@ -22,20 +22,20 @@ function well_done(){
 function test-program($prog_name){
     if ($null -eq (Get-Command $prog_name -ErrorAction SilentlyContinue)) 
     { 
-        Write-Error "Checking ${prog_name} ... no!"
+        Write-Error "检查 ${prog_name} ... no!"
 
         # 退出，返回开始的地方
         failed_exit
     }
     else{
-        Write-Output "Checking ${prog_name} ... ok!"
+        Write-Output "检查 ${prog_name} ... ok!"
     }
 }
 
 # 处理命令结果
 function test-command($result){
     if($result -ne "True"){
-        Write-Error "Build failed down:$result"
+        Write-Error "构建失败:$result"
 
         # 退出，返回开始的地方
         failed_exit
@@ -45,7 +45,7 @@ function test-command($result){
 # 删除目录(如果存在)
 function clean_dir($dir){
     if(Test-Path -Path "${dir}"){
-        Write-Output "Remove the ${dir} directory"
+        Write-Output "删除 '${dir}' 目录"
         Remove-Item -Path "${dir}" -Force -Recurse
     }
 }
@@ -61,12 +61,12 @@ $test_type
 if($args.Count -ne 3){
     $argCount = $args.Count;
 
-    Write-Error "Miss or too many parameters:${argCount} arg(s)"
-    Write-Error "Accepted three parameters:"
-    Write-Error "Accepted parameter 1:'Debug' or 'Release'"
-    Write-Error "Accepted parameter 2:'Pack' or 'Nopack'"
-    Write-Error "Accepted parameter 3:'Test' or 'Notest'"
-    Write-Error "Such as './build.ps1 Debug Nopack Test'"
+    Write-Error "参数数量不正确!:${argCount} arg(s)"
+    Write-Error "需要三个参数:"
+    Write-Error "参数1指定构建类型:'Debug' or 'Release'"
+    Write-Error "参数2指定是否打包:'Pack' or 'Nopack'"
+    Write-Error "参数3指定是否Test:'Test' or 'Notest'"
+    Write-Error "例如 './build.ps1 Debug Nopack Test'"
     failed_exit
 }
 
@@ -79,8 +79,8 @@ elseif($args[0] -eq "Release"){
 } 
 else{
     $wrongArg = $args[0]
-    Write-Error "Unknown parameter:${wrongArg}"
-    Write-Error "Accepted parameters:'Debug' or 'Release'"
+    Write-Error "未知的参数:${wrongArg}"
+    Write-Error "此参数位支持:'Debug' or 'Release'"
     failed_exit
 }
 
@@ -93,8 +93,8 @@ elseif($args[1] -eq "Nopack"){
 }
 else{
     $wrongArg = $args[1]
-    Write-Error "Unknown parameter:${wrongArg}"
-    Write-Error "Accepted parameters:'Pack' or 'Nopack'"
+    Write-Error "未知的参数:${wrongArg}"
+    Write-Error "此参数位支持:'Pack' or 'Nopack'"
     failed_exit
 }
 
@@ -107,18 +107,19 @@ elseif($args[2] -eq "Notest"){
 }
 else{
     $wrongArg = $args[2]
-    Write-Error "Unknown parameter:${wrongArg}"
-    Write-Error "Accepted parameters:'Test' or 'Notest'"
+    Write-Error "未知的参数:${wrongArg}"
+    Write-Error "此参数位支持:'Test' or 'Notest'"
     failed_exit
 }
 
 #======================================================================
-Write-Host "Build ${build_type} -> ${pack_type} && ${test_type}" -ForegroundColor Green
+Write-Host "构建 ${build_type} -> ${pack_type} && ${test_type}" -ForegroundColor Green
 
 # 检查
 # cmake
+# ctest
 # cpack
-Write-Output "Checking depends ..."
+Write-Output "检查依赖 ..."
 test-program("cmake")
 test-program("ctest")
 test-program("cpack")
@@ -132,7 +133,7 @@ New-Item -ItemType Directory -Path "./build" -Force
 Set-Location "./build"
 
 # 生成cmake
-&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}"
+&"cmake" ".." "-D" "CMAKE_BUILD_TYPE=${build_type}" "-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "UTOPIASERVER_GOOGLE_TEST_GITEE_MIRROR=True"
 test-command($?)
 
 # 获取cpu线程数

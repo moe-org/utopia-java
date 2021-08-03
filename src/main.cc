@@ -7,10 +7,10 @@
 // 因其使用了.cc后缀，不被Cmake捕获
 // 仅作为main定义文件使用
 
-#include <string>
-#include <iostream>
-#include <backward/backward.hpp>
 #include "logo.hpp"
+#include <backward/backward.hpp>
+#include <iostream>
+#include <string>
 
 using namespace std;
 using namespace utopia;
@@ -19,12 +19,11 @@ using namespace utopia;
 /// @param argc		命令行参数数量
 /// @param argv		命令行参数
 /// @return			程序返回值
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 	print_logo();
 	throw 1;
-	while(true){}
+	while(true) {}
 
 
 	return 0;
 }
-
