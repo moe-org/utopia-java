@@ -99,8 +99,8 @@ else()  #               gcc/clang   全局选项
             add_utopia_options("-std=c++2a")
         endif()
     else()
-        # 对于其他编译器 一律使用-std=c++20
-        add_utopia_options("-std=c++20")
+        # 对于其他编译器 一律使用-std=c++2a
+        add_utopia_options("-std=c++2a")
     endif()
 
 
