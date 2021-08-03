@@ -14,5 +14,8 @@
 # 忽略编辑器配置文件
 /.vs/
 /.vscode/
-/.idea
+/.idea/
 /.CMakeSettings.json
+
+# 忽略Python虚拟环境文件夹
+/vnev/
