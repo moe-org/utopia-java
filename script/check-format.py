@@ -49,12 +49,12 @@ def process_file(file_name):
 
         process = subprocess.run(
             args,
-        stdout=subprocess.PIPE
-        ,stdin=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        encoding="utf-8"
-        )
-        results = process.stdout;
+            stdout=subprocess.PIPE,
+            stdin=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            encoding="utf-8"
+            )
+        results = process.stdout
 
         # 比较输出结果
         with open(file_name,"r",encoding="utf-8") as fd:

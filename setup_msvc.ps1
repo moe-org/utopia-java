@@ -13,7 +13,7 @@ $msvc_cmd = "$vs_install_dir\VC\Auxiliary\Build\vcvars64.bat"
 $cmd_args
 
 foreach($arg in $args){
-    $cmd_args += arg.ToString .replace("`"", "\`"")
+    $cmd_args += arg.replace("`"", "\`"")
 }
 
 
