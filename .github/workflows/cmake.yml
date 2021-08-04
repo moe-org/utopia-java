@@ -18,9 +18,10 @@ jobs:
       matrix:
         os: [ubuntu-latest,mac-latest]
 
-      env:
-        CC: clang
-        CXX: clang++
+    # 设置环境变量
+    env:
+      CC: clang
+      CXX: clang++
 
     steps:
     # 签出代码
@@ -40,9 +41,10 @@ jobs:
       matrix:
         os: [ubuntu-latest,mac-latest]
 
-      env:
-        CC: gcc-10
-        CXX: g++-10
+    # 设置环境变量
+    env:
+      CC: gcc-10
+      CXX: g++-10
 
     steps:
     # 签出代码
