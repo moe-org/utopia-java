@@ -13,9 +13,8 @@ $msvc_cmd = "$vs_install_dir\VC\Auxiliary\Build\vcvars64.bat"
 $cmd_args
 
 foreach($arg in $args){
-    $cmd_args += arg.replace("`"", "\`"")
+    $cmd_args += arg
 }
-
 
 # 设置环境并启动build.ps1
 &"cmd.exe" "/c" "`"$msvc_cmd`" && python ./build.py ${cmd_args}"

@@ -7,6 +7,5 @@
 
 | Checking | Status |
 | :-------:|:------:|
-| Build And Test | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/moe-org/UtopiaServer/CMake%20Build%20And%20Test?style=for-the-badge) |
-| Format   | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/moe-org/UtopiaServer/Clang-Fotmat%20Checking?style=for-the-badge) |
-| Tidy   | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/moe-org/UtopiaServer/Clang-Tidy%20Checking?style=for-the-badge) |
+| Build And Test | ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/moe-org/UtopiaServer/Build%20And%20Test?style=for-the-badge) |
+
