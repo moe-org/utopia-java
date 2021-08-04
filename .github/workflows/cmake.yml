@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest,mac-latest]
+        os: [ubuntu-latest,macos-latest]
 
     # 设置环境变量
     env:
@@ -39,7 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest,mac-latest]
+        os: [ubuntu-latest,macos-latest]
 
     # 设置环境变量
     env:
