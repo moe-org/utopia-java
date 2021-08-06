@@ -49,7 +49,7 @@ void Block::update() {
 
 void Block::update_buffer() {
 	// 加锁
-	std::scoped_lock locker(this->current_entities_, this->next_locker_);
+	std::scoped_lock locker(this->current_locker_, this->next_locker_);
 
 	// 交换缓冲区
 	current_entities_.swap(next_entities_);
