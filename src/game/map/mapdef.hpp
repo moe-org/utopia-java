@@ -21,7 +21,7 @@ namespace utopia {
 		PosType x { 0 };
 		PosType y { 0 };
 
-		constexpr FlatPos(const PosType x, const PosType y) noexcept;
+		FlatPos(const PosType x, const PosType y) noexcept;
 	};
 
 
@@ -31,13 +31,11 @@ namespace utopia {
 		PosType y { 0 };
 		PosType z { 0 };
 
-		constexpr Pos(const PosType x,
-					  const PosType y,
-					  const PosType z) noexcept;
+		Pos(const PosType x, const PosType y, const PosType z) noexcept;
 
 		/// @brief		降级到2d坐标
 		/// @return		使用此类信息构造一个2d坐标，忽略z轴
-		inline constexpr FlatPos downgrade() const noexcept {
+		inline FlatPos downgrade() const noexcept {
 			FlatPos flat(x, y);
 			return flat;
 		}
@@ -51,14 +49,14 @@ namespace utopia {
 		PosType		z { 0 };
 		WorldIdType id { 0 };
 
-		constexpr WorldPos(const WorldIdType world_id,
-						   const PosType	 x,
-						   const PosType	 y,
-						   const PosType	 z) noexcept;
+		WorldPos(const WorldIdType world_id,
+				 const PosType	   x,
+				 const PosType	   y,
+				 const PosType	   z) noexcept;
 
 		/// @brief		降级到3d坐标
 		/// @return		使用此类信息构造一个3d坐标，忽略world id
-		inline constexpr Pos downgrade() const noexcept {
+		inline Pos downgrade() const noexcept {
 			Pos pos(x, y, z);
 			return pos;
 		}
