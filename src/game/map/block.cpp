@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia server block source file
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           game/map/block.cpp
+/// @author         moe-org
+/// @brief          地图块实现源文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 
 #include "block.hpp"
 #include <memory>

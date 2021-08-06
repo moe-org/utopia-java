@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////
 /// @file           game/map/area.cpp
 /// @author         moe-org
-/// @brief          区域实现
+/// @brief          区域实现源文件
 /// @copyright      MIT License
 /////////////////////////////////////////////////
 
@@ -16,11 +16,11 @@
 
 using namespace utopia;
 
-Area::Area(Area &&origin) noexcept {
+Area::Area(Area&& origin) noexcept {
 	*this = std::move(origin);
 }
 
-Area &Area::operator=(Area &&origin) noexcept {
+Area& Area::operator=(Area&& origin) noexcept {
 	std::scoped_lock lock(origin.locker_, this->locker_);
 
 	this->ground_ = std::move(origin.ground_);
@@ -30,7 +30,7 @@ Area &Area::operator=(Area &&origin) noexcept {
 }
 
 
-std::optional<std::shared_ptr<Block>> Area::get_block_by_pos(const Pos &pos) {
+std::optional<std::shared_ptr<Block>> Area::get_block_by_pos(const Pos& pos) {
 	if(pos.z != STANDARD_GROUND_Z) {
 		// 其他高度层，加锁
 		std::lock_guard<std::mutex> locker(this->locker_);

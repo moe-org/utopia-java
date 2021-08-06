@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia server main source cpp
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           main.cc
+/// @author         moe-org
+/// @brief          游戏主源文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 // NOTE:这个文件不会成为测试可执行文件UtopiaServer-Test的一部分
 // 因其使用了.cc后缀，不被Cmake捕获
 // 仅作为main定义文件使用
@@ -19,7 +20,7 @@ using namespace utopia;
 /// @param argc		命令行参数数量
 /// @param argv		命令行参数
 /// @return			程序返回值
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
 	print_logo();
 	throw 1;
 	while(true) {}

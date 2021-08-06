@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia sevrer print logo source cpp
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           logo.cpp
+/// @author         moe-org
+/// @brief          logo实现文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 
 #include <iostream>
 #include <sstream>
@@ -26,7 +27,7 @@ namespace {
 		return os.str();
 	}
 
-	constexpr char const *clear_style = "\x1b[0m";
+	constexpr char const* clear_style = "\x1b[0m";
 
 	inline void			  print_blue(std::string str) {
 		  cout << truecolor(0, 0, 0) << on_truecolor(91, 207, 250) << str

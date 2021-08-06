@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia servrer Entity define header file
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           game/entity/entity.hpp
+/// @author         moe-org
+/// @brief          实体定义头文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 #pragma once
 
 #include <cstdint>
@@ -26,7 +27,7 @@ namespace utopia {
 		/// @brief			比较两个实体是否相等
 		/// @param other	另一个实体
 		/// @return			如果相等，返回true，否则false
-		virtual bool operator==(const Entity &other) const = 0;
+		virtual bool operator==(const Entity& other) const = 0;
 
 		/// @brief
 		/// 复制自己

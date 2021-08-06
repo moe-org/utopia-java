@@ -1,20 +1,23 @@
-// utopia server config include file
-// Part of utopai server
-// using MIT license
+/////////////////////////////////////////////////
+/// @file           config.hpp
+/// @author         moe-org
+/// @brief          游戏配置头文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 
 #pragma once
 
 namespace utopia {
 
 	constexpr const unsigned long long UTOPIA_SERVER_VERSION_MAJOR =
-		@UtopiaServer_VERSION_MAJOR@;
+		@UtopiaServer_VERSION_MAJOR @;
 
 	constexpr const unsigned long long UTOPIA_SERVER_VERSION_MINOR =
-		@UtopiaServer_VERSION_MINOR@;
+		@UtopiaServer_VERSION_MINOR @;
 
 	constexpr const unsigned long long UTOPIA_SERVER_VERSION_PATCH =
-		@UtopiaServer_VERSION_PATCH@;
+		@UtopiaServer_VERSION_PATCH @;
 
 	constexpr const unsigned long long UTOPIA_SERVER_VERSION_TWEAK =
-		@UtopiaServer_VERSION_TWEAK@;
+		@UtopiaServer_VERSION_TWEAK @;
 } // namespace utopia

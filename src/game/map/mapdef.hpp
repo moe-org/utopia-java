@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia server map datas define header file
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           game/map/mapdef.hpp
+/// @author         moe-org
+/// @brief          地图基础数据类型定义头文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 #pragma once
 
 #include <cstdint>
@@ -15,24 +16,12 @@ namespace utopia {
 	/// @brief  世界类型
 	using WorldIdType = uint64_t;
 
-	/// @brief  用于储存世界坐标的结构体
-	struct WorldPos {
-		PosType		x { 0 };
-		PosType		y { 0 };
-		PosType		z { 0 };
-		WorldIdType id { 0 };
+	/// @brief 用于储存2d坐标的结构体
+	struct FlatPos {
+		PosType x { 0 };
+		PosType y { 0 };
 
-		constexpr WorldPos(const WorldIdType world_id,
-						   const PosType	 x,
-						   const PosType	 y,
-						   const PosType	 z) noexcept;
-
-		/// @brief		降级到3d坐标
-		/// @return		使用此类信息构造一个3d坐标，忽略world id
-		inline constexpr FlatPos downgrade() const noexcept {
-			FlatPos flat(x, y);
-			return flat;
-		}
+		constexpr FlatPos(const PosType x, const PosType y) noexcept;
 	};
 
 
@@ -55,13 +44,26 @@ namespace utopia {
 	};
 
 
-	/// @brief 用于储存2d坐标的结构体
-	struct FlatPos {
-		PosType x { 0 };
-		PosType y { 0 };
+	/// @brief  用于储存世界坐标的结构体
+	struct WorldPos {
+		PosType		x { 0 };
+		PosType		y { 0 };
+		PosType		z { 0 };
+		WorldIdType id { 0 };
 
-		constexpr FlatPos(const PosType x, const PosType y) noexcept;
+		constexpr WorldPos(const WorldIdType world_id,
+						   const PosType	 x,
+						   const PosType	 y,
+						   const PosType	 z) noexcept;
+
+		/// @brief		降级到3d坐标
+		/// @return		使用此类信息构造一个3d坐标，忽略world id
+		inline constexpr Pos downgrade() const noexcept {
+			Pos pos(x, y, z);
+			return pos;
+		}
 	};
+
 
 	/// @brief 标准地图层X轴大小
 	constexpr const PosType STANDARD_BLOACK_FLOOR_X = 64;

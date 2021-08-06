@@ -1,8 +1,9 @@
-/** * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * @file:  The utopia server map datas source file
- * Using MIT License
- * Copyright (c) 2020-2021 Moe-Org 保留所有权利.
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/////////////////////////////////////////////////
+/// @file           game/map/mapdef.cpp
+/// @author         moe-org
+/// @brief          地图基础定义实现文件
+/// @copyright      MIT License
+/////////////////////////////////////////////////
 
 #include "mapdef.hpp"
 
