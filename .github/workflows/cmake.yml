@@ -11,60 +11,49 @@ on:
 jobs:
   # 使用clang进行构建
   clang-build:
-    # 使用最新ubuntu/mac镜像
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ubuntu-latest,macos-latest]
 
-    # 设置环境变量
     env:
       CC: clang
       CXX: clang++
 
     steps:
-    # 签出代码
     - uses: actions/checkout@v2
 
-    # 执行构建脚本
     - name: build on clang
       run: python3 ./build.py debug test
     
    
-  # 在mac下构建
+  # 在gcc下构建
   gcc-build:
-    # 使用ubuntu/macos进行构建
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         os: [ubuntu-latest,macos-latest]
 
-    # 设置环境变量
     env:
       CC: gcc-10
       CXX: g++-10
 
     steps:
-    # 签出代码
     - uses: actions/checkout@v2
 
-    # 执行构建脚本
     - name: build on gcc
       run: python3 ./build.py debug test
 
 
   # 使用msvc构建
   msvc-build:
-    # 使用最新windows镜像
     runs-on: windows-latest
 
     steps:
-    # 签出代码
     - uses: actions/checkout@v2
 
-    # 执行构建脚本
     - name: build on msvc
       # 设置msvc环境
       run: pwsh ./setup_msvc.ps1 debug test

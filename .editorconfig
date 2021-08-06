@@ -13,3 +13,14 @@ insert_final_newline = true
 
 # 使用utf-8编码
 charset = utf-8
+
+# 对于任何文件
+[**]
+# UNIX换行符
+end_of_line = lf
+
+# 文件末尾插入空行
+insert_final_newline = true
+
+# 使用utf-8编码
+charset = utf-8

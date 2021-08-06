@@ -8,7 +8,7 @@ Language:        Cpp
 # BasedOnStyle:  LLVM
 
 # 访问修饰符额外缩进 such as private
-AccessModifierOffset: 4
+AccessModifierOffset: -2
 
 # 参数对齐设置
 AlignAfterOpenBracket: Align
@@ -274,8 +274,8 @@ PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PenaltyIndentedWhitespace: 0
 
-# 指针向右对齐
-PointerAlignment: Right
+# 指针向左对齐
+PointerAlignment: Left
 
 # 不允许中断注释
 ReflowComments:  false

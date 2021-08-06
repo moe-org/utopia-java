@@ -18,6 +18,7 @@ def print_help():
     print("usgae:python3 ./build.py [Options]")
     print("options:")
     print("\t-h,--help\t\t\t\tprint help then exit")
+    print("\t--options-list\t\t\t\tprint the cmake-msg.txt then exit")
 
     print("\tdebug\t\t\t\t\tenable debug mode")
     print("\trelease\t\t\t\t\tenable release mode")
@@ -37,7 +38,6 @@ def print_help():
     print("\t--test-options     [option]\t\tadd a cmake test options")
 
     print("\t--cmake-check              \t\tenable cmake warning")
-
 
 
 def write_error(msg):
@@ -95,6 +95,13 @@ while index < len(args):
     # 打印帮助
     if arg == "-h" or arg == "--help":
         print_help()
+        # 之后退出
+        sys.exit(0)
+
+    # 打印cmake-msg.txt
+    elif arg == "--options-list":
+        with open("cmake-msg.txt","r",encoding="utf-8") as fd:
+            print(fd.read())
         # 之后退出
         sys.exit(0)
 
