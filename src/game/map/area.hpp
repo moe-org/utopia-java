@@ -30,6 +30,7 @@ namespace utopia {
 		/// @brief 通过坐标获取地图块
 		/// @param pos 坐标
 		/// @return 获取到的地图块。如果坐标不在范围内返回nullopt
+		/// @note 原点在area左下角。范围(0,0)<->(STANDARD_BLOACK_FLOOR_X - 1, STANDARD_BLOACK_FLOOR_Y - 1)
 		std::optional<std::shared_ptr<Block>> get_block_by_pos(const Pos& pos);
 
 	  private:

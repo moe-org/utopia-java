@@ -36,3 +36,9 @@ add_executable(
     ${CP_UTOPIASERVER_SOURCE_FILES_WITHOUT_MAIN}
 )
 
+# 设置头文件引用路径
+target_include_directories(
+    ${CP_UTOPIASERVER_TEST}
+    PUBLIC
+    ${CP_UTOPIASERVER_SOURCE_DIR}
+)

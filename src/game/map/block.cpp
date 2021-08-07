@@ -17,72 +17,104 @@ Block::Block(Block&& origin) noexcept {
 }
 
 Block& Block::operator=(Block&& origin) noexcept {
-	// 加锁
-	std::scoped_lock lock(origin.current_locker_,
-						  origin.next_locker_,
-						  this->current_locker_,
-						  this->next_locker_);
-
+	// 写锁
+	std::scoped_lock lock(origin.locker_,
+						  this->locker_);
 
 	// 移动实体列表
-	this->next_entities_	= std::move(origin.next_entities_);
-	this->current_entities_ = std::move(origin.current_entities_);
+	this->entities_ = std::move(origin.entities_);
 
 	// 清空origin
-	origin.current_entities_.clear();
-	origin.next_entities_.clear();
+	origin.entities_.clear();
 
 	return *this;
 }
 
-void Block::update() {
-	// 加锁
-	std::lock_guard<std::mutex> lock(this->current_locker_);
+void Block::update_state() {
+	// 写锁
+	std::lock_guard lock(this->locker_);
 
-	// 循环更新
-	for(auto& entity : current_entities_) {
-		entity->update();
+	// 更新实体列表
+	for (auto it = entities_.begin(); it != entities_.end();) {
+		// 将added的实体变为normal
+		if (it->second == BlockEntityState::Added) {
+			it->second = BlockEntityState::Normal;
+			it++;
+		}	
+		// 将removed的实体删除
+		else if (it->second == BlockEntityState::Removed) {
+			entities_.erase(it);
+			it = entities_.begin();
+		} else {
+			it++;
+		}
 	}
 
 	return;
 }
 
-void Block::update_buffer() {
-	// 加锁
-	std::scoped_lock locker(this->current_locker_, this->next_locker_);
+void Block::update() {
+	// 上锁
+	std::lock_guard lock(this->locker_);
 
-	// 交换缓冲区
-	current_entities_.swap(next_entities_);
+	// 只update状态为normal的实体
+	for(auto entity = entities_.begin();entity != entities_.end();entity++){
+		BlockEntityState state = entity->second;
 
-	return;
-}
-
-void Block::add(std::shared_ptr<Entity> entity) {
-	// 加锁
-	std::lock_guard<std::mutex> lock(this->next_locker_);
-
-	// 加入到待添加列表
-	this->next_entities_.push_back(entity);
-
-	return;
-}
-
-void Block::remove(std::shared_ptr<utopia::Entity> entity, bool remove_all) {
-	// 加锁
-	std::lock_guard<std::mutex> locker(this->next_locker_);
-
-	// 删除
-	for(auto it = next_entities_.begin(); it != next_entities_.end(); it++) {
-		if(it->operator->()->operator==(*entity.get())) {
-			next_entities_.erase(it);
-
-			if(remove_all) {
-				// 继续删除
-				it = next_entities_.begin();
-			} else {
-				// 只删除一个
-				return;
-			}
+		if(state == BlockEntityState::Normal) {
+			entity->first->update();
 		}
 	}
 }
+
+
+void Block::add(std::shared_ptr<Entity> entity) {
+	// 写锁
+	std::lock_guard lock(this->locker_);
+
+	// 写入
+	entities_.push_back(std::make_pair(entity,BlockEntityState::Added));
+}
+
+void Block::remove(std::shared_ptr<Entity> entity, bool remove_all) {
+	// 写锁
+	std::lock_guard lock(this->locker_);
+
+	// 删除
+	for(auto it = entities_.begin(); it != entities_.end();) {
+		// Normal实体才可删除
+		if(it->second == BlockEntityState::Normal &&
+			it->first->operator==(*entity.get())) {
+
+			// 修改到Removed
+			it->second = BlockEntityState::Removed;
+
+			if (remove_all) {
+				it = entities_.begin();
+			} else {
+				return;
+			}
+		} else {
+			it++;
+		}
+	}
+
+	return;
+}
+
+std::vector<std::shared_ptr<Entity>> Block::get_entities() {
+	// 上锁
+	std::lock_guard<std::mutex> lock(this->locker_);
+
+	// 读取
+	std::vector<std::shared_ptr<Entity>> results(entities_.size());
+
+	for (auto& entity : entities_) {
+		if (entity.second == BlockEntityState::Normal) {
+			results.push_back(entity.first);
+		}
+	}
+
+	return results;
+}
+

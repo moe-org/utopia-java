@@ -15,7 +15,7 @@ namespace utopia {
 	/// @brief 地图层
 	class BlockFloor {
 	  public:
-		BlockFloor()						 = default;
+		BlockFloor();
 		~BlockFloor()						 = default;
 
 		BlockFloor(const BlockFloor& origin) = delete;
@@ -27,13 +27,14 @@ namespace utopia {
 		/// @brief 通过坐标获取地图块
 		/// @param pos 坐标
 		/// @return 获取到的地图块。如果坐标不在范围内返回nullopt
+		/// @note 原点在block_floor左下角。范围(0,0)-(STANDARD_BLOACK_FLOOR_X - 1, STANDARD_BLOACK_FLOOR_Y - 1)
 		std::optional<std::shared_ptr<Block>>
 		get_block_by_pos(const FlatPos& pos);
 
 	  private:
 		std::array<std::array<std::shared_ptr<Block>, STANDARD_BLOACK_FLOOR_Y>,
 				   STANDARD_BLOACK_FLOOR_X>
-			blocks_; ///< 方块数组
+			blocks_ {}; ///< 方块数组
 	};
 
 } // namespace utopia

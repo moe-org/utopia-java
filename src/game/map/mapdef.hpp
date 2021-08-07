@@ -21,6 +21,7 @@ namespace utopia {
 		PosType x { 0 };
 		PosType y { 0 };
 
+		~FlatPos() = default;
 		FlatPos(const PosType x, const PosType y) noexcept;
 	};
 
@@ -31,6 +32,7 @@ namespace utopia {
 		PosType y { 0 };
 		PosType z { 0 };
 
+		~Pos() = default;
 		Pos(const PosType x, const PosType y, const PosType z) noexcept;
 
 		/// @brief		降级到2d坐标
@@ -49,6 +51,7 @@ namespace utopia {
 		PosType		z { 0 };
 		WorldIdType id { 0 };
 
+		~WorldPos() = default;
 		WorldPos(const WorldIdType world_id,
 				 const PosType	   x,
 				 const PosType	   y,
