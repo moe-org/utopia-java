@@ -113,10 +113,11 @@ namespace utopia {
 		/// @param pos 坐标
 		/// @return 如果在范围内，返回true，否则返回false
 		inline bool is_within_spoce(const FlatPos& pos) {
-			return pos.x >= (this->x_min_ * STANDARD_BLOACK_FLOOR_X)
-				   && pos.x <= ((this->x_max_ + 1) * STANDARD_BLOACK_FLOOR_X)
-				   && pos.y >= (this->y_min_ * STANDARD_BLOACK_FLOOR_Y)
-				   && pos.y <= ((this->y_max_ + 1) * STANDARD_BLOACK_FLOOR_Y);
+			auto x = get_x_range();
+			auto y = get_y_range();
+
+			return pos.x >= x.first && pos.x <= x.second && pos.y >= y.first
+				   && pos.y <= y.second;
 		}
 
 	  private:

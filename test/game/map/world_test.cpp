@@ -49,11 +49,10 @@ TEST_F(WorldTest, AccessNullTest) {
 	auto x_range = world.get_x_range();
 	auto y_range = world.get_y_range();
 
-	for(PosType x = x_range.second; x <= x_range.second*2; x++) {
-		for(PosType y = y_range.first; y >= y_range.first*2; y--) {
-			auto result = world.get_block_by_pos(Pos(x, y, 0));
-			EXPECT_FALSE(result.has_value());
-		}
-	}
+	
+	auto result =
+		world.get_block_by_pos(Pos(x_range.first - 1, y_range.second + 1, 0));
+
+	EXPECT_FALSE(result.has_value());
 }
 

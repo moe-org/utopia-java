@@ -74,14 +74,14 @@ cmake_check = False
 generate_arguments = ['cmake','-S','.','-B','build']
 
 # 构建命令行
-build_arguments = ['cmake','--build','.']
+build_arguments = ['cmake','--build','build']
 
 # 打包命令行
-pack_bin_arguments = ['cpack',"--config","CPackConfig.cmake"]
-pack_src_arguments = ['cpack',"--config","CPackSourceConfig.cmake"]
+pack_bin_arguments = ['cpack',"--config","build/CPackConfig.cmake"]
+pack_src_arguments = ['cpack',"--config","build/CPackSourceConfig.cmake"]
 
 # 测试命令行
-test_arguments = ['ctest']
+test_arguments = ['ctest','--test-dir','build']
 
 # 解析参数
 args = sys.argv[1:]
@@ -209,21 +209,20 @@ try:
     subprocess.run(generate_arguments,check=True)
 
     write_okay("生成完成")
-    write_okay("设置工作目录到build")
 
-    subprocess.run(build_arguments,check=True,cwd="./build")
+    subprocess.run(build_arguments,check=True)
     write_okay("构建完成")
 
     if pack_bin_type:
-        subprocess.run(pack_bin_arguments,check=True,cwd="./build")
+        subprocess.run(pack_bin_arguments,check=True)
         write_okay("打包输出完成")
 
     if pack_src_type:
-        subprocess.run(pack_src_arguments,check=True,cwd="./build")
+        subprocess.run(pack_src_arguments,check=True)
         write_okay("打包源码完成")
 
     if test_type:
-        subprocess.run(test_arguments,check=True,cwd="./build")
+        subprocess.run(test_arguments,check=True)
         write_okay("测试完成")
 
 except subprocess.CalledProcessError as err:
