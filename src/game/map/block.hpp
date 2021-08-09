@@ -9,6 +9,7 @@
 #include "../entity/entity.hpp"
 #include <memory>
 #include <shared_mutex>
+#include <mutex>
 #include <vector>
 #include <utility>
 #include <atomic>
