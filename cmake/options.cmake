@@ -100,7 +100,6 @@ else()  #               gcc/clang   全局选项
     # 开启C++20支持
     set(CMAKE_CXX_STANDARD 20)
 
-
     # GCC11及以上使用-std=c++20
     # 否则使用-std=c++2a
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
