@@ -1,0 +1,37 @@
+# 勋章日涅夫的CI/CD
+name: Update Badge
+
+# 测试完成则触发
+on:
+  workflow_run:
+    workflows: [ "CI And CD" ]
+    types: [ completed ]
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+
+    # 获取事件参数
+    env:
+      pte_check_suite_url: ${{ github.event.workflow_run.check_suite_url }}
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 运行修改脚本
+      - name: Update badges
+        run: python3 update_badge.py ${pte_check_suite_url}
+
+      # 配置git
+      - name: Config git
+        run: |
+          git config --global user.name mingmoe
+          git config --global user.email sudo.free@qq.com
+      # 提交修改
+      - name: Push to github
+        run: |
+          git add README.md
+          git commit -m "Update badges in README.md"
+          git push

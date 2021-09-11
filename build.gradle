@@ -1,0 +1,76 @@
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// The build.gradle is a part of project utopia, under MIT License.
+// See https://opensource.org/licenses/MIT for license information.
+// Copyright (c) 2021 moe-org All rights reserved.
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// 设置版本号选项
+def buildNumber = "BuildNumber"
+def versionSuffix = "VersionSuffix"
+def clearVersion = "1.0.0"
+
+// 开启中国镜像加速选项
+def chinaMavenRepo = "ChinaMavenRepo"
+
+// 面向所有项目的设置
+allprojects {
+    // 组id
+    group = "moe.kawayi.org"
+
+    // 设置项目版本号
+    def projectDef = project.getProperties()
+
+    version = clearVersion +
+            (projectDef.containsKey(buildNumber) ? projectDef.get(buildNumber) : "") +
+            (projectDef.containsKey(versionSuffix) ? projectDef.get(versionSuffix) : "")
+
+    // 设置全局变量
+    ext {
+        // libgdx版本号
+        gdxVersion = "1.10.0"
+    }
+
+    // 设置储存库
+    repositories {
+        maven {
+            if(Boolean.parseBoolean((
+                    projectDef.containsKey(chinaMavenRepo) ?
+                            projectDef.get(chinaMavenRepo) :
+                            "false"
+                    ).toString())){
+                url "https://maven.aliyun.com/nexus/content/groups/public"
+            }
+            else{
+                url "https://oss.sonatype.org/content/repositories/snapshots/"
+            }
+        }
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
+
+// 输出版本号
+tasks.register("printVersion"){
+    println(project.version)
+}
+
+// 打印版本号帮助
+tasks.register("printVersionHelp") {
+    println "===== version help ====="
+    println "use gradle option:-P " + buildNumber + "={Build Number}"
+    println "use gradle option:-P " + versionSuffix + "={Version Suffix}"
+    println "default buildNumber and versionSuffix is empty"
+    println "format:" + clearVersion + "{Build Number}{Version Suffix}"
+    println "finally version:" + project.version
+    println "=====   help end   ====="
+}
+
+// 打印中国镜像帮助
+tasks.register("printMavenRepoHelp") {
+    println "===== maven help ====="
+    println "use gradle option:-P " + chinaMavenRepo + "=true"
+    println "will use china maven repo"
+    println "=====  help end  ====="
+}
+

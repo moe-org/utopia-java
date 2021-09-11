@@ -1,0 +1,207 @@
+# 集成测试/集成部署
+name: CI And CD
+
+# 设置触发事件
+on:
+  push:
+    branches: [ master ]
+
+    paths:
+      # 防止勋章日涅夫触发CI/CD
+      # 防止更新文档触发CI/CD
+      - "**"
+      - "!README.md"
+      - "!docs/**"
+
+  pull_request:
+    branches: [ master ]
+
+    paths:
+      - "**"
+      - "!README.md"
+      - "!docs/**"
+
+
+jobs:
+  #================================================================
+  # 检查项目
+  #================================================================
+  Check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 设置Java
+      - name: Set up zulu Java environment ver.16
+        uses: actions/setup-java@v2
+        with:
+          java-version: 16
+          distribution: zulu
+
+      # 检查
+      - name: Validate
+        run: ./gradlew check
+
+  #================================================================
+  # 构建并进行单元测试
+  #================================================================
+  Build-And-Test:
+    runs-on: ubuntu-latest
+    needs: [ Check ]
+
+    strategy:
+      matrix:
+        java: [ '16' ]
+        release: [ 'zulu', 'temurin' ]
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 设置Java版本
+      - name: Set up ${{ matrix.release }} Java environment ver.${{ matrix.java }}
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: ${{ matrix.release }}
+
+      # 编译
+      - name: Build
+        run: ./gradlew build test
+
+  #================================================================
+  # 设置快照tags
+  #================================================================
+  Record-Version:
+    runs-on: ubuntu-latest
+
+    # 不在PR的环境下设置tag
+    if: ${{ github.event_name == 'push' }}
+
+    # 需要能成功构建并进行单元测试
+    needs: [ Build-And-Test ]
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 配置git
+      - name: Config git
+        run: |
+          git config --global user.name   mingmoe
+          git config --global user.email  sudo.free@qq.com
+
+      # 设置tag
+      - name: Set tag
+        env:
+          # 版本号
+          change_list: -SNAPSHOT
+          build_number: -${{ github.run_number }}
+
+        run: |
+          tag_version=$(./gradlew printVersion -q -P BuildNumber=${build_number} -P VersionSuffix=${change_list})
+          git tag ${tag_version}
+          git push --tags
+
+  #================================================================
+  # 更新文档
+  #================================================================
+  Generate-Javadoc:
+    runs-on: ubuntu-latest
+
+    # 只在设置tag后生成文档
+    needs: [ Record-Version ]
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 设置Java
+      - name: Set up zulu Java environment ver.16
+        uses: actions/setup-java@v2
+        with:
+          java-version: 16
+          distribution: zulu
+
+      # 生成文档
+      - name: Generate Javadoc
+
+        env:
+          # 版本号
+          change_list: -SNAPSHOT
+          build_number: -${{ github.run_number }}
+
+          # note:需要设置版本号
+        run: ./gradlew javadoc -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
+
+      # 配置git
+      - name: Config git
+        run: |
+          git config --global user.name   mingmoe
+          git config --global user.email  sudo.free@qq.com
+
+      # 复制文档
+      - name: Put Javadoc
+        run: |
+          git add desktop/build/docs/javadoc --force
+          git add core/build/docs/javadoc --force
+          git stash push -- core/build/docs/javadoc desktop/build/docs/javadoc
+          git fetch
+          git checkout -b docs origin/docs
+          git rm -r desktop/build/docs/javadoc
+          git rm -r core/build/docs/javadoc
+          git commit -m "remove old docs"
+          git stash pop
+      # 生成CNAME文件
+      # 供GitHub pages使用
+      - name: Generate CNAME file
+        run: |
+          echo "utopia.client.doc.kawayi.moe" >> ./CNAME
+      # 提交文档
+      - name: Push Javadoc
+        run: |
+          git add --all
+          git commit -m "update Javadoc"
+          git push
+
+  #================================================================
+  # 检查代码覆盖率
+  #================================================================
+  Check-Code-Coverage:
+    runs-on: ubuntu-latest
+
+    # 在设置tag之后检查代码覆盖率
+    needs: [ Record-Version ]
+
+    steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 设置Java版本
+      - name: Set up zulu Java environment ver.16
+        uses: actions/setup-java@v2
+        with:
+          java-version: 16
+          distribution: zulu
+
+      # 测试
+      - name: Check code coverage
+        env:
+          # 设置token
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+          # 版本号
+          change_list: -SNAPSHOT
+          build_number: -${{ github.run_number }}
+
+        # 上传覆盖率
+        run: |
+          ./gradlew test -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
+          bash <(curl -s https://codecov.io/bash)

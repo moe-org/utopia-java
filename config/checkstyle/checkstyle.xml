@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- The checkstyle.xml is a part of project utopia, under MIT License. -->
+<!-- See https://opensource.org/licenses/MIT for license information. -->
+<!-- Copyright (c) 2021 moe-org All rights reserved. -->
+<!--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<module name="Checker">
+    <!-- 字符集编码 -->
+    <property name="charset" value="UTF-8"/>
+    <!-- 违规级别 -->
+    <property name="severity" value="error"/>
+    <!-- 需要检查的文件扩展名 -->
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+
+    <!--检查Java文件-->
+    <module name="TreeWalker">
+        <!--检查空块-->
+        <module name="EmptyCatchBlock"/>
+        <module name="EmptyBlock"/>
+
+        <!--禁止Unicode转义-->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <!--允许不可打印的 控制字符,空白字符 使用转义-->
+            <property name="allowEscapesForControlCharacters" value="true"/>
+            <property name="allowNonPrintableEscapes" value="true"/>
+        </module>
+
+        <!--检查类型名称-->
+        <module name="TypeName">
+            <!--大驼峰命名法-->
+            <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!--检查包声明是否匹配目录-->
+        <module name="PackageDeclaration"/>
+
+        <!--检查包名-->
+        <module name="PackageName">
+            <!--匹配以moe.kawayi.org开头，全小写的包名-->
+            <property name="format" value="^moe\.kawayi\.org[a-z0-9\.]*$"/>
+        </module>
+
+
+    </module>
+
+
+</module>

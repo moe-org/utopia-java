@@ -1,0 +1,96 @@
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// The build.gradle is a part of project utopia, under MIT License.
+// See https://opensource.org/licenses/MIT for license information.
+// Copyright (c) 2021 moe-org All rights reserved.
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+// 插件设置
+plugins{
+    // java 程序
+    id 'java-library'
+
+    // java 引用程序
+    id 'application'
+
+    // 检查源文件格式
+    id 'checkstyle'
+
+    // 静态代码分析
+    id "com.github.spotbugs-base" version "4.7.4"
+
+    // 代码覆盖率报告
+    id 'jacoco'
+}
+
+project(":desktop") {
+    // 依赖
+    dependencies {
+        // 依赖项目
+        api project(":core")
+
+        // 引入libgdx
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+        // 测试框架
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    }
+
+    // 设置checkstyle
+    checkstyle{
+        ignoreFailures = false
+    }
+}
+
+// 使用junit进行测试
+test {
+    useJUnitPlatform()
+
+    finalizedBy jacocoTestReport // 在test完成之后调用jacoco
+}
+
+jacocoTestReport {
+    dependsOn test // 调用jacoco之前进行测试
+
+    reports {
+        // 设置输出
+        xml.required = true
+        html.required = true
+    }
+}
+
+// 设置java编译选项
+compileJava {
+    options.encoding("UTF-8")
+}
+
+// 设置java工具链
+java {
+    toolchain {
+        // 设置java版本
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+// 生成文档
+javadoc {
+    source = sourceSets.main.allJava
+    options.setJFlags(["-Dfile.encoding=UTF-8"])
+    options.setEncoding("UTF-8")
+    options.setLocale("zh-cn")
+    options.setWindowTitle("Utopia Doc")
+}
+
+// application设置
+application {
+    // 设置主类
+    mainClass = 'moe.kawayi.org.utopia.client.main.desktop.DesktopLauncher'
+
+    // 设置默认jvm参数
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+
+    // 设置应用名称
+    applicationName = "utopia-client-desktop"
+}
