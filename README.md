@@ -58,4 +58,11 @@
 </p>
 
 <!---ubadge-auto-list-begin-->
+| Checking | Status |
+| :-------:|:------:|
+| Check | ![Check](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=appveyor) |
+| Build-And-Test | ![Build-And-Test](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=appveyor) |
+| Record-Version | ![Record-Version](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=appveyor) |
+| Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=appveyor) |
+| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=appveyor) |
 <!---ubadge-auto-list-end-->
