@@ -45,7 +45,7 @@ jobs:
       - name: Validate
         run: |
           chmod 777 ./gradlew
-         ./gradlew check
+          ./gradlew check
 
   #================================================================
   # 构建并进行单元测试
@@ -75,7 +75,7 @@ jobs:
       - name: Build
         run: |
           chmod 777 ./gradlew
-         ./gradlew build test
+          ./gradlew build test
 
   #================================================================
   # 设置快照tags
@@ -145,7 +145,7 @@ jobs:
           # note:需要设置版本号
         run: |
           chmod 777 ./gradlew
-         ./gradlew javadoc -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
+          ./gradlew javadoc -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
 
       # 配置git
       - name: Config git
