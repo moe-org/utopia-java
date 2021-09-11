@@ -109,7 +109,9 @@ jobs:
 
         run: |
           chmod 777 ./gradlew
+          ./gradlew build
           tag_version=$(./gradlew printVersion -q -P BuildNumber=${build_number} -P VersionSuffix=${change_list})
+          echo TAG:${tag_version}
           git tag ${tag_version}
           git push --tags
 
