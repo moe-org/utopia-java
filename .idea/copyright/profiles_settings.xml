@@ -1,0 +1,15 @@
+<component name="CopyrightManager">
+  <settings default="MIT License">
+    <module2copyright>
+      <element module="All" copyright="MIT License" />
+    </module2copyright>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="block" value="false" />
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+      <option name="lenBefore" value="40" />
+      <option name="lenAfter" value="40" />
+      <option name="filler" value="* " />
+    </LanguageOptions>
+  </settings>
+</component>
