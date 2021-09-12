@@ -6,28 +6,26 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^7.0.2"
+    "cz-conventional-changelog": "^3.3.0"
   },
   "scripts": {
-    "all-install": "npm run prepare && npm run lint-commit-hook-install && npm run commit-hook-install",
-    "prepare": "npx husky install",
-    "lint-commit-hook-install": "npx add \".husky/lint-commit-msg\" 'npx --no-install commitlint --edit $1'",
-    "commit-hook-install": "echo \"Use git cz to push code\""
+    "lint-last-commit": "npx commitlint --from HEAD~1 --to HEAD --verbose",
+    "commit": "git cz"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moe-org/UtopiaClient.git"
   },
-  "author": "",
+  "author": "MingMoe",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/moe-org/UtopiaClient/issues"
   },
   "homepage": "https://github.com/moe-org/UtopiaClient#readme",
   "private": true,
+  "//NOTE//": "配置commitizen(git cz)",
   "config": {
-    "//NOTE//": "使用常规commit format",
+    "//NOTE//": "使用标准commit format ; commit-lint程序的配置见commitlint.config.js",
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
