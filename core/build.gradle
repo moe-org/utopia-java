@@ -5,7 +5,7 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 // 插件设置
-plugins{
+plugins {
     // java 库
     id 'java-library'
 
@@ -31,7 +31,7 @@ project(":core") {
     }
 
     // 设置checkstyle
-    checkstyle{
+    checkstyle {
         ignoreFailures = false
     }
 }
@@ -56,6 +56,8 @@ javadoc {
     options.setEncoding("UTF-8")
     options.setLocale("zh-cn")
     options.setWindowTitle("Utopia Doc")
+    title = "Utopia Client Core Javadoc"
+    failOnError = true
 }
 
 // 使用junit进行测试

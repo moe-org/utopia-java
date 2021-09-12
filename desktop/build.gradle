@@ -6,7 +6,7 @@
 
 
 // 插件设置
-plugins{
+plugins {
     // java 程序
     id 'java-library'
 
@@ -39,7 +39,7 @@ project(":desktop") {
     }
 
     // 设置checkstyle
-    checkstyle{
+    checkstyle {
         ignoreFailures = false
     }
 }
@@ -81,6 +81,8 @@ javadoc {
     options.setEncoding("UTF-8")
     options.setLocale("zh-cn")
     options.setWindowTitle("Utopia Doc")
+    title = "Utopia Client Desktop Javadoc"
+    failOnError = true
 }
 
 // application设置
