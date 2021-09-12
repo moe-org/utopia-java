@@ -68,6 +68,6 @@
 | Build-And-Test (16, zulu) | ![Build-And-Test (16, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Build-And-Test (16, temurin) | ![Build-And-Test (16, temurin)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Record-Version | ![Record-Version](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-cancelled-lightgrey?style=for-the-badge&logo=appveyor) |
-| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-cancelled-lightgrey?style=for-the-badge&logo=appveyor) |
+| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=appveyor) |
+| Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 <!---ubadge-auto-list-end-->
