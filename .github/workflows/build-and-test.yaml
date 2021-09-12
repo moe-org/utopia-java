@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix: 
-        message: ${{ fromJson(github.event.push.commits) }}
+        include: ${{ fromJson(github.event.push.commits) }}
 
     steps:
       # 检出代码
