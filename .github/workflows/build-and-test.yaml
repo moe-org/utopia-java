@@ -183,18 +183,20 @@ jobs:
           git add desktop/build/docs/javadoc --force
           git add core/build/docs/javadoc --force
           git stash push -- core/build/docs/javadoc desktop/build/docs/javadoc
+          git reset --hard HEAD^1
           git fetch
           git checkout -b docs origin/docs
+          git clean -f -d
           git rm -r desktop
           git rm -r core
-          git commit -m "remove old docs"
+          git commit -m "docs(javadoc) Remove old docs"
           git stash pop
 
       # 提交文档
       - name: Push Javadoc
         run: |
           git add --all
-          git commit -m "update Javadoc"
+          git commit -m "docs(javadoc) Update new docs"
           git push
 
   #================================================================
