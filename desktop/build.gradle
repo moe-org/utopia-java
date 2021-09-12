@@ -63,7 +63,8 @@ jacocoTestReport {
 
 // 设置java编译选项
 compileJava {
-    options.encoding("UTF-8")
+    options.setEncoding("UTF-8")
+    options.forkOptions.jvmArgs << '-J-Dfile.encoding=UTF-8'
 }
 
 // 设置java工具链

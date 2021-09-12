@@ -13,9 +13,25 @@ import java.util.Objects;
 /**
  * {@link UtopiaBinaryFormatArray}的线程不安全实现
  */
-public class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArray {
+public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArray {
 
-    private final ArrayList<UtopiaBinaryFormatValue> array = new ArrayList<>();
+    private final ArrayList<UtopiaBinaryFormatValue> array;
+
+    /**
+     * 默认构造
+     */
+    public UtopiaBinaryFormatArrayImpl() {
+        array = new ArrayList<>();
+    }
+
+    /**
+     * 带数组容量大小的构造
+     *
+     * @param preCapacity 数组预留容量大小; {@link ArrayList#ArrayList(int)}
+     */
+    public UtopiaBinaryFormatArrayImpl(int preCapacity) {
+        array = new ArrayList<>(preCapacity);
+    }
 
     @Override
     public int getLength() {

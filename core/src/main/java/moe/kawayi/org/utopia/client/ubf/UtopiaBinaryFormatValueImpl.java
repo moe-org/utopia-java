@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * {@link UtopiaBinaryFormatValue}的线程不安全实现
  */
-public class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValue {
+public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValue {
 
     @NotNull
     private UtopiaBinaryFormatType type;

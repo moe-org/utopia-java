@@ -11,9 +11,25 @@ import java.util.*;
 /**
  * {@link UtopiaBinaryFormatObject}的线程不安全实现
  */
-public class UtopiaBinaryFormatObjectImpl implements UtopiaBinaryFormatObject {
+public final class UtopiaBinaryFormatObjectImpl implements UtopiaBinaryFormatObject {
 
-    private final HashMap<String, UtopiaBinaryFormatValue> keyValue = new HashMap<>();
+    private final HashMap<String, UtopiaBinaryFormatValue> keyValue;
+
+    /**
+     * 默认构造
+     */
+    public UtopiaBinaryFormatObjectImpl() {
+        keyValue = new HashMap<>();
+    }
+
+    /**
+     * 带map容量大小的构造
+     *
+     * @param preCapacity map预留容量大小; {@link HashMap#HashMap(int)}
+     */
+    public UtopiaBinaryFormatObjectImpl(int preCapacity) {
+        keyValue = new HashMap<>(preCapacity);
+    }
 
     @Override
     public int getLength() {
@@ -23,7 +39,7 @@ public class UtopiaBinaryFormatObjectImpl implements UtopiaBinaryFormatObject {
     @Override
     public Optional<UtopiaBinaryFormatValue> get(String key) {
         Objects.requireNonNull(key, "key must not be null");
-        
+
         return Optional.ofNullable(keyValue.get(key));
     }
 
