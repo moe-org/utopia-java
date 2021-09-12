@@ -29,9 +29,10 @@ jobs:
         run: |
           git config --global user.name mingmoe
           git config --global user.email sudo.free@qq.com
+          
       # 提交修改
       - name: Push to github
         run: |
           git add README.md
-          git commit -m "Update badges in README.md"
+          git commit -m "chore(README): 更新勋章"
           git push

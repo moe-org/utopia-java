@@ -32,10 +32,6 @@ jobs:
     # 不在PR的环境下设置tag
     if: ${{ github.event_name == 'push' }}
 
-    strategy:
-      matrix: 
-        include: ${{ fromJson(github.event.push.commits) }}
-
     steps:
       # 检出代码
       - name: Checkout repository
@@ -47,7 +43,7 @@ jobs:
 
       # 检查提交
       - name: Check commit
-        run: echo "${{ matrix.message.message }}" | npx commitlint
+        run: npm run lint-last-commit
 
   #================================================================
   # 检查项目
