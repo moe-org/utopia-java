@@ -36,6 +36,8 @@ jobs:
       # 检出代码
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 4
 
       # 安装npm包
       - name: Npm install
@@ -150,6 +152,8 @@ jobs:
       # 检出代码
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 4
 
       # 设置Java
       - name: Set up zulu Java environment ver.16
