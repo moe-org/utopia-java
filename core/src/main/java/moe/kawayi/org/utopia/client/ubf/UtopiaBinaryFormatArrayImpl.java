@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
- * {@see UtopiaBinaryFormatArray}的线程不安全实现
+ * {@link UtopiaBinaryFormatArray}的线程不安全实现
  */
 public class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArray {
 
