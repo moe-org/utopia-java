@@ -1,0 +1,35 @@
+{
+  "name": "utopiaclient",
+  "version": "1.0.0",
+  "description": "The client of game utopia",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^7.0.2"
+  },
+  "scripts": {
+    "all-install": "npm run prepare && npm run lint-commit-hook-install && npm run commit-hook-install",
+    "prepare": "npx husky install",
+    "lint-commit-hook-install": "npx add \".husky/lint-commit-msg\" 'npx --no-install commitlint --edit $1'",
+    "commit-hook-install": "echo \"Use git cz to push code\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moe-org/UtopiaClient.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moe-org/UtopiaClient/issues"
+  },
+  "homepage": "https://github.com/moe-org/UtopiaClient#readme",
+  "private": true,
+  "config": {
+    "//NOTE//": "使用常规commit format",
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

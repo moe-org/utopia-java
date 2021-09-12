@@ -19,6 +19,10 @@
     <!------------------------>
     <br>
     <!------------------------>
+    <img alt="GitHub" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge" />
+    <!------------------------>
+    <br>
+    <!------------------------>
     <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/moe-org/UtopiaClient/total?style=for-the-badge">
     <!------------------------>
     <br>
