@@ -4,13 +4,17 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+plugins{
+    id 'java'
+}
+
 // 设置版本号选项
 def buildNumber = "BuildNumber"
 def versionSuffix = "VersionSuffix"
 def clearVersion = "1.0.0"
 
 // 开启中国镜像加速选项
-def chinaMavenRepo = "ChinaMavenRepo"
+def chinaMavenRepoKey = "ChinaMavenRepo"
 
 // 面向所有项目的设置
 allprojects {
@@ -33,14 +37,13 @@ allprojects {
     // 设置储存库
     repositories {
         maven {
-            if(Boolean.parseBoolean((
-                    projectDef.containsKey(chinaMavenRepo) ?
-                            projectDef.get(chinaMavenRepo) :
+            if (Boolean.parseBoolean((
+                    projectDef.containsKey(chinaMavenRepoKey) ?
+                            projectDef.get(chinaMavenRepoKey) :
                             "false"
-                    ).toString())){
+            ).toString())) {
                 url "https://maven.aliyun.com/nexus/content/groups/public"
-            }
-            else{
+            } else {
                 url "https://oss.sonatype.org/content/repositories/snapshots/"
             }
         }
@@ -51,7 +54,7 @@ allprojects {
 }
 
 // 输出版本号
-tasks.register("printVersion"){
+tasks.register("printVersion") {
     println(project.version)
 }
 
@@ -62,15 +65,39 @@ tasks.register("printVersionHelp") {
     println "use gradle option:-P " + versionSuffix + "={Version Suffix}"
     println "default buildNumber and versionSuffix is empty"
     println "format:" + clearVersion + "{Build Number}{Version Suffix}"
-    println "finally version:" + project.version
+    println "current finally version:" + project.version
     println "=====   help end   ====="
 }
 
 // 打印中国镜像帮助
 tasks.register("printMavenRepoHelp") {
     println "===== maven help ====="
-    println "use gradle option:-P " + chinaMavenRepo + "=true"
+    println "use gradle option:-P " + chinaMavenRepoKey + "=true"
     println "will use china maven repo"
     println "=====  help end  ====="
 }
 
+// 对所有子项目生成Javadoc
+gradle.projectsEvaluated {
+    gradle ->
+        {
+            tasks.register("allJavadoc",Javadoc) {
+                description "Collect all subproject javadoc into one directory"
+
+                it.source subprojects.collect { project -> project.sourceSets.main.allJava }
+
+                it.classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
+
+                // 输出到javadoc
+                it.destinationDir = new File(project.rootDir, "docs")
+
+                // 设置
+                it.failOnError = true
+                it.options.setJFlags(["-Dfile.encoding=UTF-8"])
+                it.options.setEncoding("UTF-8")
+                it.options.setLocale("zh-cn")
+                it.options.setWindowTitle("Utopia Doc")
+                it.title = "Utopia Javadoc"
+            }
+        }
+}

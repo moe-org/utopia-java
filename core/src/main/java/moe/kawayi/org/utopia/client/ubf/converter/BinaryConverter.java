@@ -142,10 +142,12 @@ public final class BinaryConverter {
          *
          * @param output 输出流
          * @param obj    输入对象
+         * @throws IllegalStateException 递归层数过多
+         * @throws java.io.IOException 来自{@link DataInputStream}
          */
         public void convert(
                 @NotNull DataOutputStream output,
-                @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException {
+                @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException,java.io.IOException {
             Objects.requireNonNull(output, "output must not be null");
             Objects.requireNonNull(obj, "obj must not be null");
 
@@ -296,9 +298,11 @@ public final class BinaryConverter {
          *
          * @param input 输入流
          * @return UtopiaBinaryFormatObject的不安全实现
+         * @throws IllegalStateException 递归层数过多
+         * @throws java.io.IOException 来自{@link DataInputStream}
          */
         public UtopiaBinaryFormatObjectImpl convert(@NotNull DataInputStream input)
-                throws java.io.IOException {
+                throws java.io.IOException,IllegalStateException {
             Objects.requireNonNull(input, "input must not be null");
 
             callStack = 0;

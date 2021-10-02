@@ -17,7 +17,7 @@ plugins {
     id 'checkstyle'
 
     // 静态代码分析
-    id "com.github.spotbugs-base" version "4.7.4"
+    id "com.github.spotbugs" version "5.0.0-beta.1"
 
     // 代码覆盖率报告
     id 'jacoco'
@@ -33,6 +33,9 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+        // spotbugs版本
+        spotbugs 'com.github.spotbugs:spotbugs:4.4.1'
 
         // 测试框架
         testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
@@ -63,27 +66,17 @@ jacocoTestReport {
 
 // 设置java编译选项
 compileJava {
+    options.encoding("UTF-8")
     options.setEncoding("UTF-8")
-    options.forkOptions.jvmArgs << '-J-Dfile.encoding=UTF-8'
+    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8'
 }
 
 // 设置java工具链
 java {
     toolchain {
         // 设置java版本
-        languageVersion = JavaLanguageVersion.of(16)
+        languageVersion = JavaLanguageVersion.of(17)
     }
-}
-
-// 生成文档
-javadoc {
-    source = sourceSets.main.allJava
-    options.setJFlags(["-Dfile.encoding=UTF-8"])
-    options.setEncoding("UTF-8")
-    options.setLocale("zh-cn")
-    options.setWindowTitle("Utopia Doc")
-    title = "Utopia Client Desktop Javadoc"
-    failOnError = true
 }
 
 // application设置
@@ -96,4 +89,13 @@ application {
 
     // 设置应用名称
     applicationName = "utopia-client-desktop"
+}
+
+// 代码分析器spotbugs设置
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+    maxHeapSize = '1g'
+    jvmArgs = [ '-Dfile.encoding=UTF-8' ]
 }

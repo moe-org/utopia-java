@@ -11,4 +11,5 @@ $ npm run lint-last-commit
 # 检查一段字符串是否符合规范，使用
 $ echo "commit message" | npx commitlint
 ```
+每次一个小提交。
 

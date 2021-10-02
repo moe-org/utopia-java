@@ -1,0 +1,85 @@
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// The build.gradle is a part of project utopia, under MIT License.
+// See https://opensource.org/licenses/MIT for license information.
+// Copyright (c) 2021 moe-org All rights reserved.
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+plugins {
+    // java 库
+    id 'java-library'
+
+    // 检查源文件格式
+    id 'checkstyle'
+
+    // 静态代码分析
+    id "com.github.spotbugs" version "5.0.0-beta.1"
+
+    // 代码覆盖率报告
+    id 'jacoco'
+}
+
+dependencies {
+    // 日志库
+    api "org.apache.logging.log4j:log4j-api:2.14.1"
+    api "org.apache.logging.log4j:log4j-core:2.14.1"
+
+    // jackson
+    api "com.fasterxml.jackson.core:jackson-databind:2.12.5"
+
+    // netty
+    api "io.netty:netty-all:4.1.67.Final"
+
+    // spotbugs版本
+    spotbugs 'com.github.spotbugs:spotbugs:4.4.1'
+
+    // 测试框架
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+}
+
+// 设置checkstyle
+checkstyle {
+    ignoreFailures = false
+    version = "9.0"
+}
+
+test {
+    useJUnitPlatform()
+
+    finalizedBy jacocoTestReport // 在test完成之后调用jacoco
+}
+
+jacocoTestReport {
+    dependsOn test // 调用jacoco之前进行测试
+
+    reports {
+        // 设置输出
+        xml.required = true
+        html.required = true
+    }
+}
+
+
+// 设置java编译选项
+compileJava {
+    options.encoding("UTF-8")
+    options.setEncoding("UTF-8")
+    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8'
+}
+
+// 设置java工具链
+java {
+    toolchain {
+        // 设置java版本
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// 代码分析器spotbugs设置
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+    maxHeapSize = '1g'
+    jvmArgs = [ '-Dfile.encoding=UTF-8' ]
+}
+

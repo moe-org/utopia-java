@@ -4,5 +4,8 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-rootProject.name = 'utopia-client'
-include 'desktop', 'core'
+rootProject.name = 'utopia'
+include 'desktop'
+include 'core'
+include 'server'
+

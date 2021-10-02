@@ -53,6 +53,36 @@ public class BinaryConverterTest {
     }
 
     /**
+     * 递归调用测试
+     */
+    public void StackCallErrorTest() throws java.io.IOException {
+        UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
+        UtopiaBinaryFormatObjectImpl caller = obj;
+
+        for (int stack = 1; stack != (UtopiaBinaryFormat.MAX_STACK + 1); stack++) {
+
+            var newCaller = new UtopiaBinaryFormatObjectImpl();
+            var newValue = new UtopiaBinaryFormatValueImpl(newCaller);
+
+            caller.put("", newValue);
+
+            caller = newCaller;
+        }
+
+        Assertions.assertThrows(IllegalStateException.class,
+                () -> {
+                    var memoryOutput = new ByteArrayOutputStream();
+                    var outputStream = new DataOutputStream(memoryOutput);
+
+                    var to = new BinaryConverter.ConvertTo();
+
+                    // 不抛异常就算成功
+                    to.convert(outputStream, obj);
+                }
+        );
+    }
+
+    /**
      * 检查基础类型转换一致性
      */
     public void ConvertBaseRightTest() throws java.io.IOException {
