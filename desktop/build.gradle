@@ -10,9 +10,6 @@ plugins {
     // java 程序
     id 'java-library'
 
-    // java 引用程序
-    id 'application'
-
     // 检查源文件格式
     id 'checkstyle'
 
@@ -21,6 +18,9 @@ plugins {
 
     // 代码覆盖率报告
     id 'jacoco'
+
+    // 打包jar
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 project(":desktop") {
@@ -68,19 +68,7 @@ jacocoTestReport {
 compileJava {
     options.encoding("UTF-8")
     options.setEncoding("UTF-8")
-    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8'
-}
-
-// application设置
-application {
-    // 设置主类
-    mainClass = 'moe.kawayi.org.utopia.client.main.desktop.DesktopLauncher'
-
-    // 设置默认jvm参数
-    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
-
-    // 设置应用名称
-    applicationName = "utopia-client-desktop"
+    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
 }
 
 // 代码分析器spotbugs设置
@@ -91,6 +79,14 @@ spotbugs {
     maxHeapSize = '1g'
     jvmArgs = [ '-Dfile.encoding=UTF-8' ]
 }
+
+// 配置启动类
+jar {
+    manifest {
+        attributes 'Main-Class': 'moe.kawayi.org.utopia.desktop.DesktopLauncher'
+    }
+}
+
 
 // 设置Java版本
 sourceCompatibility = JavaVersion.VERSION_16

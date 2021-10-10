@@ -79,8 +79,12 @@ tasks.register("printMavenRepoHelp") {
 
 // 打印帮助
 tasks.register("printHelp"){
+    it.dependsOn(tasks.findByName("printVersionHelp"))
+    it.dependsOn(tasks.findByName("printMavenRepoHelp"))
+
     println "===== utopia help ====="
     println "use allJavadoc tasks to collect all subproject javadoc to docs directory"
+    println "use shadowJar tasks to generate jar for subproject desktop and server"
     println "=====   help end  ====="
 }
 

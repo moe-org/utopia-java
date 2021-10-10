@@ -16,7 +16,11 @@ plugins {
 
     // 代码覆盖率报告
     id 'jacoco'
+
+    // 打包jar
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
+
 
 dependencies {
     // 日志库
@@ -66,7 +70,7 @@ jacocoTestReport {
 compileJava {
     options.encoding("UTF-8")
     options.setEncoding("UTF-8")
-    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8'
+    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
 }
 
 // 代码分析器spotbugs设置
@@ -76,6 +80,13 @@ spotbugs {
     showProgress = true
     maxHeapSize = '1g'
     jvmArgs = [ '-Dfile.encoding=UTF-8' ]
+}
+
+// 配置启动类
+jar {
+    manifest {
+        attributes 'Main-Class': 'moe.kawayi.org.utopia.server.main.Main'
+    }
 }
 
 // 设置Java版本
