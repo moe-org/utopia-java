@@ -209,7 +209,7 @@ jobs:
         run: |
           git add docs --force
           git stash push -- docs
-          git reset --hard HEAD^1
+          git reset --hard origin/master
           git fetch
           git checkout -b docs origin/docs
           git clean -f -d
