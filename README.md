@@ -61,8 +61,8 @@
 <!---ubadge-auto-list-begin-->
 | Checking | Status |
 | :-------:|:------:|
-| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=appveyor) |
 | Check | ![Check](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
+| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=appveyor) |
 | Build-And-Test (16, zulu) | ![Build-And-Test (16, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Build-And-Test (16, temurin) | ![Build-And-Test (16, temurin)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Build-And-Test (17, zulu) | ![Build-And-Test (17, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
