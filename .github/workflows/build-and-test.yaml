@@ -216,8 +216,6 @@ jobs:
       #   添加图标
       - name: Fix Javadoc
         run: |
-          pip install html5lib
-          pip install beautifulsoup4
           python fix_javadoc.py docs
 
       # 复制文档

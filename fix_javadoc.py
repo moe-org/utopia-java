@@ -3,10 +3,9 @@
 # MIT License
 # Copyright (c) 2021 MingMoe
 
-
-from bs4 import BeautifulSoup
 import os
 import sys
+from typing import List
 
 if len(sys.argv) != 2:
     print("unknown arguments. need a arguments as directory to process javadoc")
@@ -24,24 +23,7 @@ def findAllFile(base):
 
 
 # 处理
-def process(text):
-    soup = BeautifulSoup(text, 'html5lib')
-
-    header = soup.head
-
-    apple_touch_icon = soup.new_tag("link",attrs={"rel":"apple-touch-icon","sizes":"180x180","href":"/apple-touch-icon.png"})
-
-    icon_small = soup.new_tag("link",attrs={"rel":"icon","type":"image/png","sizes":"16x16","href":"/favicon-16x16.png"})
-    icon_large = soup.new_tag("link",attrs={"rel":"icon","type":"image/png","sizes":"32x32","href":"/favicon-32x32.png"})
-
-    manifest = soup.new_tag("link",attrs={"rel":"manifest","href":"/site.webmanifest"})
-
-    mask_icon = soup.new_tag("link",attrs={"rel":"mask-icon", "href":"/safari-pinned-tab.svg", "color":"#000000"})
-
-    tile_color = soup.new_tag("meta",attrs={"name":"msapplication-TileColor", "content":"#000000"})
-
-    theme_color = soup.new_tag("meta",attrs={"name":"theme-color", "content":"#ffffff"})
-
+def process(text:List[str],file:str) -> List[str]:
 
     header_content = \
         """
@@ -53,26 +35,47 @@ def process(text):
         <meta name="msapplication-TileColor" content="#000000">
         <meta name="theme-color" content="#ffffff">
         """
-    
-    header.append(apple_touch_icon)
-    header.append(icon_small)
-    header.append(icon_large)
-    header.append(manifest)
-    header.append(mask_icon)
-    header.append(tile_color)
-    header.append(theme_color)
 
-    return soup.prettify()
+    found = False
+    
+    ptr = 0
+
+    while ptr != len(text):
+
+        if text[ptr].strip().startswith("<head>"):
+            text[ptr] = text[ptr] + header_content
+            found = True
+            break
+
+        ptr = ptr + 1
+
+    if not found:
+        print(f"warning:not found <head> at file:{file}")
+
+    return text
 
 # 主函数
-for f in findAllFile(inputDir):
-    with open(f,"r+",encoding="UTF-8") as f:
-        lines = f.read()
+#    with open(f,"r+",encoding="UTF-8") as f:
 
-        output = process(lines)
+#        lines:List[str] = f.readlines()
 
-        f.truncate(0)
+#        f.truncate(0)
 
-        f.write(output)
+#        for result in process(lines,f):
+#            f.write(result)
+
+for f_name in findAllFile(inputDir):
+    with open(f_name,"r+",encoding="UTF-8") as f_handle:
+
+        lines:List[str] = f_handle.readlines()
+
+        f_handle.close()
+
+        f_handle = open(f_name,"w",encoding="UTF-8")
+
+        f_handle.writelines(process(lines,f_name))
+
+        f_handle.close()
+
 
 sys.exit(0)
