@@ -28,7 +28,7 @@ public class WorldImplTest {
     }
 
     @Test
-    public void AccessTest() {
+    public void accessTest() {
         ArrayList<Object> objs = new ArrayList<>();
 
         int xMax = world.getMaxXSize();
@@ -54,7 +54,7 @@ public class WorldImplTest {
     }
 
     @Test
-    public void AccessWrongTest() {
+    public void accessWrongTest() {
         int xMax = world.getMaxXSize();
         int xMin = world.getMinXSize();
         int yMax = world.getMaxYSize();
@@ -73,7 +73,7 @@ public class WorldImplTest {
 
     @ParameterizedTest
     @CsvSource({"-1,0", "0,-1", "0,0", "-1,-1"})
-    public void WrongConstructionTest(int x, int y) {
+    public void wrongConstructionTest(int x, int y) {
         Assertions.assertThrows(
                 WorldConstructionException.class,
                 () -> {
@@ -83,7 +83,7 @@ public class WorldImplTest {
     }
 
     @Test
-    public void NullPointerTest() {
+    public void nullPointerTest() {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {

@@ -10,7 +10,7 @@ import moe.kawayi.org.utopia.server.entity.Entity;
 import moe.kawayi.org.utopia.server.map.Block;
 import moe.kawayi.org.utopia.server.map.BlockImpl;
 import moe.kawayi.org.utopia.server.map.WorldPosition;
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ public class BlockTest {
     private final Block block = new BlockImpl();
 
     @Test
-    public void BlockAddCollisionEntityTest() {
+    public void blockAddCollisionEntityTest() {
         // 一个拥有碰撞体的实体
         var entity = new Entity() {
 
@@ -77,7 +77,7 @@ public class BlockTest {
     }
 
     @Test
-    public void BlockNullEntityTest() {
+    public void blockNullEntityTest() {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {

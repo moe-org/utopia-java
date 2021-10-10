@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.map;
 
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;

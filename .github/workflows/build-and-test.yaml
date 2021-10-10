@@ -34,7 +34,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 18
+          fetch-depth: 16
 
       # 安装npm包
       - name: Npm install
@@ -60,8 +60,6 @@ jobs:
           npx commitlint --from HEAD~14 --to HEAD --verbose
           npx commitlint --from HEAD~15 --to HEAD --verbose
           npx commitlint --from HEAD~16 --to HEAD --verbose
-          npx commitlint --from HEAD~17 --to HEAD --verbose
-          npx commitlint --from HEAD~18 --to HEAD --verbose
 
   #================================================================
   # 检查项目
@@ -151,13 +149,13 @@ jobs:
       - name: Set tag
         env:
           # 版本号
-          change_list: -SNAPSHOT
+          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
         run: |
           chmod 777 ./gradlew
           ./gradlew build
-          tag_version=$(./gradlew printVersion -q -P BuildNumber=${build_number} -P VersionSuffix=${change_list})
+          tag_version=$(./gradlew printVersion -q -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix})
           echo TAG:${tag_version}
           git tag ${tag_version}
           git push --tags
@@ -192,13 +190,13 @@ jobs:
 
         env:
           # 版本号
-          change_list: -SNAPSHOT
+          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
           # note:需要设置版本号
         run: |
           chmod 777 ./gradlew
-          ./gradlew javadoc -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
+          ./gradlew allJavadoc -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
 
       # 配置git
       - name: Config git
@@ -256,11 +254,11 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
           # 版本号
-          change_list: -SNAPSHOT
+          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
         # 上传覆盖率
         run: |
           chmod 777 ./gradlew
-          ./gradlew test -P BuildNumber=${build_number} -P VersionSuffix=${change_list}
+          ./gradlew test -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
           bash <(curl -s https://codecov.io/bash)

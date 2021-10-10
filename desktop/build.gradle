@@ -71,14 +71,6 @@ compileJava {
     options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8'
 }
 
-// 设置java工具链
-java {
-    toolchain {
-        // 设置java版本
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 // application设置
 application {
     // 设置主类
@@ -99,3 +91,7 @@ spotbugs {
     maxHeapSize = '1g'
     jvmArgs = [ '-Dfile.encoding=UTF-8' ]
 }
+
+// 设置Java版本
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16

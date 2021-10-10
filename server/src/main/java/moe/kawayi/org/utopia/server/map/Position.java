@@ -79,8 +79,8 @@ public final class Position {
      */
     @Override
     public boolean equals(Object obj) {
-        // null check
-        Objects.requireNonNull(obj, "obj must not be null");
+        if(obj == null)
+            return false;
 
         if (obj instanceof Position pos) {
             return pos.x == this.x &&

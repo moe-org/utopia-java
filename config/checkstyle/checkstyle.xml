@@ -15,7 +15,6 @@
     <!-- 需要检查的文件扩展名 -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
-
     <!--检查Java文件-->
     <module name="TreeWalker">
         <!--检查空块-->
@@ -29,19 +28,58 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
 
-        <!--检查类型名称-->
-        <module name="TypeName">
-            <!--大驼峰命名法-->
-            <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
-        </module>
-
         <!--检查包声明是否匹配目录-->
         <module name="PackageDeclaration"/>
+
+
+
+        <!-- =====检查名称===== -->
 
         <!--检查包名-->
         <module name="PackageName">
             <!--匹配以moe.kawayi.org开头，全小写的包名-->
             <property name="format" value="^moe\.kawayi\.org[a-z0-9\.]*$"/>
+        </module>
+
+
+        <!--检查类型名称-->
+        <module name="TypeName">
+            <!--大驼峰命名法-->
+            <property name="format" value="^[A-Z]+[A-Za-z0-9]*$"/>
+        </module>
+
+        <!--检查常量名称-->
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z]+[A-Z0-9_]*$"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="format" value="^[A-Z]+[A-Z0-9_]*$"/>
+        </module>
+
+        <!--检查抽象类名称-->
+        <module name="AbstractClassName">
+            <property name="format" value="^Abstract[A-Z]+[a-zA-Z0-9]*$"/>
+        </module>
+
+        <!--检查函数名称-->
+        <module name="MethodName">
+            <!--小驼峰命名法-->
+            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+        </module>
+
+        <!--检查成员函数名称-->
+        <module name="MemberName">
+            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+        </module>
+
+        <!--参数名称-->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+        </module>
+
+        <!--检查本地变量名称-->
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
         </module>
 
 

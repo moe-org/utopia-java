@@ -11,7 +11,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.concurrent.FastThreadLocal;
-import moe.kawayi.org.utopia.server.ubf.converter.BinaryConverter;
+import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

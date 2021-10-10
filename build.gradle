@@ -77,6 +77,13 @@ tasks.register("printMavenRepoHelp") {
     println "=====  help end  ====="
 }
 
+// 打印帮助
+tasks.register("printHelp"){
+    println "===== utopia help ====="
+    println "use allJavadoc tasks to collect all subproject javadoc to docs directory"
+    println "=====   help end  ====="
+}
+
 // 对所有子项目生成Javadoc
 gradle.projectsEvaluated {
     gradle ->

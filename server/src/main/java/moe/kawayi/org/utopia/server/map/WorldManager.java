@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.map;
 
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -21,7 +21,7 @@ public final class WorldManager {
     /**
      * 世界列表
      */
-    private static final ConcurrentHashMap<Long, World> worlds = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Long, World> WORLDS = new ConcurrentHashMap<>();
 
     /**
      * 获取所有世界
@@ -30,7 +30,7 @@ public final class WorldManager {
      */
     @NotNull
     public static Collection<World> getEntities() {
-        return worlds.values();
+        return WORLDS.values();
     }
 
 
@@ -44,7 +44,7 @@ public final class WorldManager {
         // null check
         Objects.requireNonNull(world, "world must not be null");
 
-        var result = worlds.putIfAbsent(world.getWorldId(), world);
+        var result = WORLDS.putIfAbsent(world.getWorldId(), world);
         // 如果成功映射，则返回null
         return result == null;
     }
@@ -55,7 +55,7 @@ public final class WorldManager {
      * @param worldId 要删除的世界的id
      */
     public static void removeEntity(long worldId) {
-        worlds.remove(worldId);
+        WORLDS.remove(worldId);
     }
 
     /**
@@ -65,6 +65,6 @@ public final class WorldManager {
      * @return 如果实际已经注册，返回世界的引用，否则返回空:{@link Optional#empty()}
      */
     public static Optional<World> getEntity(long worldId) {
-        return Optional.ofNullable(worlds.get(worldId));
+        return Optional.ofNullable(WORLDS.get(worldId));
     }
 }

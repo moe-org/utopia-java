@@ -62,8 +62,8 @@ public final class FlatPosition {
      */
     @Override
     public boolean equals(Object obj) {
-        // null check
-        Objects.requireNonNull(obj, "obj must not be null");
+        if(obj == null)
+            return false;
 
         if (obj instanceof FlatPosition pos) {
             return pos.x == this.x &&

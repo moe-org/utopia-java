@@ -9,8 +9,8 @@ package moe.kawayi.org.utopia.server.config;
 import moe.kawayi.org.utopia.server.main.Main;
 import moe.kawayi.org.utopia.server.net.NetConfig;
 import moe.kawayi.org.utopia.server.util.FileTool;
-import moe.kawayi.org.utopia.server.util.NotNull;
-import moe.kawayi.org.utopia.server.util.Nullable;
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +51,7 @@ public final class ConfigManager {
      * 日志器
      */
     @NotNull
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     /**
      * 系统配置
@@ -63,26 +63,26 @@ public final class ConfigManager {
      * 锁
      */
     @NotNull
-    private static final Object locker = new Object();
+    private static final Object LOCKER = new Object();
 
 
     /**
      * 载入系统配置
      */
     public static void loadSystemConfig() {
-        synchronized (locker) {
+        synchronized (LOCKER) {
             systemConfig = new Properties();
 
             Path fileName = FileTool.getPath(CONFIG_DIRECTORY, SYSTEM_CONFIG_FILE);
-            logger.info("加载配置文件:{}", fileName);
+            LOGGER.info("加载配置文件:{}", fileName);
 
-            try (FileInputStream fis = new FileInputStream(fileName.toString())) {
+            try (FileInputStream FIS = new FileInputStream(fileName.toString())) {
 
-                systemConfig.load(fis);
+                systemConfig.load(FIS);
 
             } catch (FileNotFoundException ex) {
-                logger.error("未找到配置文件:{} err:{}", fileName, ex);
-                logger.info("创建默认配置文件:{}", fileName);
+                LOGGER.error("未找到配置文件:{} err:{}", fileName, ex);
+                LOGGER.info("创建默认配置文件:{}", fileName);
 
                 // 创建配置文件
                 try {
@@ -98,11 +98,11 @@ public final class ConfigManager {
 
                     writer.close();
                 } catch (IOException err) {
-                    logger.error("创建默认配置文件失败", err);
+                    LOGGER.error("创建默认配置文件失败", err);
                 }
 
             } catch (IOException ex) {
-                logger.error("加载配置文件失败:{} err:{}", fileName, ex);
+                LOGGER.error("加载配置文件失败:{} err:{}", fileName, ex);
             }
         }
     }
@@ -117,7 +117,7 @@ public final class ConfigManager {
     public static Optional<String> getSystemConfig(@NotNull String key) {
         Objects.requireNonNull(key, "key must not be null");
 
-        synchronized (locker) {
+        synchronized (LOCKER) {
 
             if (systemConfig == null) {
                 return Optional.empty();
@@ -125,7 +125,7 @@ public final class ConfigManager {
                 var gotValue = systemConfig.getProperty(key);
 
                 if (gotValue == null)
-                    logger.warn("未找到系统配置key-value:{}", key);
+                    LOGGER.warn("未找到系统配置key-value:{}", key);
 
                 return Optional.ofNullable(gotValue);
             }

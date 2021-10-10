@@ -6,8 +6,8 @@
 
 package moe.kawayi.org.utopia.server.command;
 
-import moe.kawayi.org.utopia.server.ubf.UtopiaBinaryFormatObject;
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 命令接口

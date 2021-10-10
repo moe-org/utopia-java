@@ -23,19 +23,19 @@ public final class GameLogicLoop {
     /**
      * 日志器
      */
-    private static final Logger logger = LogManager.getLogger(GameLogicLoop.class);
+    private static final Logger LOGGER = LogManager.getLogger(GameLogicLoop.class);
 
     /**
      * 是否运行
      */
-    private static final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private static final AtomicBoolean IS_RUNNING = new AtomicBoolean(false);
 
     /**
      * 游戏循环
      */
     public static void mainLoop() {
         // 防止二次进入
-        if (isRunning.get())
+        if (IS_RUNNING.get())
             return;
 
         try {
@@ -48,10 +48,10 @@ public final class GameLogicLoop {
             int yMax = world.getMaxYSize();
             int yMin = world.getMinYSize();
 
-            isRunning.set(true);
-            logger.info("逻辑线程启动");
+            IS_RUNNING.set(true);
+            LOGGER.info("逻辑线程启动");
 
-            while (isRunning.get()) {
+            while (IS_RUNNING.get()) {
                 // 计算时间
                 long startTime = System.nanoTime();
 
@@ -77,12 +77,12 @@ public final class GameLogicLoop {
             }
 
         } catch (Throwable ex) {
-            logger.error("逻辑线程错误", ex);
-            isRunning.set(false);
+            LOGGER.error("逻辑线程错误", ex);
+            IS_RUNNING.set(false);
         } finally {
             // 如果没发生异常执行至此
             // 则isRunning已经为false
-            logger.info("逻辑线程关闭");
+            LOGGER.info("逻辑线程关闭");
         }
     }
 
@@ -93,14 +93,14 @@ public final class GameLogicLoop {
      * @return 如果返回true，则逻辑线程正在运行
      */
     public static boolean isRun() {
-        return isRunning.get();
+        return IS_RUNNING.get();
     }
 
     /**
      * 关闭服务器
      */
     public static void shutdown() {
-        isRunning.set(false);
+        IS_RUNNING.set(false);
     }
 
 }

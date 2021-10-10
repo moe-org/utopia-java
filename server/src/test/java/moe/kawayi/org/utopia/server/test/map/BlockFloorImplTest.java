@@ -23,7 +23,7 @@ public class BlockFloorImplTest {
     private final BlockFloorImpl floor = new BlockFloorImpl();
 
     @Test
-    public void AccessTest() {
+    public void accessTest() {
         ArrayList<Object> objs = new ArrayList<>();
 
         for (int x = 0; x != BLOCK_FLOOR_X_SIZE; x++)
@@ -42,7 +42,7 @@ public class BlockFloorImplTest {
     }
 
     @Test
-    public void AccessWrongTest() {
+    public void accessWrongTest() {
         assertFalse(floor.getBlock(new FlatPosition(
                 Integer.MAX_VALUE,
                 Integer.MIN_VALUE)).isPresent());
@@ -63,7 +63,7 @@ public class BlockFloorImplTest {
 
 
     @Test
-    public void NullPointerTest() {
+    public void nullPointerTest() {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {

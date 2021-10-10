@@ -7,14 +7,14 @@
 package moe.kawayi.org.utopia.server.entity;
 
 import moe.kawayi.org.utopia.server.map.WorldPosition;
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Optional;
 
 /**
  * 实体接口
  */
-public interface Entity {
+public interface Entity extends Cloneable{
 
     /**
      * 获取位置

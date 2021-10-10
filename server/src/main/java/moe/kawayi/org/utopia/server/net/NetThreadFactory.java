@@ -7,7 +7,7 @@
 package moe.kawayi.org.utopia.server.net;
 
 import io.netty.util.concurrent.FastThreadLocalThread;
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadFactory;

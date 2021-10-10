@@ -9,7 +9,7 @@ package moe.kawayi.org.utopia.server.main;
 import moe.kawayi.org.utopia.server.config.ConfigManager;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +21,7 @@ public final class Main {
     /**
      * 日志器
      */
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     /**
      * utopia server 入口函数
@@ -31,7 +31,7 @@ public final class Main {
      */
     public static void main(@NotNull String[] args) throws Exception {
         Thread.currentThread().setName("Main");
-        logger.info("Server start.");
+        LOGGER.info("Server start.");
 
         // 读取配置文件
         ConfigManager.loadSystemConfig();
@@ -45,7 +45,7 @@ public final class Main {
             NetMain.shutdown();
 
             // 服务器关闭
-            logger.info("Server shut down!");
+            LOGGER.info("Server shut down!");
         }));
 
         try {
@@ -66,11 +66,11 @@ public final class Main {
             t.join();
 
         } catch (Throwable err) {
-            logger.error("Server crash", err);
+            LOGGER.error("Server crash", err);
 
             throw err;
         } finally {
-            logger.error("Server shutdown");
+            LOGGER.error("Server shutdown");
 
             // 关闭逻辑线程
             GameLogicLoop.shutdown();

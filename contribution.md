@@ -2,6 +2,9 @@
 ### 我们使用cz来管理git提交信息
 请先在本地安装nodejs/npm，之后初始化项目: `npm install`
 ```shell
+# 首次使用需要初始化
+$ npm install
+
 # 提交使用
 $ npm run commit
 

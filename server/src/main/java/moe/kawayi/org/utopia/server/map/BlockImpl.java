@@ -7,8 +7,8 @@
 package moe.kawayi.org.utopia.server.map;
 
 import moe.kawayi.org.utopia.server.entity.Entity;
-import moe.kawayi.org.utopia.server.util.NotNull;
-import moe.kawayi.org.utopia.server.util.Nullable;
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -36,8 +36,8 @@ public final class BlockImpl implements Block {
     /**
      * 是否可碰撞
      */
-    private @Nullable
-    Entity collision = null;
+    private @NotNull
+    Optional<Entity> collision = Optional.empty();
 
     /**
      * 读写锁
@@ -52,7 +52,7 @@ public final class BlockImpl implements Block {
      * @return 如果添加成功，返回true，否则返回false
      */
     @Override
-    public boolean addEntity(@NotNull Entity entity) {
+    public boolean addEntity(@NotNull final Entity entity) {
         // null check
         Objects.requireNonNull(entity, "entity must not be null");
 
@@ -65,10 +65,10 @@ public final class BlockImpl implements Block {
             var collision = entity.isCollideable();
 
             // 检查碰撞体
-            if (collision && (this.collision != null)) {
+            if (collision && (this.collision.isPresent())) {
                 return false;
             } else if (collision) {
-                this.collision = entity;
+                this.collision = Optional.of(entity);
             }
 
             // 检查通过性
@@ -203,7 +203,7 @@ public final class BlockImpl implements Block {
         lock.lock();
 
         try {
-            return Optional.ofNullable(collision);
+            return collision;
         } finally {
             lock.unlock();
         }

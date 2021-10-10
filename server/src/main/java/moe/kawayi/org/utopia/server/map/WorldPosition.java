@@ -84,8 +84,8 @@ public final class WorldPosition {
      */
     @Override
     public boolean equals(Object obj) {
-        // null check
-        Objects.requireNonNull(obj, "obj must not be null");
+        if(obj == null)
+            return false;
 
         if (obj instanceof WorldPosition pos) {
             return pos.x == this.x &&

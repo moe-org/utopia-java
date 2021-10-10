@@ -14,7 +14,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import moe.kawayi.org.utopia.server.config.ConfigManager;
-import moe.kawayi.org.utopia.server.util.Nullable;
+import moe.kawayi.org.utopia.core.util.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,12 +28,12 @@ public final class NetMain {
     /**
      * 日志器
      */
-    private static final Logger logger = LogManager.getLogger(NetMain.class);
+    private static final Logger LOGGER = LogManager.getLogger(NetMain.class);
 
     /**
      * 服务器运行状态
      */
-    private static final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private static final AtomicBoolean IS_RUNNING = new AtomicBoolean(false);
 
     /**
      * 工作组
@@ -50,7 +50,7 @@ public final class NetMain {
     /**
      * 锁
      */
-    private static final Object locker = new Object();
+    private static final Object LOCKER = new Object();
 
     /**
      * 启动网络系统
@@ -59,10 +59,10 @@ public final class NetMain {
      */
     public static void internetBootstrap() throws InterruptedException {
         // never run again
-        if (isRunning.get())
+        if (IS_RUNNING.get())
             return;
 
-        synchronized (locker) {
+        synchronized (LOCKER) {
             // 获取设置
             int boosThreadCount = Integer.parseInt(
                     ConfigManager.getSystemConfig(NetConfig.NETTY_BOOS_THREAD_COUNT).orElseThrow());
@@ -98,14 +98,14 @@ public final class NetMain {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture f = b.bind(port).sync();
-            isRunning.set(true);
+            IS_RUNNING.set(true);
 
-            logger.info("网络服务器启动");
+            LOGGER.info("网络服务器启动");
 
             // 设置关闭动作
             f.channel().closeFuture().addListener((ChannelFutureListener) channelFuture -> {
-                logger.info("网络服务器关闭");
-                isRunning.set(false);
+                LOGGER.info("网络服务器关闭");
+                IS_RUNNING.set(false);
             });
         }
     }
@@ -116,14 +116,14 @@ public final class NetMain {
      * @return 如果返回true，则说明netty还在运行。
      */
     public static boolean isRun() {
-        return isRunning.get();
+        return IS_RUNNING.get();
     }
 
     /**
      * 关闭netty服务器
      */
     public static void shutdown() {
-        synchronized (locker) {
+        synchronized (LOCKER) {
             if (isRun()) {
                 if (bossGroup != null)
                     bossGroup.shutdownGracefully();

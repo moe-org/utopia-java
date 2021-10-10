@@ -20,7 +20,7 @@ public class AreaTest {
     private final Area area = new AreaImpl();
 
     @Test
-    public void AreaAccessTest() {
+    public void areaAccessTest() {
         ArrayList<Object> objs = new ArrayList<>();
 
         for (int x = 0; x != WorldInfo.BLOCK_FLOOR_X_SIZE; x++)
@@ -38,7 +38,7 @@ public class AreaTest {
     }
 
     @Test
-    public void AreaAccessWrongTest() {
+    public void areaAccessWrongTest() {
         var result1 = area.getBlock(
                 new Position(WorldInfo.BLOCK_FLOOR_X_SIZE, WorldInfo.BLOCK_FLOOR_Y_SIZE, WorldInfo.GROUND_Z));
 
@@ -50,7 +50,7 @@ public class AreaTest {
     }
 
     @Test
-    public void AreaNullPointerTest() {
+    public void areaNullPointerTest() {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {

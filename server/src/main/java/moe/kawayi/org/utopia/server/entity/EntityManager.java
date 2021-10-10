@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.entity;
 
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -21,7 +21,7 @@ public final class EntityManager {
     /**
      * 实体列表
      */
-    private static final ConcurrentHashMap<String, EntityFactory> entitiesFactory = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, EntityFactory> ENTITIES_FACTORY = new ConcurrentHashMap<>();
 
     /**
      * 获取所有实体
@@ -30,7 +30,7 @@ public final class EntityManager {
      */
     @NotNull
     public static Collection<EntityFactory> getEntities() {
-        return entitiesFactory.values();
+        return ENTITIES_FACTORY.values();
     }
 
 
@@ -44,7 +44,7 @@ public final class EntityManager {
         // null check
         Objects.requireNonNull(entityFactory, "entityFactory must not be null");
 
-        var result = entitiesFactory.putIfAbsent(entityFactory.getEntityId(), entityFactory);
+        var result = ENTITIES_FACTORY.putIfAbsent(entityFactory.getEntityId(), entityFactory);
         // 如果成功映射，则返回null
         return result == null;
     }
@@ -58,7 +58,7 @@ public final class EntityManager {
         // null check
         Objects.requireNonNull(entityId, "entityId must not be null");
 
-        entitiesFactory.remove(entityId);
+        ENTITIES_FACTORY.remove(entityId);
     }
 
     /**
@@ -71,6 +71,6 @@ public final class EntityManager {
         // null check
         Objects.requireNonNull(entityId, "entityId must not be null");
 
-        return Optional.ofNullable(entitiesFactory.get(entityId));
+        return Optional.ofNullable(ENTITIES_FACTORY.get(entityId));
     }
 }

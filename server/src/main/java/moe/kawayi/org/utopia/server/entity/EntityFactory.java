@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.entity;
 
-import moe.kawayi.org.utopia.server.util.NotNull;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 实体工厂

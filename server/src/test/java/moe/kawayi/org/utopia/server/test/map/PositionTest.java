@@ -16,7 +16,7 @@ public class PositionTest {
 
 
     @Test
-    public void WorldPositionDowngradeTest() {
+    public void worldPositionDowngradeTest() {
         WorldPosition wPos = new WorldPosition(
                 Integer.MAX_VALUE,
                 Integer.MIN_VALUE,
@@ -31,7 +31,7 @@ public class PositionTest {
     }
 
     @Test
-    public void PositionDowngradeTest() {
+    public void positionDowngradeTest() {
         Position wPos = new Position(
                 Integer.MAX_VALUE,
                 Integer.MIN_VALUE,
