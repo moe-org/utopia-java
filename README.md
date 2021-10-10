@@ -56,9 +56,6 @@
     <!------------------------>
     <br>
     <!------------------------>
-    Code Coverage
-    <br>
-    <img style="margin: 5px;border: 1px dashed #000000;" alt="Codecov" src="https://codecov.io/gh/moe-org/utopia/branch/master/graphs/commits.svg">                           
 </p>
 
 <!---ubadge-auto-list-begin-->

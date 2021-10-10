@@ -210,7 +210,15 @@ jobs:
         run: |
           chmod 777 ./gradlew
           ./gradlew allJavadoc -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
-          cp -r ./icon/* ./docs/
+          cp -r -f ./icon/* ./docs/
+
+      # 魔改文档
+      #   添加图标
+      - name: Fix Javadoc
+        run: |
+          pip install html5lib
+          pip install beautifulsoup4
+          python fix_javadoc.py docs
 
       # 复制文档
       - name: Put Javadoc
@@ -226,16 +234,8 @@ jobs:
           git stash pop
           echo "utopia.doc.kawayi.moe" >> "./docs/CNAME"
 
-      # 魔改文档
-      #   添加图标
-      - name: Fix Javadoc
-        run: |
-          pip install html5lib
-          pip install beautifulsoup4
-          python fix_javadoc.py docs
-
       # 提交文档
-      - name: Push Javadoc
+      - name: Push
         run: |
           git add --all
           git commit -m "docs(javadoc) Upload new docs"
