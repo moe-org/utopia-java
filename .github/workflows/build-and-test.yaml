@@ -185,6 +185,18 @@ jobs:
           java-version: 17
           distribution: zulu
 
+      # 设置python
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          architecture: 'x64'
+
+      # 配置git
+      - name: Config git
+        run: |
+          git config --global user.name   mingmoe
+          git config --global user.email  sudo.free@qq.com
+
       # 生成文档
       - name: Generate Javadoc
 
@@ -194,15 +206,11 @@ jobs:
           build_number: -${{ github.run_number }}
 
           # note:需要设置版本号
+          # note:需要复制图标
         run: |
           chmod 777 ./gradlew
           ./gradlew allJavadoc -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
-
-      # 配置git
-      - name: Config git
-        run: |
-          git config --global user.name   mingmoe
-          git config --global user.email  sudo.free@qq.com
+          cp -r ./icon/* ./docs/
 
       # 复制文档
       - name: Put Javadoc
@@ -216,6 +224,15 @@ jobs:
           git rm -r docs
           git commit -m "docs(javadoc) Remove old docs"
           git stash pop
+          echo "utopia.doc.kawayi.moe" >> "./docs/CNAME"
+
+      # 魔改文档
+      #   添加图标
+      - name: Fix Javadoc
+        run: |
+          pip install html5lib
+          pip install beautifulsoup4
+          python fix_javadoc.py docs
 
       # 提交文档
       - name: Push Javadoc

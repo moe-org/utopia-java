@@ -102,9 +102,11 @@ gradle.projectsEvaluated {
                 it.failOnError = true
                 it.options.setJFlags(["-Dfile.encoding=UTF-8"])
                 it.options.setEncoding("UTF-8")
+                it.options.encoding("UTF-8")
                 it.options.setLocale("zh-cn")
+                it.options.setOverview(rootProject.rootDir.toString() + "/config/overview.html".toString() as String)
                 it.options.setWindowTitle("Utopia Doc")
-                it.title = "Utopia Javadoc"
+                it.title = "Utopia Javadoc ver." + rootProject.version.toString()
             }
         }
 }
