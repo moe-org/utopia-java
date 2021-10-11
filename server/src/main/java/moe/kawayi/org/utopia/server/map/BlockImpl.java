@@ -8,7 +8,6 @@ package moe.kawayi.org.utopia.server.map;
 
 import moe.kawayi.org.utopia.server.entity.Entity;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.ArrayList;
 import java.util.Objects;

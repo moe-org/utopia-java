@@ -59,7 +59,6 @@ jobs:
           npx commitlint --from HEAD~13 --to HEAD --verbose
           npx commitlint --from HEAD~14 --to HEAD --verbose
           npx commitlint --from HEAD~15 --to HEAD --verbose
-          npx commitlint --from HEAD~16 --to HEAD --verbose
 
   #================================================================
   # 检查项目

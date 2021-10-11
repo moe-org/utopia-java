@@ -6,8 +6,6 @@
 
 package moe.kawayi.org.utopia.server.map;
 
-import java.util.Objects;
-
 /**
  * 坐标
  */

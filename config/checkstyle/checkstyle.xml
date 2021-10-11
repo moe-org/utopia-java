@@ -17,9 +17,18 @@
 
     <!--检查Java文件-->
     <module name="TreeWalker">
-        <!--检查空块-->
-        <module name="EmptyCatchBlock"/>
+
+        <!--检查空(catch)块-->
+        <module name="EmptyCatchBlock">
+            <!--如果空的catch块内第一行为注释，则忽略-->
+            <property name="commentFormat" value=".*"/>
+        </module>
         <module name="EmptyBlock"/>
+
+
+        <!--检查空语句-->
+        <module name="EmptyStatement"/>
+
 
         <!--禁止Unicode转义-->
         <module name="AvoidEscapedUnicodeCharacters">
@@ -28,12 +37,13 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
 
+
+        <!--对于long后缀检查L-->
+        <module name="UpperEll"/>
+
+
         <!--检查包声明是否匹配目录-->
         <module name="PackageDeclaration"/>
-
-
-
-        <!-- =====检查名称===== -->
 
         <!--检查包名-->
         <module name="PackageName">
@@ -42,44 +52,65 @@
         </module>
 
 
+        <!--检查导入-->
+        <module name="RedundantImport"/>
+
+        <!--note:如果javadoc需要导入，写全称
+        例如:
+                import java.util.List
+                {@link List}
+              写作
+                {@link java.util.List}
+
+         ref: https://checkstyle.org/config_imports.html#UnusedImports
+        -->
+        <module name="UnusedImports"/>
+
+
+        <!--禁用双括号初始化-->
+        <module name="AvoidDoubleBraceInitialization"/>
+
+
+        <!-- =====检查名称===== -->
+
         <!--检查类型名称-->
         <module name="TypeName">
-            <!--大驼峰命名法-->
-            <property name="format" value="^[A-Z]+[A-Za-z0-9]*$"/>
-        </module>
-
-        <!--检查常量名称-->
-        <module name="ConstantName">
-            <property name="format" value="^[A-Z]+[A-Z0-9_]*$"/>
-        </module>
-        <module name="LocalFinalVariableName">
-            <property name="format" value="^[A-Z]+[A-Z0-9_]*$"/>
+            <property name="format" value="^${utopia.checkstyle.large_hump}$"/>
         </module>
 
         <!--检查抽象类名称-->
         <module name="AbstractClassName">
-            <property name="format" value="^Abstract[A-Z]+[a-zA-Z0-9]*$"/>
+            <property name="format" value="^Abstract${utopia.checkstyle.large_hump}$"/>
         </module>
+
+
+        <!--检查常量名称-->
+        <module name="ConstantName">
+            <property name="format" value="^${utopia.checkstyle.always_large}$"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="format" value="^${utopia.checkstyle.always_large}$"/>
+        </module>
+
 
         <!--检查函数名称-->
         <module name="MethodName">
-            <!--小驼峰命名法-->
-            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+            <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
 
         <!--检查成员名称-->
         <module name="MemberName">
-            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+            <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
 
         <!--参数名称-->
         <module name="ParameterName">
-            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+            <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
 
         <!--检查本地变量名称-->
         <module name="LocalVariableName">
-            <property name="format" value="^[a-z]+[A-Za-z0-9]*$"/>
+            <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
 
 

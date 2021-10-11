@@ -47,6 +47,12 @@ dependencies {
 checkstyle {
     ignoreFailures = false
     version = "9.0"
+
+    // 定义一些变量
+    // 小驼峰和大驼峰的命名设置
+    configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
+    configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
+    configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
 }
 
 test {

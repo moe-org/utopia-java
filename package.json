@@ -1,7 +1,7 @@
 {
-  "name": "utopiaclient",
+  "name": "utopia",
   "version": "1.0.0",
-  "description": "The client of game utopia",
+  "description": "The utopia game",
   "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moe-org/UtopiaClient.git"
+    "url": "git+https://github.com/moe-org/utopia.git"
   },
   "author": "MingMoe",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/moe-org/UtopiaClient/issues"
+    "url": "https://github.com/moe-org/utopia/issues"
   },
-  "homepage": "https://github.com/moe-org/UtopiaClient#readme",
+  "homepage": "https://github.com/moe-org/utopia#readme",
   "private": true,
   "//NOTE//": "配置commitizen(git cz)",
   "config": {
