@@ -5,7 +5,11 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 rootProject.name = 'utopia'
+
+// desktop和server项目应该可以独立启动
 include 'desktop'
-include 'core'
 include 'server'
+
+include 'core'
+include 'client'
 

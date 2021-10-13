@@ -20,32 +20,28 @@ plugins {
 
 }
 
-project(":core") {
     // 依赖
-    dependencies {
-        // 引入libgdx
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+dependencies {
+    // 日志库
+    api "org.apache.logging.log4j:log4j-api:2.14.1"
+    api "org.apache.logging.log4j:log4j-core:2.14.1"
 
-        // spotbugs版本
-        spotbugs 'com.github.spotbugs:spotbugs:4.4.1'
+    // spotbugs版本
+    spotbugs 'com.github.spotbugs:spotbugs:4.4.1'
 
+    // 测试框架
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+}
 
-        // 测试框架
-        testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
-    }
+// 设置checkstyle
+checkstyle {
+    ignoreFailures = false
 
-    // 设置checkstyle
-    checkstyle {
-        ignoreFailures = false
-        version = "9.0"
-
-        // 定义一些变量
-        // 小驼峰和大驼峰的命名设置
-        configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
-        configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
-        configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
-    }
+    // 定义一些变量
+    // 小驼峰和大驼峰的命名设置
+    configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
+    configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
+    configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
 }
 
 // 设置java编译选项

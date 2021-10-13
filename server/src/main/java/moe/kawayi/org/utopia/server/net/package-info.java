@@ -6,6 +6,8 @@
 
 /**
  * 网络包的实现:
- * {@code | 数据长度(int) | 数据id(int) | 数据(size = 数据长度) | }
+ * <pre>{@code | 数据长度(int) | 数据类型(int) | 数据(size = 数据长度) | }</pre>
+ *
+ * 具体数据类型见{@link moe.kawayi.org.utopia.server.net.PackageTypeEnum}
  */
 package moe.kawayi.org.utopia.server.net;

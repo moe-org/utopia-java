@@ -69,18 +69,20 @@ public final class EventBus<EventT> {
 
     /**
      * 注册监听函数
+     * <pre>
      * {@code
      * MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-     * <p>
+     *
      * MethodType mt = MethodType.methodType(void.class, String.class,String.class);
-     * <p>
+     *
      * MethodHandle hm = publicLookup.findVirtual(String.class, "replace", mt);
-     * <p>
+     *
      * // note:非static函数需要绑定到一个实例
      * hm = hm.bindTo("The String Object");
-     * <p>
+     *
      * eventBus.register(hm);
      * }
+     * </pre>
      *
      * @param handle 监听函数的句柄
      * @return 监听ID
@@ -113,12 +115,14 @@ public final class EventBus<EventT> {
      *
      * <p>
      * Example
+     * <pre>
      * {@code
      * var eventBus = createSomethingOutOfNothing();
-     * <p>
+     *
      * eventBus.register(String.class,
      * "concat", methodType(String.class, String.class))
      * }
+     * </pre>
      * 注意:此函数不可注册非静态函数
      *
      * @param cls  要注册监听函数的类

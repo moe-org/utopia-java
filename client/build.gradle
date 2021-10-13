@@ -16,9 +16,6 @@ plugins {
 
     // 代码覆盖率报告
     id 'jacoco'
-
-    // 打包jar
-    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 
@@ -26,9 +23,6 @@ dependencies {
     // 日志库
     api "org.apache.logging.log4j:log4j-api:2.14.1"
     api "org.apache.logging.log4j:log4j-core:2.14.1"
-
-    // jackson
-    api "com.fasterxml.jackson.core:jackson-databind:2.12.5"
 
     // netty
     api "io.netty:netty-all:4.1.67.Final"
@@ -85,15 +79,6 @@ spotbugs {
     showProgress = true
     maxHeapSize = '1g'
     jvmArgs = [ '-Dfile.encoding=UTF-8' ]
-}
-
-// 配置启动类
-jar {
-    manifest {
-        attributes 'Main-Class': 'moe.kawayi.org.utopia.server.main.Main'
-    }
-
-    finalizedBy shadowJar
 }
 
 // 设置Java版本

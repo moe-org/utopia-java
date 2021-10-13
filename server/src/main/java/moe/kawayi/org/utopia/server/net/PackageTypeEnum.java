@@ -6,24 +6,23 @@
 
 package moe.kawayi.org.utopia.server.net;
 
+import moe.kawayi.org.utopia.server.net.packet.PingPacket;
+
 /**
  * 包类型
  */
 public enum PackageTypeEnum {
     /**
      * PING包，将回复服务器基本信息
+     *
+     * 将会忽略一切附带数据。返回一个服务器基本信息（见{@link PingPacket}）的UBF。
      */
     PING(0),
 
     /**
-     * COMMAND包，将执行服务器指令
+     * COMMAND包，将执行服务器指令。
      */
-    COMMAND(1),
-
-    /**
-     * 心跳包
-     */
-    ALIVE(2);
+    COMMAND(1);
 
 
     /**
