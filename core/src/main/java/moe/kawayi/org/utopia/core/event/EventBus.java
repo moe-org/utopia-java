@@ -69,8 +69,7 @@ public final class EventBus<EventT> {
 
     /**
      * 注册监听函数
-     * <pre>
-     * {@code
+     * <pre>{@code
      * MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
      *
      * MethodType mt = MethodType.methodType(void.class, String.class,String.class);
@@ -81,8 +80,7 @@ public final class EventBus<EventT> {
      * hm = hm.bindTo("The String Object");
      *
      * eventBus.register(hm);
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param handle 监听函数的句柄
      * @return 监听ID

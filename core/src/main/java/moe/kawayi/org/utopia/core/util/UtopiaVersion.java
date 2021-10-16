@@ -9,12 +9,8 @@ package moe.kawayi.org.utopia.core.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.jar.Manifest;
 
 /**
  * 获取版本号
@@ -23,7 +19,7 @@ import java.util.jar.Manifest;
  */
 public final class UtopiaVersion {
 
-    private static final AtomicReference<String> version = new AtomicReference<>(null);
+    private static final AtomicReference<String> VERSION = new AtomicReference<>(null);
 
     private static final Logger LOGGER = LogManager.getLogger(UtopiaVersion.class);
 
@@ -48,19 +44,30 @@ public final class UtopiaVersion {
      */
     @NotNull
     public static String getUtopiaVersion() throws java.io.IOException{
-        if(version.get() == null){
+        if(VERSION.get() == null){
             Properties properties = new Properties();
 
-            properties.load(UtopiaVersion.class.getResourceAsStream(PROPERTIES_FILE_PATH));
+            var is = UtopiaVersion.class.getResourceAsStream(PROPERTIES_FILE_PATH);
 
-            var ver = properties.getProperty(VERSION_PROPERTIES_KEY,DEFAULT_VERSION);
+            if (is == null) {
+                VERSION.set(DEFAULT_VERSION);
+                LOGGER.warn("could not read utopia server");
+                return DEFAULT_VERSION;
+            }
 
-            version.set(ver);
+            try (is) {
 
-            return ver;
+                properties.load(is);
+
+                var ver = properties.getProperty(VERSION_PROPERTIES_KEY, DEFAULT_VERSION);
+
+                VERSION.set(ver);
+
+                return ver;
+            }
         }
         else{
-            return version.get();
+            return VERSION.get();
         }
     }
 

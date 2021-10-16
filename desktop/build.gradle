@@ -1,3 +1,9 @@
+import java.nio.charset.Charset
+import java.nio.file.CopyOption
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The build.gradle is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
@@ -30,7 +36,7 @@ dependencies {
     api "org.apache.logging.log4j:log4j-core:2.14.1"
 
     // 引入libgdx
-    api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
@@ -92,7 +98,7 @@ spotbugs {
 // 配置启动类
 jar {
     manifest {
-        attributes 'Main-Class': 'moe.kawayi.org.utopia.desktop.DesktopLauncher'
+        attributes 'Main-Class': 'moe.kawayi.org.utopia.desktop.main.DesktopLauncher'
     }
 
 
@@ -100,6 +106,48 @@ jar {
 }
 
 
-// 设置Java版本
-targetCompatibility = JavaVersion.VERSION_16
-sourceCompatibility = JavaVersion.VERSION_16
+
+// 依赖任务
+// 创建版本号文件
+task createProperties {
+    java.nio.file.Path path = Paths.get("$buildDir/resources/main");
+
+    if (!Files.exists(path)) {
+        Files.createDirectories(path)
+    }
+
+    path = Paths.get("$buildDir/resources/main/utopia-version.properties");
+
+    if(!Files.exists(path)) {
+        Files.createFile(path);
+    }
+
+    Files.writeString(
+            path,
+            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),Charset.forName("UTF-8"),
+            StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING);
+}
+
+classes {
+    finalizedBy createProperties
+}
+
+
+shadowJar {
+    archiveClassifier.set("release")
+
+    destinationDirectory.set(new File("${rootDir.toString()}/output-package/desktop/"))
+}
+
+// 发布
+tasks.register("release"){
+    description "package and copy assets"
+    dependsOn shadowJar
+
+    Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"))
+    Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"))
+    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(32x32).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"));
+    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(128x128).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"));
+
+}

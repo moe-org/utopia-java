@@ -4,9 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.net;
-
-import moe.kawayi.org.utopia.server.net.packet.PingPacket;
+package moe.kawayi.org.utopia.core.net;
 
 /**
  * 包类型
@@ -15,7 +13,7 @@ public enum PackageTypeEnum {
     /**
      * PING包，将回复服务器基本信息
      *
-     * 将会忽略一切附带数据。返回一个服务器基本信息（见{@link PingPacket}）的UBF。
+     * 将会忽略一切附带数据。返回一个服务器基本信息。
      */
     PING(0),
 

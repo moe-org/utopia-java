@@ -55,17 +55,6 @@
         <!--检查导入-->
         <module name="RedundantImport"/>
 
-        <!--note:如果javadoc需要导入，写全称
-        例如:
-                import java.util.List
-                {@link List}
-              写作
-                {@link java.util.List}
-
-         ref: https://checkstyle.org/config_imports.html#UnusedImports
-        -->
-        <module name="UnusedImports"/>
-
 
         <!--禁用双括号初始化-->
         <module name="AvoidDoubleBraceInitialization"/>

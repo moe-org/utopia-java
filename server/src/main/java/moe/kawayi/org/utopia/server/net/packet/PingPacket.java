@@ -10,28 +10,31 @@ import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatValueImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.server.net.PackageTypeEnum;
+import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
+import moe.kawayi.org.utopia.core.util.UtopiaVersion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 /**
  * {@link PackageTypeEnum#PING}的包内容
  */
 public final class PingPacket implements UbfPacket{
-    private final String serverVersion = "";
 
-    /**
-     * 获取服务器版本号
-     * @return  版本号
-     */
-    public String getServerVersion(){
-        return serverVersion;
-    }
+    private static final Logger LOGGER = LogManager.getLogger(PingPacket.class);
 
     @NotNull
     @Override
-    public UtopiaBinaryFormatObject geyUtopiaBinaryFormatObject() {
+    public UtopiaBinaryFormatObject geyUtopiaBinaryFormatObject(){
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
-        obj.put("version",new UtopiaBinaryFormatValueImpl(serverVersion));
+        try {
+            obj.put("version", new UtopiaBinaryFormatValueImpl(UtopiaVersion.getUtopiaVersion()));
+        }
+        catch(IOException err){
+            LOGGER.error("get utopia version failed down",err);
+        }
 
         return obj;
     }

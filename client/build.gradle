@@ -80,7 +80,3 @@ spotbugs {
     maxHeapSize = '1g'
     jvmArgs = [ '-Dfile.encoding=UTF-8' ]
 }
-
-// 设置Java版本
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16

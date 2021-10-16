@@ -1,5 +1,3 @@
-import java.nio.charset.Charset
-
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The build.gradle is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
@@ -113,25 +111,6 @@ gradle.projectsEvaluated {
                 it.options.setOverview(rootProject.rootDir.toString() + "/config/overview.html".toString() as String)
                 it.options.setWindowTitle("Utopia Doc")
                 it.title = "Utopia Javadoc ver." + rootProject.version.toString()
-            }
-
-            // 依赖任务
-            subprojects {
-                // 创建版本号文件
-                task createProperties {
-                    File mkdirTool = new File("$buildDir/resources/main/");
-                    mkdirTool.mkdirs();
-                    mkdirTool = new File("$buildDir/resources/main/utopia-version.properties");
-                    mkdirTool.createNewFile();
-
-                    FileWriter output = new FileWriter(mkdirTool.path, Charset.forName("UTF-8"));
-                    output.write("UtopiaServer:".concat(rootProject.version.toString()).concat("\n"));
-                    output.close();
-                }
-
-                classes {
-                    finalizedBy createProperties
-                }
             }
         }
 }

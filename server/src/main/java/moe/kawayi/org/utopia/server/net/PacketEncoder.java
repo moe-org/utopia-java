@@ -29,7 +29,7 @@ import java.io.DataOutputStream;
 public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
 
 
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertTo> converter = new FastThreadLocal<>(){

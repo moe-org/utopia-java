@@ -12,14 +12,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.FastThreadLocal;
+import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.net.packet.PingPacket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ import java.util.List;
 @ChannelHandler.Sharable
 public final class PacketClassifier extends ByteToMessageDecoder {
 
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){
@@ -59,9 +58,11 @@ public final class PacketClassifier extends ByteToMessageDecoder {
         } else if(packetType == PackageTypeEnum.COMMAND.getTypeId()){
             // TODO
             // out.add(converter.get().convert(new DataInputStream(new ByteArrayInputStream(data))));
+            logger.debug("received command type packet");
         }
         else{
             // TODO
+            logger.debug("received unknown type packet");
         }
     }
 }
