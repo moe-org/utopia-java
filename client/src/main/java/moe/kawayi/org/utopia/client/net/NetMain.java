@@ -46,7 +46,7 @@ public final class NetMain {
     /**
      * 通道组
      */
-    public static AtomicReference<Channel> CLIENT_CHANNEL = new AtomicReference<>(null);
+    public static final AtomicReference<Channel> CLIENT_CHANNEL = new AtomicReference<>(null);
 
     /**
      * 开启服务器
