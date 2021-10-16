@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.net.packet;
+package moe.kawayi.org.utopia.core.net.packet;
 
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.util.NotNull;

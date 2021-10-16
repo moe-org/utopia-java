@@ -9,7 +9,7 @@ package moe.kawayi.org.utopia.server.net.handle;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import moe.kawayi.org.utopia.server.net.packet.PingPacket;
+import moe.kawayi.org.utopia.core.net.packet.PingPacket;
 
 /**
  * 处理ping的handle

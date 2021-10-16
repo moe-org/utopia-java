@@ -7,8 +7,11 @@
 package moe.kawayi.org.utopia.desktop.main;
 
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 
 import java.util.Objects;
 
@@ -18,14 +21,53 @@ import java.util.Objects;
 public class DesktopLauncher {
 
 	/**
+	 * 是否使用opengl3 es
+	 */
+	private static boolean useOpenGL3 = false;
+
+	/**
+	 * opengl3 es版本号
+	 */
+	private static int gl3Major = 3;
+
+
+	/**
+	 * opengl3 es版本号
+	 */
+	private static int gl3Minor = 2;
+
+	/**
+	 * 全屏窗口
+	 */
+	private static boolean fullScreen = false;
+
+	/**
+	 * 返回是否使用了Opengl3es
+	 * @return	如果使用，返回true，否则返回false
+	 */
+	public static boolean isUseOpenGL3(){
+		return useOpenGL3;
+	}
+
+	/**
+	 * 返回是否处于全屏模式
+	 * @return	如果全屏，返回true，否则返回false
+	 */
+	public static boolean isFullScreen(){
+		return fullScreen;
+	}
+
+	/**
 	 * 打印帮助
 	 */
 	private static void printHelp(){
 		System.out.println("options:");
-		System.out.println("-help              ---show help message then exit");
-		System.out.println("-useSmallIcon      ---use small window icon(32x32)");
-		System.out.println("-width [number]    ---set the window width");
-		System.out.println("-height [number]   ---set the window height");
+		System.out.println("-help                ---show help message then exit");
+		System.out.println("-useSmallIcon        ---use small window icon(32x32)");
+		System.out.println("-useOpenGL3          ---use OpenGL ES 3 emulation");
+		System.out.println("-gl3Major [number]   ---set OpenGL ES 3 major version. default 3");
+		System.out.println("-gl3Minor [number]   ---set OpenGL ES 3 minor version. default 2");
+		System.out.println("-fullScreen          ---create full screen window");
 	}
 
 	/**
@@ -34,17 +76,15 @@ public class DesktopLauncher {
 	 */
 	public static void main (String[] args) {
 		// 一些默认值
-		int winWidth = 800;
-		int winHeight = 480;
 		boolean useSmallIcon = false;
-
 
 		// 解析参数
 		int index = 0;
 		while(index < args.length){
 			var arg = args[index];
 
-			if(Objects.equals(arg, "-width")){
+
+			if(Objects.equals(arg, "-gl3Major")){
 				index++;
 
 				if(index >= args.length){
@@ -52,10 +92,10 @@ public class DesktopLauncher {
 					System.exit(1);
 				}
 				else{
-					winWidth = Integer.parseInt(args[index]);
+					gl3Major = Integer.parseInt(args[index]);
 				}
 			}
-			else if(Objects.equals(arg,"-height")){
+			else if(Objects.equals(arg, "-gl3Minor")){
 				index++;
 
 				if(index >= args.length){
@@ -63,15 +103,21 @@ public class DesktopLauncher {
 					System.exit(1);
 				}
 				else{
-					winHeight = Integer.parseInt(args[index]);
+					gl3Minor = Integer.parseInt(args[index]);
 				}
+			}
+			else if(Objects.equals(arg,"-useSmallIcon")){
+				useSmallIcon = true;
+			}
+			else if(Objects.equals(arg,"-useOpenGL3")){
+				useOpenGL3 = true;
+			}
+			else if(Objects.equals(arg,"-fullScreen")){
+				fullScreen = true;
 			}
 			else if(Objects.equals(arg,"-help")){
 				printHelp();
 				System.exit(0);
-			}
-			else if(Objects.equals(arg,"-useSmallIcon")){
-				useSmallIcon = true;
 			}
 			else{
 				System.err.println("unknown option:".concat(arg));
@@ -85,12 +131,22 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
 		config.setTitle("utopia");
-		config.setWindowSizeLimits(winWidth,winHeight,-1, -1);
+		config.setWindowSizeLimits(
+				DesktopApplicationListener.CAMERA_DEFAULT_WIDTH,
+				DesktopApplicationListener.CAMERA_DEFAULT_HEIGHT,
+				-1,
+				-1);
 		config.setResizable(true);
-
+		config.useOpenGL3(useOpenGL3,gl3Major,gl3Minor);
 		config.setWindowIcon(Files.FileType.Local,useSmallIcon ? "./Utopia(32x32).png" : "./Utopia(128x128).png");
 
+		// 是否启用全屏
+		if(fullScreen) {
+			config.setAutoIconify(true);
+			config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		}
 
+		// 启动程序
 		new Lwjgl3Application(new DesktopApplicationListener(), config);
 	}
 }

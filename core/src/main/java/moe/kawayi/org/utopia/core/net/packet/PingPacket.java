@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.net.packet;
+package moe.kawayi.org.utopia.core.net.packet;
 
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
@@ -20,9 +20,14 @@ import java.io.IOException;
 /**
  * {@link PackageTypeEnum#PING}的包内容
  */
-public final class PingPacket implements UbfPacket{
+public final class PingPacket implements UbfPacket {
 
     private static final Logger LOGGER = LogManager.getLogger(PingPacket.class);
+
+    /**
+     * 获取version的UtopiaBinaryFormat键值
+     */
+    public static final String UBF_VERSION_KEY = "version";
 
     @NotNull
     @Override
@@ -30,7 +35,7 @@ public final class PingPacket implements UbfPacket{
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
         try {
-            obj.put("version", new UtopiaBinaryFormatValueImpl(UtopiaVersion.getUtopiaVersion()));
+            obj.put(UBF_VERSION_KEY, new UtopiaBinaryFormatValueImpl(UtopiaVersion.getUtopiaVersion()));
         }
         catch(IOException err){
             LOGGER.error("get utopia version failed down",err);

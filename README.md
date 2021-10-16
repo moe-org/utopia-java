@@ -71,7 +71,7 @@
 
 ---------
 
-[贡献文档](https://github.com/moe-org/utopia/blob/master/contribution.md)
+[贡献文档](https://github.com/moe-org/utopia/blob/master/CONTRIBUTING.md)
 
 [Javadoc](https://utopia.doc.kawayi.moe/)
 

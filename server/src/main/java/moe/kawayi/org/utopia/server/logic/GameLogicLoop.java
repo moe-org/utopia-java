@@ -35,7 +35,7 @@ public final class GameLogicLoop {
      */
     public static void mainLoop() {
         // 防止二次进入
-        if (IS_RUNNING.get())
+        if (IS_RUNNING.getAndSet(true))
             return;
 
         try {
@@ -48,7 +48,6 @@ public final class GameLogicLoop {
             int yMax = world.getMaxYSize();
             int yMin = world.getMinYSize();
 
-            IS_RUNNING.set(true);
             LOGGER.info("逻辑线程启动");
 
             while (IS_RUNNING.get()) {

@@ -48,6 +48,7 @@ dependencies {
 
     // 依赖项目
     // client 已经依赖 core
+    api project(":core")
     api project(":client")
 }
 

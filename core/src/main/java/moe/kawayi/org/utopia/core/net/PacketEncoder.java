@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.net;
+package moe.kawayi.org.utopia.core.net;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -13,7 +13,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.concurrent.FastThreadLocal;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.server.net.packet.UbfPacket;
+import moe.kawayi.org.utopia.core.net.packet.UbfPacket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +51,7 @@ public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
 
         // 检查和扩容
         if(out.writableBytes() < (output.size()+4)){
-            out.capacity(out.writerIndex() + output.size());
+            out.capacity(out.writerIndex() + output.size() + 4);
         }
 
         // 写出
