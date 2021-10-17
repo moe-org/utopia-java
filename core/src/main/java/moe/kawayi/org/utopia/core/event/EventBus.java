@@ -69,6 +69,9 @@ public final class EventBus<EventT> {
 
     /**
      * 注册监听函数
+     *
+     * <p>
+     * Example
      * <pre>{@code
      * MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
      *
