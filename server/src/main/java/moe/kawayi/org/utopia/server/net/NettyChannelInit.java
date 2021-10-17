@@ -7,7 +7,7 @@
 package moe.kawayi.org.utopia.server.net;
 
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import moe.kawayi.org.utopia.core.net.PacketEncoder;
 import moe.kawayi.org.utopia.server.net.handle.PingPacketHandle;
@@ -15,13 +15,15 @@ import moe.kawayi.org.utopia.server.net.handle.PingPacketHandle;
 /**
  * 初始化channel
  */
-public final class NettyChannelInit extends ChannelInitializer<SocketChannel> {
+public final class NettyChannelInit extends ChannelInitializer<NioSocketChannel> {
 
     @Override
-    protected void initChannel(SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline()
-                // 添加一个解码器来解析数据长度
-                .addLast(new LengthFieldBasedFrameDecoder(
+    protected void initChannel(NioSocketChannel  socketChannel) throws Exception {
+
+
+        var pipeline = socketChannel.pipeline();
+        // 添加一个解码器来解析数据长度
+        pipeline.addLast("packet length parser",new LengthFieldBasedFrameDecoder(
                         Integer.MAX_VALUE,
                         0,
                         4,
@@ -30,11 +32,11 @@ public final class NettyChannelInit extends ChannelInitializer<SocketChannel> {
                         0
                 ))
                 // 添加一个包分类器
-                .addLast(new PacketClassifier())
+                .addLast("packet classifier",new PacketClassifier())
                 // 添加一些实际处理包的handle
-                .addLast(new PingPacketHandle())
+                .addLast("packet ping handle",new PingPacketHandle())
                 // 添加一个输出解码器
-                .addLast(new PacketEncoder())
+                .addLast("utopia binary format output encoder",new PacketEncoder())
                 ;
     }
 }

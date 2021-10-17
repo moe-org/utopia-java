@@ -4,6 +4,21 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+// 引入插件
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+        google()
+    }
+    dependencies {
+        // android插件
+        classpath 'com.android.tools.build:gradle:3.5.4'
+    }
+}
+
+
 plugins{
     id 'java'
 }
@@ -32,22 +47,27 @@ allprojects {
     ext {
         // libgdx版本号
         gdxVersion = "1.10.0"
+
+        // log4j2版本号
+        log4j2Version = "2.14.1"
+
+        // netty版本号
+        nettyVersion = "4.1.69.Final"
+
+        // junit版本号
+        junitVersion = "5.8.1"
+
+        // jackson版本号
+        jacksonVersion = "2.13.0"
+
+        // spotbugs版本号
+        spotbugsVersion = "4.4.2"
     }
 
     // 设置储存库
     repositories {
-        maven {
-            if (Boolean.parseBoolean((
-                    projectDef.containsKey(chinaMavenRepoKey) ?
-                            projectDef.get(chinaMavenRepoKey) :
-                            "false"
-            ).toString())) {
-                url "https://maven.aliyun.com/nexus/content/groups/public"
-            } else {
-                url "https://oss.sonatype.org/content/repositories/snapshots/"
-            }
-        }
         mavenCentral()
+        mavenLocal()
         google()
         gradlePluginPortal()
     }

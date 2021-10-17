@@ -32,8 +32,8 @@ plugins {
 // 依赖
 dependencies {
     // 日志库
-    api "org.apache.logging.log4j:log4j-api:2.14.1"
-    api "org.apache.logging.log4j:log4j-core:2.14.1"
+    api "org.apache.logging.log4j:log4j-api:$log4j2Version"
+    api "org.apache.logging.log4j:log4j-core:$log4j2Version"
 
     // 引入libgdx
     api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
@@ -41,10 +41,10 @@ dependencies {
     api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
     // spotbugs版本
-    spotbugs 'com.github.spotbugs:spotbugs:4.4.1'
+    spotbugs "com.github.spotbugs:spotbugs:$spotbugsVersion"
 
     // 测试框架
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
     // 依赖项目
     // client 已经依赖 core

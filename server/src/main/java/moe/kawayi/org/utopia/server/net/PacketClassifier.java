@@ -65,4 +65,9 @@ public final class PacketClassifier extends ByteToMessageDecoder {
             logger.debug("received unknown type packet");
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        ctx.close();
+    }
 }
