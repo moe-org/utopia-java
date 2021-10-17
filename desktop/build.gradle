@@ -1,14 +1,12 @@
-import java.nio.charset.Charset
-import java.nio.file.CopyOption
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
-
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The build.gradle is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+import java.nio.charset.Charset
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 
 
 // 插件设置
@@ -111,30 +109,30 @@ jar {
 // 依赖任务
 // 创建版本号文件
 task createProperties {
-    java.nio.file.Path path = Paths.get("$buildDir/resources/main");
+    java.nio.file.Path path = Paths.get("$buildDir/resources/main")
 
     if (!Files.exists(path)) {
         Files.createDirectories(path)
     }
 
-    path = Paths.get("$buildDir/resources/main/utopia-version.properties");
+    path = Paths.get("$buildDir/resources/main/utopia-version.properties")
 
     if(!Files.exists(path)) {
-        Files.createFile(path);
+        Files.createFile(path)
     }
 
     Files.writeString(
             path,
             "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),Charset.forName("UTF-8"),
             StandardOpenOption.WRITE,
-            StandardOpenOption.TRUNCATE_EXISTING);
+            StandardOpenOption.TRUNCATE_EXISTING)
 }
 
 classes {
     finalizedBy createProperties
 }
 
-
+// 打包
 shadowJar {
     archiveClassifier.set("release")
 
@@ -148,7 +146,7 @@ tasks.register("release"){
 
     Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"))
     Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"))
-    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(32x32).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"));
-    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(128x128).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"));
+    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(32x32).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"))
+    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(128x128).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"))
 
 }

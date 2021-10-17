@@ -6,7 +6,7 @@
 
 rootProject.name = 'utopia'
 
-// desktop和server项目应该可以独立启动
+// desktop和server和android项目应该可以独立启动
 include 'desktop'
 include 'server'
 

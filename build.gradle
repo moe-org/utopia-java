@@ -14,7 +14,11 @@ buildscript {
     }
     dependencies {
         // android插件
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:7.0.0'
+        // android-junit插件
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.8.0.0"
+        // android-jacoco插件
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
     }
 }
 
