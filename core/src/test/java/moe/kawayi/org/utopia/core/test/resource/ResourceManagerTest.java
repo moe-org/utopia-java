@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class ResourceManagerTest {
 
     @Test
-    public void RegisterMuchTimeTest(){
+    public void registerMuchTimeTest(){
 
         var firstTime = ResourceManager.register(
                 "RegisterMuchTimeTest",
@@ -27,7 +27,7 @@ public class ResourceManagerTest {
     }
 
     @Test
-    public void UnregisterTest(){
+    public void unregisterTest(){
 
         var registerResult = ResourceManager.register(
                 "UnregisterTest",

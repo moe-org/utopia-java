@@ -83,6 +83,7 @@ public final class ResourceManager {
      * @param protocol  访问资源加载器的协议名称
      * @return          资源加载器。未注册返回empty
      */
+    @NotNull
     public static Optional<ResourceLoader> findLoader(@NotNull String protocol){
         Objects.requireNonNull(protocol);
 
@@ -113,7 +114,10 @@ public final class ResourceManager {
      * @param url 资源的URL
      * @return 获取到的资源。如果没有对应加载器或者获取资源失败(包括获取时抛出异常)则返回empty
      */
+    @NotNull
     public static Optional<Object> getResource(@NotNull URL url){
+        Objects.requireNonNull(url);
+
         try {
             var baseLoadResult = getSystemResourceLoader().getResource(url);
 
