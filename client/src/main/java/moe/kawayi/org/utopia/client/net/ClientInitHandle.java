@@ -24,12 +24,13 @@ public class ClientInitHandle extends ChannelInboundHandlerAdapter {
         CLIENT_CHANNEL.set(ctx.channel());
         System.out.println("linked");
 
-        var buf = ctx.alloc().buffer(512);
+        var buf = ctx.alloc().buffer(8);
 
         // ping
-        buf.writeInt(0);
-        buf.writeInt(PackageTypeEnum.COMMAND.getTypeId());
+        // 写入长度和类型
+        buf.writeInt(4);
+        buf.writeInt(PackageTypeEnum.PING.getTypeId());
 
-        ctx.channel().writeAndFlush(buf);
+        ctx.writeAndFlush(buf);
     }
 }

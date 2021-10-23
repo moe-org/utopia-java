@@ -28,10 +28,9 @@ import java.util.List;
  *
  * 线程安全的
  */
-@ChannelHandler.Sharable
 public final class PacketClassifier extends ByteToMessageDecoder {
 
-    private final Logger logger = LogManager.getLogger(this.getClass());
+    private static final Logger LOGGER = LogManager.getLogger(PacketClassifier.class);
 
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){
@@ -45,7 +44,7 @@ public final class PacketClassifier extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        // 读取数据
+        // 读取type
         var packetType = in.readInt();
 
         // LengthFieldBasedFrameDecoder为我们准备好了完整的数据长度
@@ -55,19 +54,16 @@ public final class PacketClassifier extends ByteToMessageDecoder {
         // 分类数据
         if(packetType == PackageTypeEnum.PING.getTypeId()){
             out.add(new PingPacket());
+            LOGGER.debug("received ping type packet");
         } else if(packetType == PackageTypeEnum.COMMAND.getTypeId()){
             // TODO
             // out.add(converter.get().convert(new DataInputStream(new ByteArrayInputStream(data))));
-            logger.debug("received command type packet");
+            LOGGER.debug("received command type packet");
         }
         else{
             // TODO
-            logger.debug("received unknown type packet");
+            LOGGER.debug("received unknown type packet");
         }
     }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.close();
-    }
 }

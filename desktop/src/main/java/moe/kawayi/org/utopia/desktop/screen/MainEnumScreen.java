@@ -84,14 +84,15 @@ public class MainEnumScreen implements Screen {
 
         // 初始化标签
         var labelStyle = new Label.LabelStyle();
-        labelStyle.font = new BitmapFont();
+        labelStyle.fontColor = Color.BLACK;
+        labelStyle.font = font;
 
         label = new Label("",labelStyle);
 
         label.setAlignment(Align.center);
         label.setStyle(labelStyle);
         label.setSize(200,100);
-        label.setPosition(0,0);
+        label.setPosition(500,500);
 
         // 设置舞台
         stage = new Stage(viewport);
@@ -121,7 +122,7 @@ public class MainEnumScreen implements Screen {
             try {
                 if(!NetMain.isRunning())
                     NetMain.start(uriInputField.getText());
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -132,7 +133,7 @@ public class MainEnumScreen implements Screen {
             var attr = got.attr(AttributeKey.valueOf(CHANNEL_SERVER_PING_VERSION));
 
             if(attr.get() != null)
-                label.setName((String)attr.get());
+                label.setText("version:".concat(attr.get().toString()));
         }
 
         stage.act(delta);

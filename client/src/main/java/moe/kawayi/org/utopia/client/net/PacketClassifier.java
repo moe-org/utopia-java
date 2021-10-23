@@ -9,6 +9,7 @@ package moe.kawayi.org.utopia.client.net;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.FastThreadLocal;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
@@ -23,12 +24,16 @@ import java.io.DataInputStream;
 import java.util.List;
 
 /**
- * 包分类器
+ * 包分类器。根据包id进行分类。
+ *
+ * 我们已经使用{@link LengthFieldBasedFrameDecoder}来解码长度数据了。所以我们不需要再检查长度。
+ *
+ * 线程安全的
  */
 public class PacketClassifier extends ByteToMessageDecoder {
 
     /**
-     * 获取服务器版本号的key(用于{@link ChannelHandlerContext#attr(AttributeKey)})
+     * 获取服务器版本号的key(用于{@link ChannelHandlerContext#channel()#attr(AttributeKey)})
      */
     public static final String CHANNEL_SERVER_PING_VERSION = "utopia.client.received_ping_packet.server_version";
 
@@ -46,7 +51,7 @@ public class PacketClassifier extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        // 读取数据
+        // 读取数据类型
         var packetType = in.readInt();
 
         // LengthFieldBasedFrameDecoder为我们准备好了完整的数据长度

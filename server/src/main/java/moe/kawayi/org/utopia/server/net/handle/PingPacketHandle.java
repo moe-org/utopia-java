@@ -16,13 +16,12 @@ import moe.kawayi.org.utopia.core.net.packet.PingPacket;
  *
  * 线程安全的(仅仅是返回输入的{@link PingPacket}包)
  */
-@ChannelHandler.Sharable
 public final class PingPacketHandle extends SimpleChannelInboundHandler<PingPacket> {
 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PingPacket msg) throws Exception {
         // 直接写入PingPacket信息
-        ctx.write(msg.geyUtopiaBinaryFormatObject());
+        ctx.writeAndFlush(msg);
     }
 }

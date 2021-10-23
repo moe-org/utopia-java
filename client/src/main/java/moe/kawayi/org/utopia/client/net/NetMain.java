@@ -8,12 +8,8 @@ package moe.kawayi.org.utopia.client.net;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.GlobalEventExecutor;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 
@@ -52,9 +48,11 @@ public final class NetMain {
      * 开启服务器
      * @param uriPath uri地址
      */
-    public static synchronized void start(@NotNull String uriPath)throws java.net.URISyntaxException{
-        if(IS_RUNNING.get())
+    @Nullable
+    public static synchronized void start(@NotNull String uriPath)throws java.net.URISyntaxException,java.lang.InterruptedException{
+        if(IS_RUNNING.getAndSet(true)) {
             return;
+        }
 
         WORKER_GROUP.set(new NioEventLoopGroup(1));
 
@@ -66,31 +64,32 @@ public final class NetMain {
 
         var uri = new URI("utopia-server://" + uriPath);
 
-        bootstrap.connect(uri.getHost(),uri.getPort()).addListener(
+        var channel = bootstrap.connect(uri.getHost(),uri.getPort()).addListener(
                 future -> {
                     if(!future.isSuccess()){
-                        IS_RUNNING.set(false);
+                        close();
                     }
                 }
-        );
+        ).sync().channel();
 
-        IS_RUNNING.set(true);
+        channel.closeFuture().addListener(
+                future -> {
+                    close();
+                }
+        );
     }
 
     /**
      * 关闭服务器
      */
     public static void close(){
-        if(!IS_RUNNING.get())
+        if(!IS_RUNNING.getAndSet(false))
             return;
 
-        IS_RUNNING.set(false);
-        var got = WORKER_GROUP.getAndUpdate(ignore -> null);
+        var got = WORKER_GROUP.getAndSet(null);
 
-        if(got == null)
-            return;
-
-        got.shutdownGracefully();
+        if(got != null && (!(got.isTerminated() || got.isShutdown())))
+            got.shutdownGracefully();
     }
 
 }

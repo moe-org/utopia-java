@@ -11,6 +11,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.concurrent.FastThreadLocal;
+import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.net.packet.UbfPacket;
@@ -25,8 +26,11 @@ import java.io.DataOutputStream;
  *
  * 线程安全的
  */
-@ChannelHandler.Sharable
 public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
+
+    public PacketEncoder(){
+        super(UbfPacket.class,true);
+    }
 
 
     private final Logger logger = LogManager.getLogger(this.getClass());
@@ -40,22 +44,28 @@ public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
     };
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, UbfPacket msg, ByteBuf out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx,  UbfPacket msg, ByteBuf out) throws Exception {
         // 转换
-        ByteArrayOutputStream outputBuf = new ByteArrayOutputStream(512);
-        DataOutputStream output = new DataOutputStream(outputBuf);
+        try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(512)) {
 
-        converter.get().convert(output,msg.geyUtopiaBinaryFormatObject());
+            try (DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
+                converter.get().convert(dataOutputStream, msg.getUtopiaBinaryFormatObject());
+                dataOutputStream.flush();
+                byteArrayOutputStream.flush();
+            }
 
-        output.flush();
+            // 检查和扩容
+            if (out.writableBytes() < (byteArrayOutputStream.size() + 8)) {
+                out.capacity(out.writerIndex() + byteArrayOutputStream.size() + 8);
+            }
 
-        // 检查和扩容
-        if(out.writableBytes() < (output.size()+4)){
-            out.capacity(out.writerIndex() + output.size() + 4);
+            // 写出
+            // 包长度
+            // 包类型
+            // 包数据
+            out.writeInt(byteArrayOutputStream.size() + 4);
+            out.writeInt(msg.getPacketType());
+            out.writeBytes(byteArrayOutputStream.toByteArray());
         }
-
-        // 写出
-        out.writeInt(outputBuf.size());
-        out.writeBytes(outputBuf.toByteArray());
     }
 }

@@ -19,17 +19,20 @@ public final class NettyChannelInit extends ChannelInitializer<SocketChannel>
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline()
-                .addLast(new ClientInitHandle())
-                // 添加一个解码器来解析数据长度
-                .addLast(new LengthFieldBasedFrameDecoder(
+                // 添加一个拆包器
+                .addLast("packet length parser",new LengthFieldBasedFrameDecoder(
                         Integer.MAX_VALUE,
                         0,
                         4,
-                        // note: 长度数据并不包含包类型,需要修正(类型为int)
-                        4,
-                        0
+                        0,
+                        // 丢弃长度
+                        4
                 ))
-                .addLast(new PacketClassifier())
-                .addLast(new PacketEncoder());
+                // 添加一个包分类器
+                .addLast("packet classifier",new PacketClassifier())
+                // 添加一个输出解码器
+                .addLast("utopia binary format output encoder",new PacketEncoder())
+                // 添加一个处理client logic的channel
+                .addLast("client logic channel",new ClientInitHandle());
     }
 }

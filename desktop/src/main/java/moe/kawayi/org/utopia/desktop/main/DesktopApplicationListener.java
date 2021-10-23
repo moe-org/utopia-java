@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import moe.kawayi.org.utopia.client.net.NetMain;
 import moe.kawayi.org.utopia.desktop.screen.MainEnumScreen;
 
 /**
@@ -68,7 +69,11 @@ public class DesktopApplicationListener implements ApplicationListener {
 
     @Override
     public void dispose() {
-        if(screen != null)
+        if(screen != null) {
             screen.hide();
+            screen.dispose();
+        }
+        // 关闭网络
+        NetMain.close();
     }
 }

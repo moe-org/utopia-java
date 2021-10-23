@@ -129,6 +129,9 @@ public final class BinaryConverter {
                 case BOOLEAN -> {
                     output.writeBoolean(obj.getBoolean().orElseThrow());
                 }
+                case STRING -> {
+                    convertString(output, obj.getString().orElseThrow());
+                }
                 case ARRAY -> {
                     convertArray(output, obj.getArray().orElseThrow());
                 }

@@ -31,7 +31,7 @@ public final class PingPacket implements UbfPacket {
 
     @NotNull
     @Override
-    public UtopiaBinaryFormatObject geyUtopiaBinaryFormatObject(){
+    public UtopiaBinaryFormatObject getUtopiaBinaryFormatObject(){
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
         try {
@@ -42,5 +42,10 @@ public final class PingPacket implements UbfPacket {
         }
 
         return obj;
+    }
+
+    @Override
+    public int getPacketType() {
+        return PackageTypeEnum.PING.getTypeId();
     }
 }

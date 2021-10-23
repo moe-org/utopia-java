@@ -6,7 +6,6 @@
 
 package moe.kawayi.org.utopia.core.resource;
 
-import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class ResourceLoaderBase implements ResourceLoader{
     @Override
     public Optional<Object> getResource(URL url) throws Exception{
         return switch (url.getProtocol()) {
-            case "jar", "file", "http", "https" -> Optional.of(url.openConnection());
+            case "jar", "file", "http", "https" -> Optional.ofNullable(url.openConnection());
             default -> Optional.empty();
         };
     }
