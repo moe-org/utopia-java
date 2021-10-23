@@ -76,9 +76,9 @@ public final class ConfigManager {
             Path fileName = FileTool.getPath(CONFIG_DIRECTORY, SYSTEM_CONFIG_FILE);
             LOGGER.info("加载配置文件:{}", fileName);
 
-            try (FileInputStream FIS = new FileInputStream(fileName.toString())) {
+            try (FileInputStream fis = new FileInputStream(fileName.toString())) {
 
-                systemConfig.load(FIS);
+                systemConfig.load(fis);
 
             } catch (FileNotFoundException ex) {
                 LOGGER.error("未找到配置文件:{} err:{}", fileName, ex);

@@ -40,13 +40,13 @@ public final class NetMain {
      * 工作组
      */
     @Nullable
-    private static final AtomicReference<EventLoopGroup> bossGroup = new AtomicReference<>(null);
+    private static final AtomicReference<EventLoopGroup> BOSS_GROUP = new AtomicReference<>(null);
 
     /**
      * 工作组
      */
     @Nullable
-    private static final AtomicReference<EventLoopGroup> workerGroup = new AtomicReference<>(null);
+    private static final AtomicReference<EventLoopGroup> WORKER_GROUP = new AtomicReference<>(null);
 
     /**
      * 启动网络系统
@@ -72,12 +72,12 @@ public final class NetMain {
                 ConfigManager.getSystemConfig(NetConfig.MAX_WAIT_LIST).orElseThrow());
 
         // 初始化事件循环线程
-        bossGroup.set(
+        BOSS_GROUP.set(
                 new NioEventLoopGroup(
                         boosThreadCount,
                         new NetThreadFactory("boos-thread-")));
 
-        workerGroup.set(
+        WORKER_GROUP.set(
                 new NioEventLoopGroup(
                         workerThreadCount,
                         new NetThreadFactory("worker-thread-")));
@@ -85,7 +85,7 @@ public final class NetMain {
         // 设置启动类
         ServerBootstrap b = new ServerBootstrap();
 
-        b.group(bossGroup.get(), workerGroup.get())
+        b.group(BOSS_GROUP.get(), WORKER_GROUP.get())
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new NettyChannelInit())
                 .option(ChannelOption.SO_BACKLOG, maxWaitList)
@@ -116,12 +116,12 @@ public final class NetMain {
      */
     public static void shutdown() {
         if (IS_RUNNING.getAndSet(false)) {
-            var group = bossGroup.getAndSet(null);
+            var group = BOSS_GROUP.getAndSet(null);
 
             if (group != null)
                 group.shutdownGracefully();
 
-            group = workerGroup.getAndSet(null);
+            group = WORKER_GROUP.getAndSet(null);
 
             if (group != null)
                 group.shutdownGracefully();

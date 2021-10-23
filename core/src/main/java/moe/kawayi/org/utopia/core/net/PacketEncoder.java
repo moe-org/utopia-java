@@ -48,9 +48,9 @@ public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
         // 转换
         try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(512)) {
 
-            try (DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
-                converter.get().convert(dataOutputStream, msg.getUtopiaBinaryFormatObject());
-                dataOutputStream.flush();
+            try (DataOutputStream outputStream = new DataOutputStream(byteArrayOutputStream)) {
+                converter.get().convert(outputStream, msg.getUtopiaBinaryFormatObject());
+                outputStream.flush();
                 byteArrayOutputStream.flush();
             }
 

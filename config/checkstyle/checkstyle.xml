@@ -77,9 +77,6 @@
         <module name="ConstantName">
             <property name="format" value="^${utopia.checkstyle.always_large}$"/>
         </module>
-        <module name="LocalFinalVariableName">
-            <property name="format" value="^${utopia.checkstyle.always_large}$"/>
-        </module>
 
 
         <!--检查函数名称-->
@@ -99,6 +96,9 @@
 
         <!--检查本地变量名称-->
         <module name="LocalVariableName">
+            <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
+        </module>
+        <module name="LocalFinalVariableName">
             <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
 
