@@ -7,7 +7,6 @@
 package moe.kawayi.org.utopia.server.main;
 
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
-import moe.kawayi.org.utopia.server.config.ConfigManager;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
 import moe.kawayi.org.utopia.core.util.NotNull;
@@ -35,9 +34,6 @@ public final class Main {
         LOGGER.info("Server start");
 
         LOGGER.info("utopia-version {}",UtopiaVersion.getUtopiaVersion());
-
-        // 读取配置文件
-        ConfigManager.loadSystemConfig();
 
         // 添加hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

@@ -4,8 +4,10 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 import java.nio.charset.Charset
+import java.nio.file.CopyOption
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 
 
@@ -139,14 +141,16 @@ shadowJar {
     destinationDirectory.set(new File("${rootDir.toString()}/output-package/desktop/"))
 }
 
+static void releaseFile(String origin, String des){
+    Files.copy(Paths.get(origin),Paths.get(des), StandardCopyOption.REPLACE_EXISTING)
+}
+
 // 发布
 tasks.register("release"){
     description "package and copy assets"
     dependsOn shadowJar
 
-    Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"))
-    Files.deleteIfExists(Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"))
-    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(32x32).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(32x32).png"))
-    Files.copy(Paths.get("${rootDir.toString()}/icon/Utopia(128x128).png"),Paths.get("${rootDir.toString()}/output-package/desktop/Utopia(128x128).png"))
+    releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${rootDir.toString()}/output-package/desktop/Utopia(32x32).png")
+    releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${rootDir.toString()}/output-package/desktop/Utopia(128x128).png")
 
 }

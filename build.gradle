@@ -66,6 +66,9 @@ allprojects {
 
         // spotbugs版本号
         spotbugsVersion = "4.4.2"
+
+        // hocon版本号
+        hoconVersion = "1.4.1"
     }
 
     // 设置储存库
@@ -128,7 +131,7 @@ gradle.projectsEvaluated {
 
                 // 设置
                 it.failOnError = true
-                it.options.setJFlags(["-Dfile.encoding=UTF-8"])
+                it.options.setJFlags(["-Dfile.encoding=UTF-8","-Duser.language=es"])
                 it.options.setEncoding("UTF-8")
                 it.options.encoding("UTF-8")
                 it.options.setLocale("zh-cn")

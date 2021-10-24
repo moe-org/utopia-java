@@ -18,7 +18,7 @@ public final class NetConfig {
     /**
      * {@link NetConfig#NETTY_BOOS_THREAD_COUNT}的默认值
      */
-    public final static String NETTY_BOOS_THREAD_COUNT_DEFAULT = "1";
+    public final static int NETTY_BOOS_THREAD_COUNT_DEFAULT = 1;
 
 
     /**
@@ -29,7 +29,7 @@ public final class NetConfig {
     /**
      * {@link NetConfig#NETTY_WORKER_THREAD_COUNT}的默认值
      */
-    public final static String NETTY_WORKER_THREAD_COUNT_DEFAULT = "1";
+    public final static int NETTY_WORKER_THREAD_COUNT_DEFAULT = 1;
 
 
     /**
@@ -41,7 +41,7 @@ public final class NetConfig {
     /**
      * {@link NetConfig#PORT}的默认值
      */
-    public final static String PORT_DEFAULT = "25674";
+    public final static int PORT_DEFAULT = 25674;
 
 
     /**
@@ -52,12 +52,12 @@ public final class NetConfig {
     /**
      * {@link NetConfig#MAX_WAIT_LIST}的默认值
      */
-    public final static String MAX_WAIT_LIST_DEFAULT = "32";
+    public final static int MAX_WAIT_LIST_DEFAULT = 32;
 
     /**
-     * 网络默认配置文件
+     * 网络默认配置文件。HOCON格式
      */
-    public final static String NET_DEFAULT_CONFIG =
+    public final static String NET_DEFAULT_CONFIG_HOCON =
             "# 网络配置文件\n" +
                     NETTY_BOOS_THREAD_COUNT + "=" + NETTY_BOOS_THREAD_COUNT_DEFAULT + "\n" +
                     NETTY_WORKER_THREAD_COUNT + "=" + NETTY_WORKER_THREAD_COUNT_DEFAULT + "\n" +

@@ -44,6 +44,9 @@ dependencies {
     // 测试框架
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
+    // 引入HOCON
+    implementation "com.typesafe:config:$hoconVersion"
+
     // core
     api project(":core")
 }

@@ -17,6 +17,9 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * 客户端网络主类
+ */
 public final class NetMain {
 
 
@@ -47,6 +50,8 @@ public final class NetMain {
     /**
      * 开启服务器
      * @param uriPath uri地址
+     * @throws java.net.URISyntaxException URL语法错误
+     * @throws java.lang.InterruptedException netty中断错误
      */
     @Nullable
     public static synchronized void start(@NotNull String uriPath)throws java.net.URISyntaxException,java.lang.InterruptedException{

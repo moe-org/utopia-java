@@ -107,9 +107,8 @@ public final class ResourceManager {
     /**
      * 获取资源
      *
-     * 值得注意的是：将会优先将URL传递给
-     * {@link ResourceManager#getSystemResourceLoader#getResource(URL)}，
-     * 加载失败且{@link ResourceManager#getSystemResourceLoader#getResource(URL)}不抛出异常时才寻找其他资源加载器。
+     * 值得注意的是：将会优先将URL传递给{@link ResourceManager#getSystemResourceLoader()}，
+     * 加载失败且{@link ResourceManager#getSystemResourceLoader()}不抛出异常时才寻找其他资源加载器。
      *
      * @param url 资源的URL
      * @return 获取到的资源。如果没有对应加载器或者获取资源失败(包括获取时抛出异常)则返回empty
@@ -119,9 +118,11 @@ public final class ResourceManager {
         Objects.requireNonNull(url);
 
         try {
+            // 先交给base loader进行加载
             var baseLoadResult = getSystemResourceLoader().getResource(url);
 
             if(baseLoadResult.isEmpty()){
+                // 寻找用户自定义loader
                 var loader = RESOURCE_LOADERS.get(url.getProtocol());
 
                 if(loader != null){

@@ -41,6 +41,7 @@ public final class UtopiaVersion {
     /**
      * 获取版本号
      * @return  获取到的版本号。如果获取失败返回0.0.0
+     * @throws java.io.IOException IO错误
      */
     @NotNull
     public static String getUtopiaVersion() throws java.io.IOException{

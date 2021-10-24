@@ -28,6 +28,9 @@ import java.io.DataOutputStream;
  */
 public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
 
+    /**
+     * 构造一个解码器
+     */
     public PacketEncoder(){
         super(UbfPacket.class,true);
     }

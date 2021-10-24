@@ -33,7 +33,7 @@ import java.util.List;
 public class PacketClassifier extends ByteToMessageDecoder {
 
     /**
-     * 获取服务器版本号的key(用于{@link ChannelHandlerContext#channel()#attr(AttributeKey)})
+     * 获取服务器版本号的key的netty attr
      */
     public static final String CHANNEL_SERVER_PING_VERSION = "utopia.client.received_ping_packet.server_version";
 
