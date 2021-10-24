@@ -52,7 +52,7 @@ public final class UtopiaVersion {
 
             if (is == null) {
                 VERSION.set(DEFAULT_VERSION);
-                LOGGER.warn("could not read utopia server");
+                LOGGER.warn("could not read utopia version");
                 return DEFAULT_VERSION;
             }
 

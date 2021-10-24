@@ -51,4 +51,19 @@ public final class ConfigManager {
         }
     }
 
+    /**
+     * 根据参数configInfoClass对config注入默认配置
+     *
+     * @param config 要注入的配置
+     * @param configInfoClass 要注入的配置的信息
+     */
+    public static void putDefaultConfig(@NotNull Config config,@NotNull Class<?> configInfoClass){
+        Objects.requireNonNull(config);
+        Objects.requireNonNull(configInfoClass);
+
+        // 根据反射注入
+
+
+
+    }
 }

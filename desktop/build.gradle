@@ -138,19 +138,23 @@ classes {
 shadowJar {
     archiveClassifier.set("release")
 
-    destinationDirectory.set(new File("${rootDir.toString()}/output-package/desktop/"))
+    destinationDirectory.set(new File("${desktopReleaseDir}"))
 }
 
 static void releaseFile(String origin, String des){
+    Paths.get(des).toFile().mkdirs();
+
     Files.copy(Paths.get(origin),Paths.get(des), StandardCopyOption.REPLACE_EXISTING)
 }
 
 // 发布
 tasks.register("release"){
     description "package and copy assets"
-    dependsOn shadowJar
+    dependsOn ":desktop:shadowJar"
+    dependsOn rootProject.tasks.named("allJavaSourceJar")
+    dependsOn rootProject.tasks.named("allJavadocJar")
 
-    releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${rootDir.toString()}/output-package/desktop/Utopia(32x32).png")
-    releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${rootDir.toString()}/output-package/desktop/Utopia(128x128).png")
-
+    // copy source
+    releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${desktopReleaseDir}/Utopia(32x32).png")
+    releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${desktopReleaseDir}/Utopia(128x128).png")
 }

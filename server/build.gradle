@@ -134,11 +134,13 @@ classes {
 shadowJar {
     archiveClassifier.set("release")
 
-    destinationDirectory.set(new File("${rootDir.toString()}/output-package/server/"))
+    destinationDirectory.set(new File("${serverReleaseDir}"))
 }
 
 // 发布
 tasks.register("release"){
     description "package and copy assets"
-    dependsOn shadowJar
+    dependsOn ":server:shadowJar"
+    dependsOn rootProject.tasks.named("allJavaSourceJar")
+    dependsOn rootProject.tasks.named("allJavadocJar")
 }

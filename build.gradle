@@ -69,6 +69,14 @@ allprojects {
 
         // hocon版本号
         hoconVersion = "1.4.1"
+
+        // 发布路径
+        releaseDir = "${rootDir}/output-package/"
+        desktopReleaseDir = "${releaseDir}/desktop"
+        serverReleaseDir =  "${releaseDir}/server"
+
+        // javadoc输出路径
+        javadocReleasePath = "docs"
     }
 
     // 设置储存库
@@ -115,11 +123,17 @@ tasks.register("printHelp"){
     println "=====   help end  ====="
 }
 
+// 声明
+tasks.register("allJavadoc",Javadoc)
+tasks.register("allJavaSourceJar",Jar)
+tasks.register("allJavadocJar",Jar)
+
 // 对所有子项目生成Javadoc
 gradle.projectsEvaluated {
     gradle ->
         {
-            tasks.register("allJavadoc",Javadoc) {
+            // 生成所有子项目的javadoc
+            tasks.named("allJavadoc",Javadoc) {
                 description "Collect all subproject javadoc into one directory"
 
                 it.source subprojects.collect { project -> project.sourceSets.main.allJava }
@@ -127,7 +141,7 @@ gradle.projectsEvaluated {
                 it.classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
 
                 // 输出到javadoc
-                it.destinationDir = new File(project.rootDir, "docs")
+                it.destinationDir = new File(project.rootDir, javadocReleasePath as String)
 
                 // 设置
                 it.failOnError = true
@@ -138,6 +152,24 @@ gradle.projectsEvaluated {
                 it.options.setOverview(rootProject.rootDir.toString() + "/config/overview.html".toString() as String)
                 it.options.setWindowTitle("Utopia Doc")
                 it.title = "Utopia Javadoc ver." + rootProject.version.toString()
+            }
+            // 生成所有子项目的源代码的jar
+            tasks.named("allJavaSourceJar",Jar){
+                dependsOn classes
+
+                it.from subprojects.collect { project -> project.sourceSets.main.allSource }
+
+                it.destinationDirectory.set(file("${releaseDir}"))
+                it.archiveName("utopia-source-${rootProject.version.toString()}.jar")
+            }
+            // 生辰所有子项目的javadoc的jar
+            tasks.named("allJavadocJar",Jar){
+                dependsOn allJavadoc
+
+                it.from "${rootProject.rootDir.toString()}/${javadocReleasePath.toString()}"
+
+                it.destinationDirectory.set(file("${releaseDir}"))
+                it.archiveName("utopia-javadoc-${rootProject.version.toString()}.jar")
             }
         }
 }
