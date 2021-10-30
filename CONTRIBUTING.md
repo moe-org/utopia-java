@@ -25,3 +25,6 @@ $ echo "commit message" | npx commitlint
 使用`./gradlew check`进行代码检查。
 
 原则上，只接受通过检查的带有单元测试的代码。
+
+## 编码规范
+使用Optional处理可能为空的函数返回值。
