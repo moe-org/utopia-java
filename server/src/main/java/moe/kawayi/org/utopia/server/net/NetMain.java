@@ -6,7 +6,6 @@
 
 package moe.kawayi.org.utopia.server.net;
 
-import com.typesafe.config.Config;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -14,6 +13,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import moe.kawayi.org.utopia.core.config.Config;
 import moe.kawayi.org.utopia.core.config.ConfigManager;
 import moe.kawayi.org.utopia.core.resource.ResourceLoaderBase;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
@@ -55,25 +55,36 @@ public final class NetMain {
     /**
      * 工作组
      */
-    @Nullable
+    @NotNull
     private static final AtomicReference<EventLoopGroup> BOSS_GROUP = new AtomicReference<>(null);
 
     /**
      * 工作组
      */
-    @Nullable
+    @NotNull
     private static final AtomicReference<EventLoopGroup> WORKER_GROUP = new AtomicReference<>(null);
+
+    @NotNull
+    private static final AtomicReference<Config> CONFIG = new AtomicReference<>();
+
+    /**
+     * 获取网络服务器配置文件
+     * @return 网络服务器配置文件。如果未加载则返回empty
+     */
+    public static Optional<Config> getInternetConfig(){
+        return Optional.ofNullable(CONFIG.get());
+    }
 
     /**
      * 创建默认配置文件
      */
-    private static Config createDefaultConfiguration(@NotNull Path path) throws IOException {
+    private static Config createDefaultConfiguration(@NotNull Path path) throws Exception {
         Objects.requireNonNull(path);
 
         if(!path.toFile().exists())
             Files.writeString(
                 path,
-                NetConfig.NET_DEFAULT_CONFIG_HOCON,
+                ConfigManager.createDefaultHocon(NetConfig.class),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING);
 
@@ -97,24 +108,22 @@ public final class NetMain {
 
         // 获取设置
         int boosThreadCount =
-                Optional.ofNullable(
-                        config.getInt(NetConfig.NETTY_BOOS_THREAD_COUNT))
+                        config.getInt(config.createPath(NetConfig.NETTY_BOOS_THREAD_COUNT))
                         .orElse(NetConfig.NETTY_BOOS_THREAD_COUNT_DEFAULT);
 
         int workerThreadCount =
-                Optional.ofNullable(
-                                config.getInt(NetConfig.NETTY_WORKER_THREAD_COUNT))
+                                config.getInt(config.createPath(NetConfig.NETTY_WORKER_THREAD_COUNT))
                         .orElse(NetConfig.NETTY_WORKER_THREAD_COUNT_DEFAULT);
 
         int port =
-                Optional.ofNullable(
-                                config.getInt(NetConfig.PORT))
+                                config.getInt(config.createPath(NetConfig.PORT))
                         .orElse(NetConfig.PORT_DEFAULT);
 
         int maxWaitList =
-                Optional.ofNullable(
-                                config.getInt(NetConfig.MAX_WAIT_LIST))
+                                config.getInt(config.createPath(NetConfig.MAX_WAIT_LIST))
                         .orElse(NetConfig.MAX_WAIT_LIST_DEFAULT);
+
+        CONFIG.set(config);
 
         // 初始化事件循环线程
         BOSS_GROUP.set(
@@ -163,12 +172,12 @@ public final class NetMain {
         if (IS_RUNNING.getAndSet(false)) {
             var group = BOSS_GROUP.getAndSet(null);
 
-            if (group != null)
+            if (group != null && (!group.isShutdown()) && (!group.isTerminated()) && (!group.isShuttingDown()))
                 group.shutdownGracefully();
 
             group = WORKER_GROUP.getAndSet(null);
 
-            if (group != null)
+            if (group != null && (!group.isShutdown()) && (!group.isTerminated()) && (!group.isShuttingDown()))
                 group.shutdownGracefully();
         }
     }

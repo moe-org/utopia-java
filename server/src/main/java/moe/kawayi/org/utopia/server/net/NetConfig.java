@@ -53,14 +53,4 @@ public final class NetConfig {
      * {@link NetConfig#MAX_WAIT_LIST}的默认值
      */
     public final static int MAX_WAIT_LIST_DEFAULT = 32;
-
-    /**
-     * 网络默认配置文件。HOCON格式
-     */
-    public final static String NET_DEFAULT_CONFIG_HOCON =
-            "# 网络配置文件\n" +
-                    NETTY_BOOS_THREAD_COUNT + "=" + NETTY_BOOS_THREAD_COUNT_DEFAULT + "\n" +
-                    NETTY_WORKER_THREAD_COUNT + "=" + NETTY_WORKER_THREAD_COUNT_DEFAULT + "\n" +
-                    PORT + "=" + PORT_DEFAULT + "\n" +
-                    MAX_WAIT_LIST + "=" + MAX_WAIT_LIST_DEFAULT + "\n";
 }

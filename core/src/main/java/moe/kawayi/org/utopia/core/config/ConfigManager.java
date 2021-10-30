@@ -6,15 +6,19 @@
 
 package moe.kawayi.org.utopia.core.config;
 
+import com.sun.jdi.Value;
 import com.typesafe.config.*;
+import moe.kawayi.org.utopia.core.config.hocon.HoconConfig;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormat;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.*;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 配置文件管理器
@@ -43,27 +47,79 @@ public final class ConfigManager {
 
                 com.typesafe.config.Config config = ConfigFactory.parseFile(path.toFile(),options);
 
-                return Optional.of(config);
+                return Optional.of(new HoconConfig(config));
             }
             else{
-                throw new IllegalArgumentException("file is not end with '.conf'");
+                throw new IllegalArgumentException("unknown file type");
             }
         }
     }
 
     /**
-     * 根据参数configInfoClass对config注入默认配置
+     * 生成一个默认的json配置字符串
      *
-     * @param config 要注入的配置
-     * @param configInfoClass 要注入的配置的信息
+     * 根据输入的configClazz中的static变量生成。不支持嵌套类型。
+     * 如果一个static变量不以"_DEFAULT"结尾，则将该变量视为key
+     * 如果一个static变量已"_DEFAULT"结尾，则将该变量视为变量的名称去除"_DEFAULT"后缀后的变量的value
+     * 如:
+     * <pre>
+     * {@code
+     *  public class Config{
+     *      public static final String PORT = "a-port";
+     *      public static final int PORT_DEFAULT = 1;
+     *  }
+     * }
+     * </pre>
+     * 将会生成类似结构的字符串: {@code {"a-port":1}}
+     *
+     * 作为key的变量将调用{@link Object#toString()}作为结果
+     *
+     * 作为value的变量的类型支持byte,short,int,long,float,double,boolean,String。其他类型将调用{@link Object#toString()}以String储存。
+     *
+     * 不支持任何Map,List等复杂类型。
+     *
+     * @param configClazz 配置类
+     * @return Hocon配置字符串。同时可以被HOCON解析。
      */
-    public static void putDefaultConfig(@NotNull Config config,@NotNull Class<?> configInfoClass){
-        Objects.requireNonNull(config);
-        Objects.requireNonNull(configInfoClass);
+    public static String createDefaultHocon(Class<?> configClazz) throws java.lang.IllegalAccessException{
+        Field[] declaredFields = configClazz.getDeclaredFields();
 
-        // 根据反射注入
+        var statics = Arrays.stream(declaredFields).toList().stream().filter(
+                value -> java.lang.reflect.Modifier.isStatic(value.getModifiers())).collect(Collectors.toList());
 
+        var keys = statics.stream().filter(value -> !value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
 
+        var values = statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
 
+        // key as field name
+        // value[0] as json key
+        // value[1] as json value
+        HashMap<String,Object[]> hashMap = new HashMap<>();
+
+        for (var field : keys){
+            Object[] objs = new Object[2];
+            objs[0] = field.get(null);
+            objs[1] = null;
+
+            hashMap.put(field.getName(),objs);
+        }
+
+        for(var field : values){
+            var got = hashMap.get(field.getName().substring(0,field.getName().length() - "_DEFAULT".length() - 1));
+
+            got[1] = field.get(null);
+
+            hashMap.put(field.getName().substring(0,field.getName().length() - "_DEFAULT".length() - 1),got);
+        }
+
+        HashMap<String,Object> keyValues = new HashMap<>();
+        hashMap.values().forEach(
+                value -> {
+                    keyValues.put((String)value[0],value[1]);
+                }
+        );
+
+        // 序列化
+        return ConfigValueFactory.fromMap(keyValues).render(ConfigRenderOptions.concise());
     }
 }
