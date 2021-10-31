@@ -58,6 +58,20 @@
     <!------------------------>
 </p>
 
+**LINK US!**
+<a href="https://twitter.com/ming_moe_" target="_blank">
+    <img src="https://img.shields.io/badge/%20-Tweet-green?style=for-the-badge&logo=twitter&color=blue" alt="TWEET"/>
+</a>
+<a href="https://www.reddit.com/user/Ming_moe" target="_blank">
+    <img src="https://img.shields.io/badge/%20-Reddit-green?style=for-the-badge&logo=reddit&color=black" alt="REDDIT"/>
+</a>
+<a href="https://www.zhihu.com/people/cai-hong-hai-dao-80" target="_blank">
+    <img src="https://img.shields.io/badge/%20-知乎-green?style=for-the-badge&logo=zhihu&color=white&logoColor=blue" alt="ZHI-HU"/>
+</a>
+<a href="https://jq.qq.com/?_wv=1027&k=quSXBWj1" target="_blank">
+    <img src="https://img.shields.io/badge/%20-QQ-green?style=for-the-badge&logo=tencentqq&color=red" alt="QQ"/>
+</a>
+
 <!---ubadge-auto-list-begin-->
 | Checking | Status |
 | :-------:|:------:|
