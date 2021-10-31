@@ -13,18 +13,8 @@ plugins {
 
     // 依赖
 dependencies {
-    // 日志库
-    api "org.apache.logging.log4j:log4j-api:$log4j2Version"
-    api "org.apache.logging.log4j:log4j-core:$log4j2Version"
-
     // netty
     api "io.netty:netty-all:$nettyVersion"
-
-    // spotbugs版本
-    spotbugs "com.github.spotbugs:spotbugs:$spotbugsVersion"
-
-    // 测试框架
-    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
     // 引入HOCON
     implementation "com.typesafe:config:$hoconVersion"
