@@ -40,7 +40,7 @@ public final class NetMain {
     /**
      * 配置文件路径
      */
-    private static final String CONFIG_RESOURCE = ResourceLoaderBase.PROTOCOL + "://config/internal.conf";
+    private static final String CONFIG_PATH = "config/internet.conf";
 
     /**
      * 日志器
@@ -102,9 +102,7 @@ public final class NetMain {
             return;
 
         // 处理配置
-        Path path = (Path)ResourceManager.getResource(new URL(CONFIG_RESOURCE)).orElseThrow();
-
-        var config = ConfigManager.loadConfig(path).orElse(createDefaultConfiguration(path));
+        var config = ConfigManager.loadConfig(Path.of(CONFIG_PATH)).orElse(createDefaultConfiguration(Path.of(CONFIG_PATH)));
 
         // 获取设置
         int boosThreadCount =

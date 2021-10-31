@@ -11,14 +11,13 @@ buildscript {
         mavenLocal()
         gradlePluginPortal()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        // android插件
-        classpath 'com.android.tools.build:gradle:7.0.0'
-        // android-junit插件
-        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.8.0.0"
-        // android-jacoco插件
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
+        // spotbugs
+        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.0-beta.6"
     }
 }
 
@@ -86,6 +85,64 @@ allprojects {
         google()
         gradlePluginPortal()
     }
+
+    // 面向所有项目设置Java编译参数
+    compileJava{
+        options.encoding("UTF-8")
+        options.setEncoding("UTF-8")
+        options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
+    }
+
+    // 测试设置
+    test {
+        useJUnitPlatform()
+    }
+}
+
+// 面向所有子项目设置插件
+subprojects {
+    apply plugin: "checkstyle"
+    apply plugin: "com.github.spotbugs"
+    apply plugin: "jacoco"
+
+    // 设置checkstyle
+    checkstyle {
+        ignoreFailures = false
+
+        // 定义一些变量
+        // 小驼峰和大驼峰的命名设置
+        configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
+        configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
+        configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
+    }
+
+    // 代码分析器spotbugs设置
+    spotbugs {
+        ignoreFailures = false
+        showStackTraces = true
+        showProgress = true
+        maxHeapSize = '1g'
+        jvmArgs = [ '-Dfile.encoding=UTF-8' ]
+    }
+
+    // 在解析之后
+    afterEvaluate {
+        // jacoco报告设置
+        jacocoTestReport {
+            dependsOn test // 调用jacoco之前进行测试
+
+            reports {
+                // 设置输出xml/html
+                xml.required = true
+                html.required = true
+            }
+        }
+
+        // test调用jacoco
+        tasks.named("test"){
+            it.finalizedBy(tasks.named("jacocoTestReport")) // 在test完成之后调用jacoco
+        }
+    }
 }
 
 // 输出版本号
@@ -128,7 +185,7 @@ tasks.register("allJavadoc",Javadoc)
 tasks.register("allJavaSourceJar",Jar)
 tasks.register("allJavadocJar",Jar)
 
-// 对所有子项目生成Javadoc
+// 解析项目过后的设置
 gradle.projectsEvaluated {
     gradle ->
         {
@@ -140,7 +197,7 @@ gradle.projectsEvaluated {
 
                 it.classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
 
-                // 输出到javadoc
+                // 输出到docs目录
                 it.destinationDir = new File(project.rootDir, javadocReleasePath as String)
 
                 // 设置
@@ -155,7 +212,9 @@ gradle.projectsEvaluated {
             }
             // 生成所有子项目的源代码的jar
             tasks.named("allJavaSourceJar",Jar){
-                dependsOn classes
+                description "Collect all subproject source code into one jar"
+
+                it.dependsOn(tasks.named("classes"))
 
                 it.from subprojects.collect { project -> project.sourceSets.main.allSource }
 
@@ -164,7 +223,9 @@ gradle.projectsEvaluated {
             }
             // 生辰所有子项目的javadoc的jar
             tasks.named("allJavadocJar",Jar){
-                dependsOn allJavadoc
+                description "Collect all subproject javadoc into one jar"
+
+                it.dependsOn(tasks.named("allJavadoc"))
 
                 it.from "${rootProject.rootDir.toString()}/${javadocReleasePath.toString()}"
 

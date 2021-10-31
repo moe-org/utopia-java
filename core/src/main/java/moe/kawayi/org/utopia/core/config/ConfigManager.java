@@ -38,7 +38,7 @@ public final class ConfigManager {
             return Optional.empty();
         }
         else{
-            if(path.endsWith(".conf")){
+            if(path.toFile().getName().endsWith(".conf")){
                 var options = ConfigParseOptions.defaults();
                 options = options.setClassLoader(null);
                 options = options.setAllowMissing(false);
@@ -57,9 +57,11 @@ public final class ConfigManager {
 
     /**
      * 生成一个默认的json配置字符串
-     *
+     * <br/>
      * 根据输入的configClazz中的static变量生成。不支持嵌套类型。
+     * <br/>
      * 如果一个static变量不以"_DEFAULT"结尾，则将该变量视为key
+     * <br/>
      * 如果一个static变量已"_DEFAULT"结尾，则将该变量视为变量的名称去除"_DEFAULT"后缀后的变量的value
      * 如:
      * <pre>
@@ -71,13 +73,13 @@ public final class ConfigManager {
      * }
      * </pre>
      * 将会生成类似结构的字符串: {@code {"a-port":1}}
-     *
+     * <br/>
      * 作为key的变量将调用{@link Object#toString()}作为结果
-     *
+     * <br/>
      * 作为value的变量的类型支持byte,short,int,long,float,double,boolean,String。其他类型将调用{@link Object#toString()}以String储存。
-     *
+     * <br/>
      * 不支持任何Map,List等复杂类型。
-     *
+     * <br/>
      * @param configClazz 配置类
      * @return Hocon配置字符串。同时可以被HOCON解析。
      */
@@ -105,7 +107,11 @@ public final class ConfigManager {
         }
 
         for(var field : values){
-            var got = hashMap.get(field.getName().substring(0,field.getName().length() - "_DEFAULT".length() - 1));
+            var got = hashMap.get(field.getName().substring(0,field.getName().length() - "_DEFAULT".length()));
+
+            if(got == null){
+                continue;
+            }
 
             got[1] = field.get(null);
 

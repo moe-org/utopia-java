@@ -13,15 +13,6 @@ plugins {
     // java 库
     id 'java-library'
 
-    // 检查源文件格式
-    id 'checkstyle'
-
-    // 静态代码分析
-    id "com.github.spotbugs" version "5.0.0-beta.1"
-
-    // 代码覆盖率报告
-    id 'jacoco'
-
     // 打包jar
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
@@ -51,55 +42,9 @@ dependencies {
     api project(":core")
 }
 
-// 设置checkstyle
-checkstyle {
-    ignoreFailures = false
-
-    // 定义一些变量
-    // 小驼峰和大驼峰的命名设置
-    configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
-    configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
-    configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
-}
-
-test {
-    useJUnitPlatform()
-
-    finalizedBy jacocoTestReport // 在test完成之后调用jacoco
-}
-
-jacocoTestReport {
-    dependsOn test // 调用jacoco之前进行测试
-
-    reports {
-        // 设置输出
-        xml.required = true
-        html.required = true
-    }
-}
-
-
-// 设置java编译选项
-compileJava {
-    options.encoding("UTF-8")
-    options.setEncoding("UTF-8")
-    options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
-}
-
-// 代码分析器spotbugs设置
-spotbugs {
-    ignoreFailures = false
-    showStackTraces = true
-    showProgress = true
-    maxHeapSize = '1g'
-    jvmArgs = [ '-Dfile.encoding=UTF-8' ]
-}
-
 // 配置启动类
 jar {
-    manifest {
-        attributes 'Main-Class': 'moe.kawayi.org.utopia.server.main.Main'
-    }
+    manifest.attributes.put("Main-Class","moe.kawayi.org.utopia.server.main.Main")
 
     finalizedBy shadowJar
 }

@@ -13,7 +13,7 @@ public final class NetConfig {
     /**
      * netty的boss线程数量
      */
-    public final static String NETTY_BOOS_THREAD_COUNT = "net.boosGroup.threadCount";
+    public final static String NETTY_BOOS_THREAD_COUNT = "BoosGroupThreadCount";
 
     /**
      * {@link NetConfig#NETTY_BOOS_THREAD_COUNT}的默认值
@@ -24,7 +24,7 @@ public final class NetConfig {
     /**
      * netty的worker线程数量
      */
-    public final static String NETTY_WORKER_THREAD_COUNT = "net.workerGroup.threadCount";
+    public final static String NETTY_WORKER_THREAD_COUNT = "WorkerGroupThreadCount";
 
     /**
      * {@link NetConfig#NETTY_WORKER_THREAD_COUNT}的默认值
@@ -35,7 +35,7 @@ public final class NetConfig {
     /**
      * 端口号
      */
-    public final static String PORT = "net.port";
+    public final static String PORT = "Port";
 
 
     /**
@@ -47,7 +47,7 @@ public final class NetConfig {
     /**
      * 最大等待队列
      */
-    public final static String MAX_WAIT_LIST = "net.maxWaitList";
+    public final static String MAX_WAIT_LIST = "NetMaxWaitList";
 
     /**
      * {@link NetConfig#MAX_WAIT_LIST}的默认值
