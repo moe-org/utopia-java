@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 /**
  * {@link World}构造函数异常
  */
@@ -16,7 +18,7 @@ public class WorldConstructionException extends Exception {
      * @param msg 异常信息
      * @see Exception#Exception(String)
      */
-    public WorldConstructionException(String msg) {
+    public WorldConstructionException(@NotNull String msg) {
         super(msg);
     }
 

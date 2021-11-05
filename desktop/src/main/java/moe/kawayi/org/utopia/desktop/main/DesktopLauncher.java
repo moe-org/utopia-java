@@ -12,6 +12,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Objects;
 
@@ -74,7 +75,7 @@ public class DesktopLauncher {
 	 * 桌面入口函数
 	 * @param args 命令行参数
 	 */
-	public static void main (String[] args) {
+	public static void main (@NotNull String[] args) {
 		// 一些默认值
 		boolean useSmallIcon = false;
 
@@ -138,7 +139,8 @@ public class DesktopLauncher {
 				-1);
 		config.setResizable(true);
 		config.useOpenGL3(useOpenGL3,gl3Major,gl3Minor);
-		config.setWindowIcon(Files.FileType.Local,useSmallIcon ? "./Utopia(32x32).png" : "./Utopia(128x128).png");
+		config.setWindowIcon(
+				Files.FileType.Local,useSmallIcon ? "./Utopia(32x32).png" : "./Utopia(128x128).png");
 
 		// 是否启用全屏
 		if(fullScreen) {

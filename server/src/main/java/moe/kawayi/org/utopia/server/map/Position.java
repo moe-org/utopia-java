@@ -6,6 +6,11 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
+
+import java.util.Objects;
+
 /**
  * 坐标
  */
@@ -44,6 +49,7 @@ public final class Position {
      *
      * @return 降级的FlatPosition
      */
+    @NotNull
     public FlatPosition downgrade() {
         return new FlatPosition(x, y);
     }
@@ -54,6 +60,7 @@ public final class Position {
      * @return 人类可读字符串
      */
     @Override
+    @NotNull
     public String toString() {
         return String.format("Position{ x:%s y:%s z:%s }", x, y, z);
     }
@@ -73,10 +80,10 @@ public final class Position {
      * 判断两个Position是否相等
      *
      * @param obj 要判断的对象
-     * @return 如果判断的对象不是 {@link Position}，或者坐标不相等，返回false。否则返回true
+     * @return 如果判断的对象不是 {@link Position}，或者坐标不相等，返回false。否则返回true。如果obj参数为空，始终返回false。
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@NotNull Object obj) {
         if(obj == null)
             return false;
 

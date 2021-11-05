@@ -20,6 +20,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 值的类型
      */
+    @NotNull
     UtopiaBinaryFormatType getType();
 
     /**
@@ -97,6 +98,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Byte> getByte();
 
     /**
@@ -104,6 +106,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Short> getShort();
 
     /**
@@ -111,6 +114,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Integer> getInt();
 
     /**
@@ -118,6 +122,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Long> getLong();
 
     /**
@@ -125,6 +130,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Float> getFloat();
 
     /**
@@ -132,6 +138,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Double> getDouble();
 
     /**
@@ -139,6 +146,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<Boolean> getBoolean();
 
     /**
@@ -146,6 +154,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<String> getString();
 
     /**
@@ -153,6 +162,7 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<UtopiaBinaryFormatArray> getArray();
 
     /**
@@ -160,5 +170,6 @@ public interface UtopiaBinaryFormatValue {
      *
      * @return 获取的值，如果类型不正确，则返回{@link Optional#empty()}
      */
+    @NotNull
     Optional<UtopiaBinaryFormatObject> getObject();
 }

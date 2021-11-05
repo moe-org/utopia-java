@@ -6,6 +6,11 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
+
+import java.util.Objects;
+
 /**
  * 世界坐标
  */
@@ -50,6 +55,7 @@ public final class WorldPosition {
      *
      * @return 降级的Position
      */
+    @NotNull
     public Position downgrade() {
         return new Position(x, y, z);
     }
@@ -60,6 +66,7 @@ public final class WorldPosition {
      * @return 人类可读字符串
      */
     @Override
+    @NotNull
     public String toString() {
         return String.format("WorldPosition{ x:%s y:%s z:%s worldId:%s }", x, y, z, worldId);
     }
@@ -81,7 +88,7 @@ public final class WorldPosition {
      * @return 如果判断的对象不是 {@link WorldPosition}，或者坐标不相等，返回false。否则返回true
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@NotNull Object obj) {
         if(obj == null)
             return false;
 

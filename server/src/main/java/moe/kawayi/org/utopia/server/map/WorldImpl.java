@@ -78,6 +78,7 @@ public final class WorldImpl implements World {
          *
          * @return 如果此区域被加载，返回带值的Optional，否则返回空Optional
          */
+        @NotNull
         Optional<AreaImpl> get() {
             synchronized (wrapperLocker) {
                 return Optional.ofNullable(innerValue);
@@ -207,7 +208,8 @@ public final class WorldImpl implements World {
      * @return 获取到的方块。如果方块未加载或者超出范围，返回空的Optional。
      */
     @Override
-    public Optional<Block> getBlock(Position position) {
+    @NotNull
+    public Optional<Block> getBlock(@NotNull Position position) {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 

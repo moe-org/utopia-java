@@ -11,6 +11,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import moe.kawayi.org.utopia.core.net.PacketEncoder;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.net.handle.PingPacketHandle;
 
 /**
@@ -20,7 +21,7 @@ import moe.kawayi.org.utopia.server.net.handle.PingPacketHandle;
 public final class NettyChannelInit extends ChannelInitializer<NioSocketChannel> {
 
     @Override
-    protected void initChannel(NioSocketChannel  socketChannel) throws Exception {
+    protected void initChannel(@NotNull NioSocketChannel  socketChannel) throws Exception {
 
 
         var pipeline = socketChannel.pipeline();

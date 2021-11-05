@@ -43,6 +43,7 @@ public final class NetThreadFactory implements ThreadFactory {
     }
 
     @Override
+    @NotNull
     public Thread newThread(@NotNull Runnable r) {
         Objects.requireNonNull(r, "r must not be null");
 

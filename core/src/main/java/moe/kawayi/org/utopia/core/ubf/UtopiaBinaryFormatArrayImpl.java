@@ -6,6 +6,9 @@
 
 package moe.kawayi.org.utopia.core.ubf;
 
+import io.netty.util.SuppressForbidden;
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -39,12 +42,13 @@ public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArra
     }
 
     @Override
+    @NotNull
     public UtopiaBinaryFormatValue get(int index) {
         return array.get(index);
     }
 
     @Override
-    public void set(int index, UtopiaBinaryFormatValue value) {
+    public void set(int index, @NotNull UtopiaBinaryFormatValue value) {
         Objects.requireNonNull(value, "value must not be null");
 
         array.set(index, value);
@@ -56,13 +60,14 @@ public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArra
     }
 
     @Override
-    public void add(UtopiaBinaryFormatValue value) {
+    public void add(@NotNull UtopiaBinaryFormatValue value) {
         Objects.requireNonNull(value, "value must not be null");
 
         array.add(value);
     }
 
     @Override
+    @NotNull
     public UtopiaBinaryFormatValue[] asArray() {
         var array = new UtopiaBinaryFormatValue[this.array.size()];
 
@@ -72,6 +77,7 @@ public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArra
     }
 
     @Override
+    @NotNull
     public Iterator<UtopiaBinaryFormatValue> iterator() {
         return array.iterator();
     }

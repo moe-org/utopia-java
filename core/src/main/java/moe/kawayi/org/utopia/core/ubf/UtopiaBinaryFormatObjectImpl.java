@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.core.ubf;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 import java.util.*;
 
 /**
@@ -37,24 +39,27 @@ public final class UtopiaBinaryFormatObjectImpl implements UtopiaBinaryFormatObj
     }
 
     @Override
-    public Optional<UtopiaBinaryFormatValue> get(String key) {
+    @NotNull
+    public Optional<UtopiaBinaryFormatValue> get(@NotNull String key) {
         Objects.requireNonNull(key, "key must not be null");
 
         return Optional.ofNullable(keyValue.get(key));
     }
 
     @Override
+    @NotNull
     public Set<String> getKeys() {
         return keyValue.keySet();
     }
 
     @Override
+    @NotNull
     public Set<Map.Entry<String, UtopiaBinaryFormatValue>> getEntrySet() {
         return keyValue.entrySet();
     }
 
     @Override
-    public void put(String key, UtopiaBinaryFormatValue value) {
+    public void put(@NotNull String key,@NotNull UtopiaBinaryFormatValue value) {
         Objects.requireNonNull(value, "value must not be null");
         Objects.requireNonNull(key, "key must not be null");
 

@@ -26,6 +26,7 @@ public interface UtopiaBinaryFormatArray extends Iterable<UtopiaBinaryFormatValu
      * @param index 索引
      * @return 获取到的数组对象
      */
+    @NotNull
     UtopiaBinaryFormatValue get(int index);
 
     /**
@@ -55,5 +56,6 @@ public interface UtopiaBinaryFormatArray extends Iterable<UtopiaBinaryFormatValu
      *
      * @return 数组
      */
+    @NotNull
     UtopiaBinaryFormatValue[] asArray();
 }

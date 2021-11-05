@@ -58,6 +58,7 @@ public interface Block {
      *
      * @return 如果此方块拥有碰撞体，则返回，否则返回空Optional
      */
+    @NotNull
     Optional<Entity> getCollide();
 
     /**

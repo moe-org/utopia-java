@@ -30,6 +30,7 @@ public interface UtopiaBinaryFormatObject {
      * @param key 对象key
      * @return 获取到的对象
      */
+    @NotNull
     Optional<UtopiaBinaryFormatValue> get(@NotNull String key);
 
     /**

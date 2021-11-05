@@ -64,6 +64,7 @@ public final class WorldManager {
      * @param worldId 世界id
      * @return 如果实际已经注册，返回世界的引用，否则返回空:{@link Optional#empty()}
      */
+    @NotNull
     public static Optional<World> getEntity(long worldId) {
         return Optional.ofNullable(WORLDS.get(worldId));
     }

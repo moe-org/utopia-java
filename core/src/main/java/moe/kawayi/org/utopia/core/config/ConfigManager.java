@@ -31,6 +31,7 @@ public final class ConfigManager {
      * @return 加载到的配置文件。如果配置文件不存在则返回empty
      * @throws IllegalArgumentException 如果文件不以.conf结尾则抛出
      */
+    @NotNull
     public static Optional<Config> loadConfig(@NotNull Path path) throws IllegalArgumentException{
         Objects.requireNonNull(path);
 
@@ -82,8 +83,10 @@ public final class ConfigManager {
      * <br/>
      * @param configClazz 配置类
      * @return Hocon配置字符串。同时可以被HOCON解析。
+     * @throws IllegalAccessException java的反射API所抛出的异常
      */
-    public static String createDefaultHocon(Class<?> configClazz) throws java.lang.IllegalAccessException{
+    @NotNull
+    public static String createDefaultHocon(@NotNull Class<?> configClazz) throws java.lang.IllegalAccessException{
         Field[] declaredFields = configClazz.getDeclaredFields();
 
         var statics = Arrays.stream(declaredFields).toList().stream().filter(
@@ -91,7 +94,8 @@ public final class ConfigManager {
 
         var keys = statics.stream().filter(value -> !value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
 
-        var values = statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
+        var values =
+                statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
 
         // key as field name
         // value[0] as json key

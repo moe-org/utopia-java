@@ -7,140 +7,101 @@
 package moe.kawayi.org.utopia.core.resource;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 资源管理器
  */
 public final class ResourceManager {
 
-    private static final Logger LOGGER = LogManager.getLogger(ResourceManager.class);
-
     /**
-     * 资源加载器
+     * utopia的根目录
      */
-    private static final ConcurrentHashMap<String,ResourceLoader>
-            RESOURCE_LOADERS = new ConcurrentHashMap<>();
+    private static final AtomicReference<Path> UTOPIA_DIR = new AtomicReference<>();
 
     /**
-     * 系统资源加载器
-     */
-    private static final ResourceLoaderBase SYSTEM_LOADER = new ResourceLoaderBase();
-
-    /**
-     * 获取系统资源加载器
-     * @return 系统资源加载器
-     */
-    @NotNull
-    public static ResourceLoader getSystemResourceLoader(){
-        return SYSTEM_LOADER;
-    }
-
-    /**
-     * 注册资源加载器
-     * @param protocol  访问资源加载器的协议名称
-     * @param loader    资源加载器
-     * @return  如果主机名称已经被占用，则注册失败，返回false。返回true则注册成功。
-     */
-    public static boolean register(@NotNull String protocol,@NotNull ResourceLoader loader){
-        Objects.requireNonNull(protocol);
-        Objects.requireNonNull(loader);
-
-        var result = RESOURCE_LOADERS.putIfAbsent(protocol,loader);
-
-        // 之前从未注册过，putIfAbsent返回null
-        var isRegister = result == null;
-
-        if(isRegister){
-            LOGGER.debug("register {} hostname to resource loader {}",protocol,loader.getName());
-        }
-
-        return isRegister;
-    }
-
-    /**
-     * 更新资源加载器
-     * @param protocol  访问资源加载器的协议名称
-     * @param loader    资源加载器
-     */
-    public  static void update(@NotNull String protocol,@NotNull ResourceLoader loader){
-        Objects.requireNonNull(protocol);
-        Objects.requireNonNull(loader);
-
-        LOGGER.debug("update {} hostname for resource loader {}",protocol,loader.getName());
-
-        RESOURCE_LOADERS.put(protocol,loader);
-    }
-
-    /**
-     * 寻找资源加载器
-     * @param protocol  访问资源加载器的协议名称
-     * @return          资源加载器。未注册返回empty
-     */
-    @NotNull
-    public static Optional<ResourceLoader> findLoader(@NotNull String protocol){
-        Objects.requireNonNull(protocol);
-
-        return Optional.ofNullable(RESOURCE_LOADERS.get(protocol));
-    }
-
-    /**
-     * 注销资源加载器
-     * @param protocol  访问资源加载器的协议名称
-     */
-    public static void unregister(@NotNull String protocol){
-        Objects.requireNonNull(protocol);
-
-        var v = RESOURCE_LOADERS.remove(protocol);
-
-        if(v != null){
-            LOGGER.debug("unregister {} hostname to resource loader {}",protocol,v.getName());
-        }
-    }
-
-    /**
-     * 获取资源
+     * 默认utopia根路径的系统PROPERTY。
      *
-     * 值得注意的是：将会优先将URL传递给{@link ResourceManager#getSystemResourceLoader()}，
-     * 加载失败且{@link ResourceManager#getSystemResourceLoader()}不抛出异常时才寻找其他资源加载器。
+     * 即默认根目录将会是
+     * <br/>
+     * {@link System#getProperty(String)} with argument {@link ResourceManager#DEFAULT_UTOPIA_DIR_PROPERTY}的调用结果
+     */
+    public static final String DEFAULT_UTOPIA_DIR_PROPERTY = "user.dir";
+
+    /**
+     * 设置utopia根目录
+     * <br/>
+     * 不应该在除了utopia启动的时候设置这个值(即从有人调用任何getPath函数族之前)。
+     * <br/>
+     * 否则会导致现有的，已经加载的plugin或者其他代码无法找到资源。并且有更多未知造成的影响。
      *
-     * @param url 资源的URL
-     * @return 获取到的资源。如果没有对应加载器或者获取资源失败(包括获取时抛出异常)则返回empty
+     * @param utopiaRoot 根目录。非空。
+     */
+    public static void setUtopiaDir(@NotNull Path utopiaRoot){
+        Objects.requireNonNull(utopiaRoot);
+
+        UTOPIA_DIR.set(utopiaRoot);
+    }
+
+    /**
+     * 获取utopia根目录。有时称为utopia-root
+     * @return utopia的根目录。保证不为空。
      */
     @NotNull
-    public static Optional<Object> getResource(@NotNull URL url){
-        Objects.requireNonNull(url);
+    public static Path getUtopiaDir(){
+        var got = UTOPIA_DIR.get();
+        if(got == null){
+            var defaultValue = Path.of(System.getProperty("user.dir"));
+            UTOPIA_DIR.compareAndSet(null,defaultValue);
 
-        try {
-            // 先交给base loader进行加载
-            var baseLoadResult = getSystemResourceLoader().getResource(url);
-
-            if(baseLoadResult.isEmpty()){
-                // 寻找用户自定义loader
-                var loader = RESOURCE_LOADERS.get(url.getProtocol());
-
-                if(loader != null){
-                    return loader.getResource(url);
-                }
-                else{
-                    return Optional.empty();
-                }
-            }
-            else{
-                return baseLoadResult;
-            }
-        }
-        catch(Exception ex){
-            LOGGER.warn("load resource '{}' failed down and throw exception",url,ex);
-            // 返回空
-            return Optional.empty();
+            return defaultValue;
+        }else {
+            return got;
         }
     }
+
+    /**
+     * 根据路径获取基于utopia-root的路径
+     * <br/>
+     * 等价于: getUtopiaDir().resolve(other);
+     * @param relative 应该为基于utopia-root的相对路径。
+     * @see ResourceManager#getPath(String)
+     * @return 获取到的路径
+     */
+    @NotNull
+    public static Path getPath(@NotNull Path relative){
+        return getUtopiaDir().resolve(relative);
+    }
+
+    /**
+     * 根据路径获取基于utopia-root的路径
+     * <br/>
+     * 等价于: getUtopiaDir().resolve(other);
+     * @param relative 应该为基于utopia-root的相对路径。
+     * @see ResourceManager#getPath(Path)
+     * @return 获取到的路径
+     */
+    @NotNull
+    public static Path getPath(@NotNull String relative){
+        return getUtopiaDir().resolve(relative);
+    }
+
+    /**
+     * 获取基于utopia-root路径的相对路径
+     * <br/>
+     * 等价于: getUtopiaDir().relativize(other);
+     * @param absolute 绝对路径
+     * @return 相对于utopia-root的相对路径。
+     */
+    @NotNull
+    public static Path relativize(@NotNull Path absolute){
+        return getUtopiaDir().relativize(absolute);
+    }
+
+
 
 }

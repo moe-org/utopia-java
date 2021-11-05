@@ -88,7 +88,7 @@ public final class BlockImpl implements Block {
      * 供remove系列函数使用
      */
     private interface RemoveCallback {
-        boolean callable(Entity removed);
+        boolean callable(@NotNull Entity removed);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class BlockImpl implements Block {
      * @param removeCallback 判断一个实体是否需要删除
      * @see RemoveCallback
      */
-    private void removeBody(RemoveCallback removeCallback) {
+    private void removeBody(@NotNull RemoveCallback removeCallback) {
         // 写锁
         var lock = rwLock.writeLock();
         lock.lock();
@@ -195,6 +195,7 @@ public final class BlockImpl implements Block {
      *
      * @return 如果此方块拥有碰撞体，则返回，否则返回空Optional
      */
+    @NotNull
     @Override
     public Optional<Entity> getCollide() {
         // 读锁

@@ -44,6 +44,7 @@ public final class AreaImpl implements Area {
      * @see BlockFloorImpl#getBlock(FlatPosition)
      */
     @Override
+    @NotNull
     public Optional<Block> getBlock(@NotNull Position position) {
         // null check
         Objects.requireNonNull(position, "position must not be null");

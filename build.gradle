@@ -155,6 +155,14 @@ subprojects {
             // spotbugs版本
             spotbugs "com.github.spotbugs:spotbugs:$spotbugsVersion"
         }
+
+        // checkstyle任务设置
+        checkstyleMain {
+            checkstyleClasspath += files("${rootDir}/config/checkstyle/keep-project-great.jar")
+        }
+        checkstyleTest {
+            checkstyleClasspath += files("${rootDir}/config/checkstyle/keep-project-great.jar")
+        }
     }
 }
 

@@ -15,6 +15,13 @@
     <!-- 需要检查的文件扩展名 -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
+    <!--最大行长-->
+    <module name="LineLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="120"/>
+    </module>
+
+
     <!--检查Java文件-->
     <module name="TreeWalker">
 
@@ -101,6 +108,10 @@
         <module name="LocalFinalVariableName">
             <property name="format" value="^${utopia.checkstyle.small_hump}$"/>
         </module>
+
+        <!--检查NotNull和Nullable-->
+        <module name="moe.kawayi.org.keep.great.checker.CheckMethodReturnValueNullMark"/>
+        <module name="moe.kawayi.org.keep.great.checker.CheckMethodArgumentsNullMark"/>
 
 
     </module>

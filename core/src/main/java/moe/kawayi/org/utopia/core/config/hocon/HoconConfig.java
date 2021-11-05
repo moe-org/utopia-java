@@ -31,6 +31,10 @@ public class HoconConfig implements Config {
      */
     public record NavigationPath(@NotNull String path) implements Config.NavigationPath{ }
 
+    /**
+     * 构造一个HoconConfig
+     * @param config Hocon的Config，非空
+     */
     public HoconConfig(@NotNull com.typesafe.config.Config config){
         Objects.requireNonNull(config);
 
@@ -38,69 +42,80 @@ public class HoconConfig implements Config {
     }
 
     @Override
-    public NavigationPath createPath(String... paths) {
+    @NotNull
+    public NavigationPath createPath(@NotNull String... paths) {
         Objects.requireNonNull(paths);
 
         return new NavigationPath(ConfigUtil.joinPath(paths));
     }
 
     @Override
-    public Optional<Byte> getByte(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Byte> getByte(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getNumber(((NavigationPath)path).path).byteValue());
     }
 
     @Override
-    public Optional<Short> getShort(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Short> getShort(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getNumber(((NavigationPath)path).path).shortValue());
     }
 
     @Override
-    public Optional<Integer> getInt(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Integer> getInt(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getNumber(((NavigationPath)path).path).intValue());
     }
 
     @Override
-    public Optional<Long> getLong(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Long> getLong(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getNumber(((NavigationPath)path).path).longValue());
     }
 
     @Override
-    public Optional<Boolean> getBoolean(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Boolean> getBoolean(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getBoolean(((NavigationPath)path).path));
     }
 
     @Override
-    public Optional<Float> getFloat(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Float> getFloat(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(((Double)obj.getDouble(((NavigationPath)path).path)).floatValue());
     }
 
     @Override
-    public Optional<Double> getDouble(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Double> getDouble(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getDouble(((NavigationPath)path).path));
     }
 
     @Override
-    public Optional<String> getString(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<String> getString(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(obj.getString(((NavigationPath)path).path));
     }
 
     @Override
-    public Optional<UUID> getUUID(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<UUID> getUUID(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(
                 UUID.fromString(obj.getString(((NavigationPath)path).path)));
     }
 
     @Override
-    public Optional<List<Config>> getArray(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<List<Config>> getArray(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         var list = obj.getList(((NavigationPath)path).path);
         return Optional.of(
@@ -109,7 +124,8 @@ public class HoconConfig implements Config {
     }
 
     @Override
-    public Optional<Config> getObject(Config.NavigationPath path) throws Exception {
+    @NotNull
+    public Optional<Config> getObject(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
         return Optional.of(
                 new HoconConfig(obj.getConfig(((NavigationPath)path).path))
@@ -117,6 +133,7 @@ public class HoconConfig implements Config {
     }
 
     @Override
+    @NotNull
     public String renderToString() {
         return obj.root().render(ConfigRenderOptions.concise());
     }

@@ -9,6 +9,7 @@ package moe.kawayi.org.utopia.client.net;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import static moe.kawayi.org.utopia.client.net.NetMain.CLIENT_CHANNEL;
 
@@ -20,7 +21,7 @@ import static moe.kawayi.org.utopia.client.net.NetMain.CLIENT_CHANNEL;
 public class ClientInitHandle extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         CLIENT_CHANNEL.set(ctx.channel());
         System.out.println("linked");
 

@@ -15,17 +15,16 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import moe.kawayi.org.utopia.core.config.Config;
 import moe.kawayi.org.utopia.core.config.ConfigManager;
-import moe.kawayi.org.utopia.core.resource.ResourceLoaderBase;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.Optional;
@@ -71,6 +70,7 @@ public final class NetMain {
      * 获取网络服务器配置文件
      * @return 网络服务器配置文件。如果未加载则返回empty
      */
+    @NotNull
     public static Optional<Config> getInternetConfig(){
         return Optional.ofNullable(CONFIG.get());
     }
@@ -78,6 +78,7 @@ public final class NetMain {
     /**
      * 创建默认配置文件
      */
+    @NotNull
     private static Config createDefaultConfiguration(@NotNull Path path) throws Exception {
         Objects.requireNonNull(path);
 
@@ -85,6 +86,7 @@ public final class NetMain {
             Files.writeString(
                 path,
                 ConfigManager.createDefaultHocon(NetConfig.class),
+                StandardCharsets.UTF_8,
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING);
 
@@ -97,12 +99,13 @@ public final class NetMain {
      * @throws InterruptedException 线程中断
      */
     public static void internetBootstrap() throws Exception {
-        // never run again
+        // never run at same time
         if (IS_RUNNING.getAndSet(true))
             return;
 
         // 处理配置
-        var config = ConfigManager.loadConfig(Path.of(CONFIG_PATH)).orElse(createDefaultConfiguration(Path.of(CONFIG_PATH)));
+        var configPath = ResourceManager.getPath(Paths.get(CONFIG_PATH));
+        var config = ConfigManager.loadConfig(configPath).orElse(createDefaultConfiguration(configPath));
 
         // 获取设置
         int boosThreadCount =
@@ -140,18 +143,26 @@ public final class NetMain {
         b.group(BOSS_GROUP.get(), WORKER_GROUP.get())
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new NettyChannelInit())
+                // 设置链接等待队列
                 .option(ChannelOption.SO_BACKLOG, maxWaitList)
+                // 地址复用。来允许绑定多个channel到同一个port
+                .option(ChannelOption.SO_REUSEADDR,true)
+                // 关闭Nagle算法，降低延迟
                 .childOption(ChannelOption.TCP_NODELAY, true)
+                // 自动读取
+                .childOption(ChannelOption.AUTO_READ,true)
+                // 保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         ChannelFuture f = b.bind(port).sync();
 
-        LOGGER.info("网络服务器启动");
-
         // 设置关闭动作
         f.channel().closeFuture().addListener((ChannelFutureListener) channelFuture -> {
-            LOGGER.info("网络服务器关闭");
+            shutdown();
         });
+
+        // well done
+        LOGGER.info("网络服务器启动");
     }
 
     /**
@@ -168,6 +179,8 @@ public final class NetMain {
      */
     public static void shutdown() {
         if (IS_RUNNING.getAndSet(false)) {
+            LOGGER.info("网络服务器关闭");
+
             var group = BOSS_GROUP.getAndSet(null);
 
             if (group != null && (!group.isShutdown()) && (!group.isTerminated()) && (!group.isShuttingDown()))

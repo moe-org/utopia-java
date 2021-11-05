@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.main;
 
+import io.netty.util.NettyRuntime;
+import moe.kawayi.org.utopia.core.util.LogUtil;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
@@ -21,7 +23,7 @@ public final class Main {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+    private static  Logger LOGGER = LogManager.getLogger(Main.class);;
 
     /**
      * utopia server 入口函数
@@ -30,7 +32,13 @@ public final class Main {
      * @throws Exception 交给运行时处理
      */
     public static void main(@NotNull String[] args) throws Exception {
+        // set thread name
         Thread.currentThread().setName("Main");
+
+        // 配置日志
+        LogUtil.configureLog();
+
+        // 设置线程名称
         LOGGER.info("Server start");
 
         LOGGER.info("utopia-version {}",UtopiaVersion.getUtopiaVersion());
@@ -64,7 +72,7 @@ public final class Main {
             // Nothing to do!
             t.join();
 
-        } catch (Throwable err) {
+        } catch (@NotNull Throwable err) {
             LOGGER.error("Server crash", err);
 
             throw err;

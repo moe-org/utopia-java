@@ -48,9 +48,10 @@ public final class BinaryConverter {
          * @param output 输出流
          * @param str    字符串
          */
-        private void convertString(DataOutputStream output,
-                                   String str) throws java.io.IOException {
+        private void convertString(@NotNull DataOutputStream output,
+                                   @NotNull String str) throws java.io.IOException {
             Objects.requireNonNull(str, "str must not be null");
+            Objects.requireNonNull(output);
 
             byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 
@@ -58,13 +59,16 @@ public final class BinaryConverter {
             output.write(utf8);
         }
 
-        private void convertId(DataOutputStream output, UtopiaBinaryFormatType type) throws java.io.IOException {
+        private void convertId(
+                @NotNull DataOutputStream output,
+                @NotNull UtopiaBinaryFormatType type)
+                    throws java.io.IOException {
             // 直接写入id
             output.write(type.getMarkCode());
         }
 
-        private void convertObject(DataOutputStream output,
-                                   UtopiaBinaryFormatObject obj) throws java.io.IOException {
+        private void convertObject(@NotNull DataOutputStream output,
+                                   @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException {
             incCallStack();
 
             // object布局:
@@ -85,8 +89,8 @@ public final class BinaryConverter {
             subCallStack();
         }
 
-        private void convertArray(DataOutputStream output,
-                                  UtopiaBinaryFormatArray array) throws java.io.IOException {
+        private void convertArray(@NotNull DataOutputStream output,
+                                  @NotNull UtopiaBinaryFormatArray array) throws java.io.IOException {
             incCallStack();
 
             // array布局:
@@ -105,8 +109,8 @@ public final class BinaryConverter {
         }
 
         private void convertValue(
-                DataOutputStream output,
-                UtopiaBinaryFormatValue obj) throws java.io.IOException {
+                @NotNull DataOutputStream output,
+                @NotNull UtopiaBinaryFormatValue obj) throws java.io.IOException {
             switch (obj.getType()) {
                 case BYTE -> {
                     output.write(obj.getByte().orElseThrow());
@@ -193,13 +197,16 @@ public final class BinaryConverter {
          *
          * @param input 输入流
          */
-        private String convertString(DataInputStream input) throws java.io.IOException {
+        @NotNull
+        private String convertString(@NotNull DataInputStream input)
+                throws java.io.IOException {
 
             int length = input.readInt();
 
             return new String(input.readNBytes(length), StandardCharsets.UTF_8);
         }
 
+        @NotNull
         private UtopiaBinaryFormatType convertType(byte id) {
             for (var value : UtopiaBinaryFormatType.values()) {
                 if (id == value.getMarkCode())
@@ -208,8 +215,9 @@ public final class BinaryConverter {
             throw new IllegalStateException("无效的类型id");
         }
 
+        @NotNull
         private UtopiaBinaryFormatObjectImpl convertObject(
-                DataInputStream input
+                @NotNull DataInputStream input
         ) throws java.io.IOException {
             incCallStack();
 
@@ -237,8 +245,9 @@ public final class BinaryConverter {
             return obj;
         }
 
+        @NotNull
         private UtopiaBinaryFormatArrayImpl convertArray(
-                DataInputStream input
+                @NotNull DataInputStream input
         ) throws java.io.IOException {
             incCallStack();
 
@@ -263,7 +272,9 @@ public final class BinaryConverter {
             return array;
         }
 
-        private UtopiaBinaryFormatValueImpl convertValue(DataInputStream input, UtopiaBinaryFormatType type)
+        @NotNull
+        private UtopiaBinaryFormatValueImpl
+            convertValue(@NotNull DataInputStream input, @NotNull UtopiaBinaryFormatType type)
                 throws java.io.IOException {
             switch (type) {
                 case BYTE -> {
@@ -308,6 +319,7 @@ public final class BinaryConverter {
          * @throws IllegalStateException 递归层数过多
          * @throws java.io.IOException 来自{@link DataInputStream}
          */
+        @NotNull
         public UtopiaBinaryFormatObjectImpl convert(@NotNull DataInputStream input)
                 throws java.io.IOException,IllegalStateException {
             Objects.requireNonNull(input, "input must not be null");

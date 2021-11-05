@@ -54,7 +54,8 @@ public final class NetMain {
      * @throws java.lang.InterruptedException netty中断错误
      */
     @Nullable
-    public static synchronized void start(@NotNull String uriPath)throws java.net.URISyntaxException,java.lang.InterruptedException{
+    public static synchronized void start(@NotNull String uriPath)
+            throws java.net.URISyntaxException,java.lang.InterruptedException{
         if(IS_RUNNING.getAndSet(true)) {
             return;
         }

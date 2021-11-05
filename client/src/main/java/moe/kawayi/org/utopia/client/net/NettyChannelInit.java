@@ -10,6 +10,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import moe.kawayi.org.utopia.core.net.PacketEncoder;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 初始化netty channel
@@ -17,7 +18,7 @@ import moe.kawayi.org.utopia.core.net.PacketEncoder;
 public final class NettyChannelInit extends ChannelInitializer<SocketChannel>
 {
     @Override
-    protected void initChannel(SocketChannel ch) throws Exception {
+    protected void initChannel(@NotNull SocketChannel ch) throws Exception {
         ch.pipeline()
                 // 添加一个拆包器
                 .addLast("packet length parser",new LengthFieldBasedFrameDecoder(

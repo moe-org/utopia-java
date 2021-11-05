@@ -41,13 +41,18 @@ public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertTo> converter = new FastThreadLocal<>(){
         @Override
+        @NotNull
         protected BinaryConverter.ConvertTo initialValue() throws Exception {
             return new BinaryConverter.ConvertTo();
         }
     };
 
     @Override
-    protected void encode(ChannelHandlerContext ctx,  UbfPacket msg, ByteBuf out) throws Exception {
+    @NotNull
+    protected void encode(
+            @NotNull ChannelHandlerContext ctx,  @
+            NotNull UbfPacket msg,
+            @NotNull ByteBuf out) throws Exception {
         // 转换
         try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(512)) {
 

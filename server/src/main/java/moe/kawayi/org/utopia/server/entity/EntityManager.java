@@ -67,6 +67,7 @@ public final class EntityManager {
      * @param entityId 实体Id
      * @return 如果实体已经注册，返回实体的工厂，否则返回空{@link Optional#empty()}
      */
+    @NotNull
     public static Optional<EntityFactory> getEntity(@NotNull String entityId) {
         // null check
         Objects.requireNonNull(entityId, "entityId must not be null");

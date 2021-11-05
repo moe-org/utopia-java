@@ -6,7 +6,9 @@
 
 package moe.kawayi.org.utopia.server.logic;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.map.*;
+import moe.kawayi.org.utopia.server.net.NetMain;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +52,8 @@ public final class GameLogicLoop {
 
             LOGGER.info("逻辑线程启动");
 
-            while (IS_RUNNING.get()) {
+            // 网络服务器关闭，loop关闭
+            while (IS_RUNNING.get() && NetMain.isRun()) {
                 // 计算时间
                 long startTime = System.nanoTime();
 
@@ -75,7 +78,7 @@ public final class GameLogicLoop {
                 }
             }
 
-        } catch (Throwable ex) {
+        } catch (@NotNull Throwable ex) {
             LOGGER.error("逻辑线程错误", ex);
             IS_RUNNING.set(false);
         } finally {

@@ -10,6 +10,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 处理ping的handle
@@ -20,7 +21,9 @@ public final class PingPacketHandle extends SimpleChannelInboundHandler<PingPack
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, PingPacket msg) throws Exception {
+    protected void channelRead0(
+            @NotNull ChannelHandlerContext ctx,
+            @NotNull PingPacket msg) throws Exception {
         // 直接写入PingPacket信息
         ctx.writeAndFlush(msg);
     }

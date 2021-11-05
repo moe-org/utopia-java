@@ -49,6 +49,7 @@ public final class BlockFloorImpl implements BlockFloor {
      * @return 如果在范围内，返回获取到的方块，否则返回Empty
      */
     @Override
+    @NotNull
     public Optional<Block> getBlock(@NotNull FlatPosition position) {
         // null check
         Objects.requireNonNull(position, "position must not be null");

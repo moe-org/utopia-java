@@ -7,6 +7,8 @@
 package moe.kawayi.org.utopia.core.event;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -88,6 +90,7 @@ public final class EventBus<EventT> {
      * @param handle 监听函数的句柄
      * @return 监听ID
      */
+    @NotNull
     public EventRegistrationId register(@NotNull MethodHandle handle) {
         // null check
         Objects.requireNonNull(handle, "handle must not be null");
@@ -133,6 +136,7 @@ public final class EventBus<EventT> {
      * @throws IllegalAccessException 函数检查失败
      * @throws NoSuchMethodException  函数不存在
      */
+    @NotNull
     public EventRegistrationId register(@NotNull Class<?> cls, @NotNull String name, @NotNull MethodType type)
             throws IllegalAccessException, NoSuchMethodException {
         // null check
@@ -181,7 +185,7 @@ public final class EventBus<EventT> {
      * @param obj 事件对象
      * @throws java.lang.Throwable 由{@link MethodHandle#invoke(Object...)}抛出
      */
-    public void post(EventT obj) throws java.lang.Throwable {
+    public void post(@Nullable EventT obj) throws java.lang.Throwable {
         // read lock
         var lock = rwLock.readLock();
         lock.lock();

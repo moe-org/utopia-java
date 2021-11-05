@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 import java.util.Optional;
 
 /**
@@ -25,5 +27,6 @@ public interface BlockFloor {
      * @see WorldInfo#BLOCK_FLOOR_X_SIZE
      * @see WorldInfo#BLOCK_FLOOR_Y_SIZE
      */
-    Optional<Block> getBlock(FlatPosition position);
+    @NotNull
+    Optional<Block> getBlock(@NotNull FlatPosition position);
 }

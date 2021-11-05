@@ -35,6 +35,7 @@ public final class PacketClassifier extends ByteToMessageDecoder {
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){
         @Override
+        @NotNull
         protected BinaryConverter.ConvertFrom initialValue() throws Exception {
             return new BinaryConverter.ConvertFrom();
         }
@@ -42,7 +43,10 @@ public final class PacketClassifier extends ByteToMessageDecoder {
 
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(
+            @NotNull ChannelHandlerContext ctx,
+            @NotNull ByteBuf in,
+            @NotNull List<Object> out) throws Exception {
 
         // 读取type
         var packetType = in.readInt();

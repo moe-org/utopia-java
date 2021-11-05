@@ -6,6 +6,9 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
+
 import java.util.Optional;
 
 /**
@@ -19,7 +22,8 @@ public interface World {
      * @param position 方块位置
      * @return 获取到的方块。如果方块未加载或者超出范围，返回空的Optional。
      */
-    Optional<Block> getBlock(Position position);
+    @NotNull
+    Optional<Block> getBlock(@NotNull Position position);
 
     /**
      * 获取世界id

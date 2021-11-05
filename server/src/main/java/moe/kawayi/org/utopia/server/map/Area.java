@@ -27,5 +27,6 @@ public interface Area {
      * @see WorldInfo#BLOCK_FLOOR_X_SIZE
      * @see WorldInfo#BLOCK_FLOOR_Y_SIZE
      */
+    @NotNull
     Optional<Block> getBlock(@NotNull Position position);
 }

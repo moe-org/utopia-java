@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.netty.util.AttributeKey;
 import moe.kawayi.org.utopia.client.net.NetMain;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 import javax.swing.*;
 import javax.swing.plaf.TextUI;
@@ -103,6 +104,7 @@ public class MainEnumScreen implements Screen {
         stage.addActor(label);
     }
 
+    @NotNull
     private Texture createBackground(){
         Pixmap xp = new Pixmap(500,200, Pixmap.Format.RGBA8888);
         xp.setColor(1,0,0,1);
@@ -122,7 +124,7 @@ public class MainEnumScreen implements Screen {
             try {
                 if(!NetMain.isRunning())
                     NetMain.start(uriInputField.getText());
-            } catch (Exception e) {
+            } catch (@NotNull Exception e) {
                 e.printStackTrace();
             }
         }

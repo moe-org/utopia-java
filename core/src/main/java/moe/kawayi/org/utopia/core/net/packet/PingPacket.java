@@ -37,7 +37,7 @@ public final class PingPacket implements UbfPacket {
         try {
             obj.put(UBF_VERSION_KEY, new UtopiaBinaryFormatValueImpl(UtopiaVersion.getUtopiaVersion()));
         }
-        catch(IOException err){
+        catch(@NotNull IOException err){
             LOGGER.error("get utopia version failed down",err);
         }
 

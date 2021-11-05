@@ -129,6 +129,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public UtopiaBinaryFormatType getType() {
         return type;
     }
@@ -200,6 +201,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Byte> getByte() {
         if (type == UtopiaBinaryFormatType.BYTE)
             return Optional.of((Byte) value);
@@ -208,6 +210,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Short> getShort() {
         if (type == UtopiaBinaryFormatType.SHORT)
             return Optional.of((Short) value);
@@ -216,6 +219,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Integer> getInt() {
         if (type == UtopiaBinaryFormatType.INT)
             return Optional.of((Integer) value);
@@ -224,6 +228,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Long> getLong() {
         if (type == UtopiaBinaryFormatType.LONG)
             return Optional.of((Long) value);
@@ -232,6 +237,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Float> getFloat() {
         if (type == UtopiaBinaryFormatType.FLOAT)
             return Optional.of((Float) value);
@@ -240,6 +246,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Double> getDouble() {
         if (type == UtopiaBinaryFormatType.DOUBLE)
             return Optional.of((Double) value);
@@ -248,6 +255,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<Boolean> getBoolean() {
         if (type == UtopiaBinaryFormatType.BOOLEAN)
             return Optional.of((Boolean) value);
@@ -256,6 +264,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<String> getString() {
         if (type == UtopiaBinaryFormatType.STRING)
             return Optional.of((String) value);
@@ -264,6 +273,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<UtopiaBinaryFormatArray> getArray() {
         if (type == UtopiaBinaryFormatType.ARRAY)
             return Optional.of((UtopiaBinaryFormatArray) value);
@@ -272,6 +282,7 @@ public final class UtopiaBinaryFormatValueImpl implements UtopiaBinaryFormatValu
     }
 
     @Override
+    @NotNull
     public Optional<UtopiaBinaryFormatObject> getObject() {
         if (type == UtopiaBinaryFormatType.OBJECT)
             return Optional.of((UtopiaBinaryFormatObject) value);
