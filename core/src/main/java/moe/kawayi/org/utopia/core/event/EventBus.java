@@ -13,150 +13,59 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Function;
 
 /**
  * 事件总线
  *
  * @param <EventT> 事件参数
  */
-public final class EventBus<EventT> {
-
-    /**
-     * 事件函数
-     */
-    @NotNull
-    private final MethodType eventMethodType;
-
-    /**
-     * 构造函数
-     *
-     * @param type 事件类型
-     */
-    public EventBus(@NotNull final Class<EventT> type) {
-        // null check
-        Objects.requireNonNull(type, "type must not be null");
-
-        eventMethodType = MethodType.methodType(void.class, type);
-    }
-
-    /**
-     * 读写锁
-     */
-    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+public final class EventBus<EventT extends Event> {
 
     /**
      * 监听者列表
      */
-    private final List<EventRegistrationId> listeners = new ArrayList<>();
+    private final ConcurrentHashMap<EventRegistrationId,Function<EventT,Void>> listeners = new ConcurrentHashMap<>();
 
     /**
-     * 查找器
+     * 下一个可供事件使用的id
      */
-    private final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    private final AtomicLong nextId = new AtomicLong(Long.MIN_VALUE);
 
     /**
      * 事件注册类。用于标记事件注册结果。作为register返回值。可以用来unregister。
      * <p>
      * 外部类无法使用此类干什么事情。
      */
-    private record EventRegistrationId(@NotNull MethodHandle handle) {
-        private EventRegistrationId(@NotNull MethodHandle handle) {
+    private record EventRegistrationId(@NotNull long handle) {
+        private EventRegistrationId(@NotNull long handle) {
             this.handle = handle;
         }
     }
 
     /**
-     * 注册监听函数
-     *
-     * <p>
-     * Example
-     * <pre>{@code
-     * MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-     *
-     * MethodType mt = MethodType.methodType(void.class, String.class,String.class);
-     *
-     * MethodHandle hm = publicLookup.findVirtual(String.class, "replace", mt);
-     *
-     * // note:非static函数需要绑定到一个实例
-     * hm = hm.bindTo("The String Object");
-     *
-     * eventBus.register(hm);
-     * }</pre>
-     *
-     * @param handle 监听函数的句柄
-     * @return 监听ID
+     * 注册一个lambda表达式到事件
+     * @param caller 调用者
+     * @return 注册id
      */
-    @NotNull
-    public EventRegistrationId register(@NotNull MethodHandle handle) {
-        // null check
-        Objects.requireNonNull(handle, "handle must not be null");
+    public EventRegistrationId register(@NotNull Function<EventT,Void> caller){
+        Objects.requireNonNull(caller);
 
-        // 转换类型
-        handle = handle.asType(eventMethodType);
+        var id = nextId.getAndIncrement();
 
-        // write lock
-        var lock = rwLock.writeLock();
-        lock.lock();
+        var registrationId = new EventRegistrationId(id);
 
-        try {
-            var id = new EventRegistrationId(handle);
+        listeners.put(registrationId,caller);
 
-            listeners.add(id);
-
-            return id;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    /**
-     * 注册监听函数
-     * 会搜索私有和保护函数
-     *
-     * <p>
-     * Example
-     * <pre>
-     * {@code
-     * var eventBus = createSomethingOutOfNothing();
-     *
-     * eventBus.register(String.class,
-     * "concat", methodType(String.class, String.class))
-     * }
-     * </pre>
-     * 注意:此函数不可注册非静态函数
-     *
-     * @param cls  要注册监听函数的类
-     * @param name 函数名称
-     * @param type 函数类型
-     * @return 监听ID
-     * @throws IllegalAccessException 函数检查失败
-     * @throws NoSuchMethodException  函数不存在
-     */
-    @NotNull
-    public EventRegistrationId register(@NotNull Class<?> cls, @NotNull String name, @NotNull MethodType type)
-            throws IllegalAccessException, NoSuchMethodException {
-        // null check
-        Objects.requireNonNull(cls, "cls must not be null");
-        Objects.requireNonNull(name, "name must not be null");
-        Objects.requireNonNull(type, "type must not be null");
-
-        // read lock
-        var lock = rwLock.readLock();
-        lock.lock();
-
-        MethodHandle handle;
-
-        try {
-            handle = lookup.findVirtual(cls, name, type);
-        } finally {
-            lock.unlock();
-        }
-
-        return register(handle);
+        return registrationId;
     }
 
     /**
@@ -168,33 +77,28 @@ public final class EventBus<EventT> {
         // null check
         Objects.requireNonNull(registrationId, "registrationId must not be null");
 
-        // write lock
-        var lock = rwLock.writeLock();
-        lock.lock();
-
-        try {
-            listeners.remove(registrationId);
-        } finally {
-            lock.unlock();
-        }
+        listeners.remove(registrationId);
     }
 
     /**
-     * 发布事件
+     * 发布事件。发布事件之后，此函数当前调用返回之前，
+     * 调用{@link EventBus#unregister(EventRegistrationId)}和{@link EventBus#register(Function)} )}将对此函数当前调用无效，直到当前调用返回或者发起一次新调用。
      *
      * @param obj 事件对象
-     * @throws java.lang.Throwable 由{@link MethodHandle#invoke(Object...)}抛出
      */
-    public void post(@Nullable EventT obj) throws java.lang.Throwable {
-        // read lock
-        var lock = rwLock.readLock();
-        lock.lock();
+    public void fireEvent(@NotNull EventT obj) {
+        Objects.requireNonNull(obj);
 
-        try {
-            for (var listener : listeners)
-                listener.handle.invoke(obj);
-        } finally {
-            lock.unlock();
+        if(obj.isCancel())
+            return;
+
+        var listeners = this.listeners.values();
+
+        for(var listener : listeners){
+            listener.apply(obj);
+
+            if(obj.isCancel())
+                return;
         }
     }
 

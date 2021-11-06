@@ -7,6 +7,7 @@
 package moe.kawayi.org.utopia.core.test.event;
 
 import moe.kawayi.org.utopia.core.event.EventBus;
+import moe.kawayi.org.utopia.core.event.EventImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,33 +19,23 @@ public class EventBusTest {
 
     private boolean called = false;
 
-    private final EventBus<Boolean> eventBus = new EventBus<>(Boolean.class);
+    private final EventBus<EventImpl<Boolean>> eventBus = new EventBus<>();
 
     @Test
     public void eventBusTestCaller() throws java.lang.Throwable {
-        // get method
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-
-        MethodType mt = MethodType.methodType(void.class, boolean.class);
-
-        MethodHandle hm = publicLookup.findVirtual(EventBusTest.class, "eventBusTestBeCaller", mt);
-
-        hm = hm.bindTo(this);
-
         // test
-        var id = eventBus.register(hm);
+        var id = eventBus.register(event -> {
+            called = (boolean)event.getParameter().orElseThrow();
+            return null;
+        });
 
-        eventBus.post(true);
+        eventBus.fireEvent(new EventImpl<Boolean>(true));
 
         eventBus.unregister(id);
 
-        eventBus.post(false);
+        eventBus.fireEvent(new EventImpl<Boolean>(false));
 
         Assertions.assertTrue(called);
-    }
-
-    public void eventBusTestBeCaller(boolean eventParameter) {
-        called = eventParameter;
     }
 
 }
