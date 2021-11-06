@@ -30,4 +30,11 @@ public interface Area {
      */
     @NotNull
     Optional<Block> getBlock(@NotNull Position position);
+
+    /**
+     * 获取area原点位置（左下角）
+     * @return area原点位置
+     */
+    @NotNull
+    FlatPosition getPosition();
 }

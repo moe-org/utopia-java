@@ -94,11 +94,6 @@ allprojects {
         options.compilerArgs << "-Xlint:unchecked"
         options.verbose(true)
     }
-
-    // 测试设置
-    test {
-        useJUnitPlatform()
-    }
 }
 
 // 面向所有子项目设置插件
@@ -156,6 +151,19 @@ subprojects {
 
             // spotbugs版本
             spotbugs "com.github.spotbugs:spotbugs:$spotbugsVersion"
+        }
+
+        // 设置测试
+        test {
+            useJUnitPlatform()
+
+            testLogging {
+                events "passed", "skipped", "failed"
+            }
+
+            reports {
+                html.enabled(true)
+            }
         }
 
         // checkstyle任务设置

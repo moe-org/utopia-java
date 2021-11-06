@@ -40,7 +40,7 @@ public class WorldImplTest {
         for (int x = xMin; x <= xMax; x++)
             for (int y = yMin; y <= yMax; y++) {
                 // get block by pos
-                var result = world.getBlock(new Position(x, y, 0));
+                var result = world.getBlock(new Position(x,y,0));
 
                 // the block must be
                 assertTrue(result.isPresent());

@@ -6,10 +6,7 @@
 
 package moe.kawayi.org.utopia.server.test.map;
 
-import moe.kawayi.org.utopia.server.map.Area;
-import moe.kawayi.org.utopia.server.map.AreaImpl;
-import moe.kawayi.org.utopia.server.map.Position;
-import moe.kawayi.org.utopia.server.map.WorldInfo;
+import moe.kawayi.org.utopia.server.map.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +14,7 @@ import java.util.ArrayList;
 
 public class AreaTest {
 
-    private final Area area = new AreaImpl();
+    private final Area area = new AreaImpl(new FlatPosition(0,0));
 
     @Test
     public void areaAccessTest() {

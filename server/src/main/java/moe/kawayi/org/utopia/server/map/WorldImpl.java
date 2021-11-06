@@ -83,12 +83,22 @@ public final class WorldImpl implements World {
         // 初始化世界索引
         areas = new AtomicReference[xAreaLength][];
 
-        for (int ptr = 0; ptr != areas.length; ptr++) {
-            areas[ptr] = new AtomicReference[yAreaLength];
+        int xIndex = getMinXSize();
+        int yIndex = getMinYSize();
+
+        for (int xPtr = 0; xPtr != areas.length; xPtr++) {
+            areas[xPtr] = new AtomicReference[yAreaLength];
 
             for(int yPtr = 0;yPtr != areas.length; yPtr++){
-                areas[ptr][yPtr] = new AtomicReference<>(new AreaImpl());
+                areas[xPtr][yPtr] = new AtomicReference<>(
+                        new AreaImpl(new FlatPosition(
+                        xIndex,
+                        yIndex
+                )));
+                yIndex += WorldInfo.BLOCK_FLOOR_Y_SIZE;
             }
+            yIndex = getMinYSize();
+            xIndex += WorldInfo.BLOCK_FLOOR_X_SIZE;
         }
     }
 
@@ -155,24 +165,17 @@ public final class WorldImpl implements World {
             return Optional.empty();
 
         // 获取area坐标
-        Position areaIndex = new Position(
-                Math.floorDiv(position.x + Math.abs(getMinXSize()),WorldInfo.BLOCK_FLOOR_X_SIZE),
-                Math.floorDiv((position.y + Math.abs(getMinYSize())),WorldInfo.BLOCK_FLOOR_Y_SIZE),
-                position.z
-        );
-
-        var area = areas[areaIndex.x][areaIndex.y].get();
+        var area = areas
+                [
+                    Math.floorDiv(position.x + Math.abs(getMinXSize()),WorldInfo.BLOCK_FLOOR_X_SIZE)
+                ]
+                [
+                    Math.floorDiv((position.y + Math.abs(getMinYSize())),WorldInfo.BLOCK_FLOOR_Y_SIZE)
+                ].get();
 
         if(area == null)
             return Optional.empty();
 
-        // 获取block坐标
-        Position blockIndex = new Position(
-                (position.x + Math.abs(getMinXSize())) % WorldInfo.BLOCK_FLOOR_X_SIZE,
-                (position.y + Math.abs(getMinYSize())) % WorldInfo.BLOCK_FLOOR_Y_SIZE,
-                position.z
-        );
-
-        return area.getBlock(blockIndex);
+        return area.getBlock(position);
     }
 }
