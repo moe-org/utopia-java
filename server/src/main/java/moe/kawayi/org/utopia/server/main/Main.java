@@ -23,7 +23,7 @@ public final class Main {
     /**
      * 日志器
      */
-    private static  Logger LOGGER = LogManager.getLogger(Main.class);;
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);;
 
     /**
      * utopia server 入口函数
@@ -38,7 +38,6 @@ public final class Main {
         // 配置日志
         LogUtil.configureLog();
 
-        // 设置线程名称
         LOGGER.info("Server start");
 
         LOGGER.info("utopia-version {}",UtopiaVersion.getUtopiaVersion());

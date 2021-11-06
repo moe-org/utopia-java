@@ -44,20 +44,6 @@ jobs:
       # 检查16次提交
       - name: Check commit
         run: |
-          npx commitlint --from HEAD~1 --to HEAD --verbose
-          npx commitlint --from HEAD~2 --to HEAD --verbose
-          npx commitlint --from HEAD~3 --to HEAD --verbose
-          npx commitlint --from HEAD~4 --to HEAD --verbose
-          npx commitlint --from HEAD~5 --to HEAD --verbose
-          npx commitlint --from HEAD~6 --to HEAD --verbose
-          npx commitlint --from HEAD~7 --to HEAD --verbose
-          npx commitlint --from HEAD~8 --to HEAD --verbose
-          npx commitlint --from HEAD~9 --to HEAD --verbose
-          npx commitlint --from HEAD~10 --to HEAD --verbose
-          npx commitlint --from HEAD~11 --to HEAD --verbose
-          npx commitlint --from HEAD~12 --to HEAD --verbose
-          npx commitlint --from HEAD~13 --to HEAD --verbose
-          npx commitlint --from HEAD~14 --to HEAD --verbose
           npx commitlint --from HEAD~15 --to HEAD --verbose
 
   #================================================================
@@ -93,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '16','17' ]
+        java: [ '17' ]
         release: [ 'zulu', 'temurin' ]
 
     steps:

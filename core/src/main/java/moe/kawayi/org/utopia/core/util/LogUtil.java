@@ -124,7 +124,7 @@ public class LogUtil {
 
         Configurator.initialize(
                     CONTEXT_NAME,
-                    LogUtil.class.getClassLoader(),
+                    ClassLoader.getSystemClassLoader(),
                     ResourceManager.getPath(XML_CONFIG_FILE_PATH).toString()
                 );
 
