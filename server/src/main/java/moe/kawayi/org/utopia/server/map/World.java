@@ -51,5 +51,4 @@ public interface World {
      * @return 返回Y轴最小值
      */
     int getMinYSize();
-
 }

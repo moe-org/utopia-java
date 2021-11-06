@@ -22,7 +22,7 @@ public interface BlockFloor {
      *
      * @param position 位置
      *                 <p>
-     *                 位置范围: from 0 to ([X|Y]_SIZE-1)
+     *                 位置范围: [0 ..=([X|Y]_SIZE-1)]；
      * @return 如果在范围内，返回获取到的方块，否则返回Empty
      * @see WorldInfo#BLOCK_FLOOR_X_SIZE
      * @see WorldInfo#BLOCK_FLOOR_Y_SIZE

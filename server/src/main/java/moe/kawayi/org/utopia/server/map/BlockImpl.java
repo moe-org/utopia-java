@@ -292,5 +292,24 @@ public final class BlockImpl implements Block {
         }
     }
 
+    @Override
+    public boolean contain(@NotNull Entity entity) {
+        // null check
+        Objects.requireNonNull(entity);
 
+        // 读锁
+        var lock = rwLock.readLock();
+        lock.lock();
+
+        try{
+            for (var item : entities)
+                if (entity == item)
+                    return true;
+
+            return false;
+        }
+        finally {
+            lock.unlock();
+        }
+    }
 }

@@ -85,4 +85,12 @@ public interface Block {
      * @return 查找结果，如果存在返回true，否则false
      */
     boolean contain(@NotNull String entityId);
+
+    /**
+     * 查找实体是否存在
+     *
+     * @param entity 要查找的实体的引用
+     * @return 查找结果，如果存在返回true，否则false
+     */
+    boolean contain(@NotNull Entity entity);
 }

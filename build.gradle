@@ -52,7 +52,7 @@ allprojects {
         gdxVersion = "1.10.0"
 
         // log4j2版本号
-        log4j2Version = "2.14.1"
+        log4j2Version = "2.14.1" as Object
 
         // netty版本号
         nettyVersion = "4.1.69.Final"
@@ -91,6 +91,8 @@ allprojects {
         options.encoding("UTF-8")
         options.setEncoding("UTF-8")
         options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
+        options.compilerArgs << "-Xlint:unchecked"
+        options.verbose(true)
     }
 
     // 测试设置
@@ -122,7 +124,7 @@ subprojects {
         showStackTraces = true
         showProgress = true
         maxHeapSize = '1g'
-        jvmArgs = [ '-Dfile.encoding=UTF-8' ]
+        jvmArgs = [ '-Dfile.encoding=UTF-8','-Duser.language=es' ]
     }
 
     // 在解析之后

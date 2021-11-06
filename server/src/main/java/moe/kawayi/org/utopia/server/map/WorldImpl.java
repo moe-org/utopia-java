@@ -11,6 +11,7 @@ import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 世界类
@@ -47,78 +48,9 @@ public final class WorldImpl implements World {
     private final int minYAreaCount;
 
     /**
-     * Area包装
+     * area数组 [x][y]
      */
-    private static class AreaWrapper {
-        /**
-         * 锁
-         */
-        @NotNull
-        private final Object wrapperLocker = new byte[0];
-
-        /**
-         * 内部值
-         */
-        @Nullable
-        private AreaImpl innerValue = null;
-
-        /**
-         * 获取此区域加载情况
-         *
-         * @return 如果此区域被加载，返回true，否则false
-         */
-        boolean isLoaded() {
-            synchronized (wrapperLocker) {
-                return innerValue != null;
-            }
-        }
-
-        /**
-         * 获取此区域
-         *
-         * @return 如果此区域被加载，返回带值的Optional，否则返回空Optional
-         */
-        @NotNull
-        Optional<AreaImpl> get() {
-            synchronized (wrapperLocker) {
-                return Optional.ofNullable(innerValue);
-            }
-        }
-
-        /**
-         * 设置区域
-         *
-         * @param value 要设置成的值
-         */
-        void set(@NotNull AreaImpl value) {
-            synchronized (wrapperLocker) {
-                innerValue = value;
-            }
-        }
-
-        /**
-         * 如果取余为空，则设置
-         *
-         * @param value 要设置到的值
-         * @return 如果设置成功，返回true，否则false
-         */
-        boolean setIfEmpty(@NotNull AreaImpl value) {
-            synchronized (wrapperLocker) {
-                if (innerValue == null) {
-                    innerValue = value;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-    }
-
-    /**
-     * area数组
-     */
-    private final AreaWrapper[] areas;
+    private final AtomicReference<Area>[][] areas;
 
 
     /**
@@ -148,14 +80,15 @@ public final class WorldImpl implements World {
         int xAreaLength = Math.abs(maxXAreaCount) + Math.abs(minXAreaCount);
         int yAreaLength = Math.abs(maxYAreaCount) + Math.abs(minYAreaCount);
 
-        int worldMaxIndex = xAreaLength * yAreaLength;
-
         // 初始化世界索引
-        areas = new AreaWrapper[worldMaxIndex];
+        areas = new AtomicReference[xAreaLength][];
 
-        for (int ptr = 0; ptr != worldMaxIndex; ptr++) {
-            areas[ptr] = new AreaWrapper();
-            areas[ptr].set(new AreaImpl());
+        for (int ptr = 0; ptr != areas.length; ptr++) {
+            areas[ptr] = new AtomicReference[yAreaLength];
+
+            for(int yPtr = 0;yPtr != areas.length; yPtr++){
+                areas[ptr][yPtr] = new AtomicReference<>(new AreaImpl());
+            }
         }
     }
 
@@ -214,51 +147,32 @@ public final class WorldImpl implements World {
         Objects.requireNonNull(position, "position must not be null");
 
         // 检查范围
-        if (position.x > getMaxXSize() || position.x < getMinXSize()
-                ||
-                position.y > getMaxYSize() || position.y < getMinYSize())
+        if(
+                position.x < getMinXSize() ||
+                position.x > getMaxXSize() ||
+                position.y < getMinYSize() ||
+                position.y > getMaxYSize())
             return Optional.empty();
 
-        // 获取索引
-        int xArea = Math.floorDiv(position.x, WorldInfo.BLOCK_FLOOR_X_SIZE);
-        int yArea = Math.floorDiv(position.y, WorldInfo.BLOCK_FLOOR_Y_SIZE);
+        // 获取area坐标
+        Position areaIndex = new Position(
+                Math.floorDiv(position.x + Math.abs(getMinXSize()),WorldInfo.BLOCK_FLOOR_X_SIZE),
+                Math.floorDiv((position.y + Math.abs(getMinYSize())),WorldInfo.BLOCK_FLOOR_Y_SIZE),
+                position.z
+        );
 
-        int index = convertPosToAreaIndex(xArea, yArea);
+        var area = areas[areaIndex.x][areaIndex.y].get();
 
-        var got = areas[index].get();
-
-        if (got.isEmpty())
+        if(area == null)
             return Optional.empty();
 
-        // 获取area内偏移
-        // 取余运算; 结果符号同被取余数。
-        int xPos = Math.abs(position.x) % WorldInfo.BLOCK_FLOOR_X_SIZE;
-        int yPos = Math.abs(position.y) % WorldInfo.BLOCK_FLOOR_Y_SIZE;
+        // 获取block坐标
+        Position blockIndex = new Position(
+                (position.x + Math.abs(getMinXSize())) % WorldInfo.BLOCK_FLOOR_X_SIZE,
+                (position.y + Math.abs(getMinYSize())) % WorldInfo.BLOCK_FLOOR_Y_SIZE,
+                position.z
+        );
 
-        if (xPos != 0 && position.x < 0) {
-            xPos = WorldInfo.BLOCK_FLOOR_X_SIZE - xPos;
-        }
-
-        if (yPos != 0 && position.y < 0) {
-            yPos = WorldInfo.BLOCK_FLOOR_Y_SIZE - yPos;
-        }
-
-        return got.get().getBlock(new Position(xPos, yPos, position.z));
-    }
-
-
-    /**
-     * 转换坐标到数组索引
-     *
-     * @param xArea area的x轴索引
-     * @param yArea area的y轴索引
-     * @return 索引
-     */
-    private int convertPosToAreaIndex(int xArea, int yArea) {
-        int x = Math.abs(minXAreaCount) + xArea;
-        int y = Math.abs(minYAreaCount) + yArea;
-
-        // access as [x][y]
-        return x * (Math.abs(minXAreaCount) + Math.abs(maxXAreaCount)) + y;
+        return area.getBlock(blockIndex);
     }
 }

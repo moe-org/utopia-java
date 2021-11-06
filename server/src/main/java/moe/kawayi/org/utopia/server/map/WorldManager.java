@@ -29,7 +29,7 @@ public final class WorldManager {
      * @return 所有世界的列表
      */
     @NotNull
-    public static Collection<World> getEntities() {
+    public static Collection<World> getWorlds() {
         return WORLDS.values();
     }
 
@@ -40,7 +40,7 @@ public final class WorldManager {
      * @param world 要注册的世界
      * @return 如果注册成功，返回true，否则false
      */
-    public static boolean addEntity(@NotNull World world) {
+    public static boolean addWorld(@NotNull World world) {
         // null check
         Objects.requireNonNull(world, "world must not be null");
 
@@ -54,7 +54,7 @@ public final class WorldManager {
      *
      * @param worldId 要删除的世界的id
      */
-    public static void removeEntity(long worldId) {
+    public static void removeWorld(long worldId) {
         WORLDS.remove(worldId);
     }
 
@@ -65,7 +65,7 @@ public final class WorldManager {
      * @return 如果实际已经注册，返回世界的引用，否则返回空:{@link Optional#empty()}
      */
     @NotNull
-    public static Optional<World> getEntity(long worldId) {
+    public static Optional<World> getWorld(long worldId) {
         return Optional.ofNullable(WORLDS.get(worldId));
     }
 }
