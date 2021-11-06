@@ -62,7 +62,7 @@ public class LogUtil {
 
   <Properties>
     <Property name="rolling-pattern" value=
-    \"[%d{HH:mm:ss.SSS}] [%t] [%highlight{%-5level}{${highlight_color}}] [%logger{36}]:%msg%exception%n\" />
+    "[%d{HH:mm:ss.SSS}] [%t] [%highlight{%-5level}{${highlight_color}}] [%logger{36}]:%msg%exception%n" />
     <Property name="console-pattern" value=\"""" +
         "[%d{HH:mm:ss.SSS}] [%t] " +
         "[%highlight{%-5level}{FATAL=Bright red, ERROR=Red, WARN=Yellow, INFO=Black, DEBUG=Blue, TRACE=Cyan}] " +
