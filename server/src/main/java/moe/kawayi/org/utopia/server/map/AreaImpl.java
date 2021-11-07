@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 
@@ -124,6 +126,7 @@ public final class AreaImpl implements Area {
     }
 
     @Override
+    @NotNull
     public FlatPosition getPosition() {
         return origin;
     }

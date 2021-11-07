@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.entity;
 
-import moe.kawayi.org.utopia.server.map.WorldPosition;
+import moe.kawayi.org.utopia.core.map.WorldPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Optional;
@@ -53,14 +53,14 @@ public interface Entity extends Cloneable{
      *
      * @return 如果可以，返回true，否则false
      */
-    boolean isPassable();
+    boolean canPass();
 
     /**
      * 实体是否可碰撞
      *
      * @return 如果可以，返回true，否则false
      */
-    boolean isCollideable();
+    boolean canCollide();
 
     /**
      * 检查是否需要update

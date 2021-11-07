@@ -9,7 +9,7 @@ package moe.kawayi.org.utopia.server.test.map;
 import moe.kawayi.org.utopia.server.entity.Entity;
 import moe.kawayi.org.utopia.server.map.Block;
 import moe.kawayi.org.utopia.server.map.BlockImpl;
-import moe.kawayi.org.utopia.server.map.WorldPosition;
+import moe.kawayi.org.utopia.core.map.WorldPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,12 +50,12 @@ public class BlockTest {
             }
 
             @Override
-            public boolean isPassable() {
+            public boolean canPass() {
                 return false;
             }
 
             @Override
-            public boolean isCollideable() {
+            public boolean canCollide() {
                 return true;
             }
 

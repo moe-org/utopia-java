@@ -6,15 +6,14 @@
 
 package moe.kawayi.org.utopia.server.test.map;
 
-import moe.kawayi.org.utopia.server.map.FlatPosition;
-import moe.kawayi.org.utopia.server.map.Position;
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.server.map.WorldConstructionException;
 import moe.kawayi.org.utopia.server.map.WorldImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +41,7 @@ public class WorldImplTest {
                 // get block by pos
                 var result = world.getBlock(new Position(x,y,0));
 
-                // the block must be
+                // the block must be existed
                 assertTrue(result.isPresent());
 
                 // the block must be unique

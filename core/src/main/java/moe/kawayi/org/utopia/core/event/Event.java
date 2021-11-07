@@ -37,5 +37,6 @@ public interface Event {
      * 获取事件携带的对象
      * @return 事件对象
      */
+    @NotNull
     Optional<Object> getParameter();
 }

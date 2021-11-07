@@ -8,7 +8,7 @@ package moe.kawayi.org.utopia.server.test.map;
 
 
 import moe.kawayi.org.utopia.server.map.BlockFloorImpl;
-import moe.kawayi.org.utopia.server.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.FlatPosition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

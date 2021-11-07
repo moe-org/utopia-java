@@ -1,20 +1,23 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The FlatPosition.java is a part of project utopia, under MIT License.
+// The Position.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.map;
+package moe.kawayi.org.utopia.core.map;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
-
-import java.util.Objects;
 
 /**
- * 平面坐标
+ * 坐标
  */
-public final class FlatPosition {
+public final class Position {
+
+    /**
+     * z轴
+     */
+    public int z;
+
     /**
      * x轴
      */
@@ -26,14 +29,26 @@ public final class FlatPosition {
     public int y;
 
     /**
-     * 构造一个平面坐标
+     * 构造一个坐标
      *
      * @param x x轴
      * @param y y轴
+     * @param z z轴
      */
-    public FlatPosition(int x, int y) {
+    public Position(int x, int y, int z) {
         this.x = x;
         this.y = y;
+        this.z = z;
+    }
+
+    /**
+     * 降级到{@link FlatPosition}，忽略z轴
+     *
+     * @return 降级的FlatPosition
+     */
+    @NotNull
+    public FlatPosition downgrade() {
+        return new FlatPosition(x, y);
     }
 
     /**
@@ -44,7 +59,7 @@ public final class FlatPosition {
     @Override
     @NotNull
     public String toString() {
-        return String.format("FlatPosition{ x:%s y:%s }", x, y);
+        return String.format("Position{ x:%s y:%s z:%s }", x, y, z);
     }
 
 
@@ -55,23 +70,24 @@ public final class FlatPosition {
      */
     @Override
     public int hashCode() {
-        return (x << 16) ^ y;
+        return (z << 16) ^ ((x + y));
     }
 
     /**
      * 判断两个Position是否相等
      *
      * @param obj 要判断的对象
-     * @return 如果判断的对象不是 {@link FlatPosition}，或者坐标不相等，返回false。否则返回true
+     * @return 如果判断的对象不是 {@link Position}，或者坐标不相等，返回false。否则返回true。如果obj参数为空，始终返回false。
      */
     @Override
     public boolean equals(@NotNull Object obj) {
         if(obj == null)
             return false;
 
-        if (obj instanceof FlatPosition pos) {
+        if (obj instanceof Position pos) {
             return pos.x == this.x &&
-                    pos.y == this.y;
+                    pos.y == this.y &&
+                    pos.z == this.z;
         }
 
         return false;

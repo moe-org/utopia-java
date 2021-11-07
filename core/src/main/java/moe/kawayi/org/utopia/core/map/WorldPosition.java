@@ -1,20 +1,21 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The Position.java is a part of project utopia, under MIT License.
+// The WorldPosition.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.map;
+package moe.kawayi.org.utopia.core.map;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
-
-import java.util.Objects;
 
 /**
- * 坐标
+ * 世界坐标
  */
-public final class Position {
+public final class WorldPosition {
+    /**
+     * 世界Id
+     */
+    public long worldId;
 
     /**
      * z轴
@@ -32,26 +33,28 @@ public final class Position {
     public int y;
 
     /**
-     * 构造一个坐标
+     * 构造一个世界坐标
      *
-     * @param x x轴
-     * @param y y轴
-     * @param z z轴
+     * @param x       x轴
+     * @param y       y轴
+     * @param z       z轴
+     * @param worldId 世界id
      */
-    public Position(int x, int y, int z) {
+    public WorldPosition(int x, int y, int z, long worldId) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.worldId = worldId;
     }
 
     /**
-     * 降级到{@link FlatPosition}，忽略z轴
+     * 降级到{@link Position}，忽略世界id
      *
-     * @return 降级的FlatPosition
+     * @return 降级的Position
      */
     @NotNull
-    public FlatPosition downgrade() {
-        return new FlatPosition(x, y);
+    public Position downgrade() {
+        return new Position(x, y, z);
     }
 
     /**
@@ -62,9 +65,8 @@ public final class Position {
     @Override
     @NotNull
     public String toString() {
-        return String.format("Position{ x:%s y:%s z:%s }", x, y, z);
+        return String.format("WorldPosition{ x:%s y:%s z:%s worldId:%s }", x, y, z, worldId);
     }
-
 
     /**
      * 获取对象hash值
@@ -73,24 +75,25 @@ public final class Position {
      */
     @Override
     public int hashCode() {
-        return (z << 16) ^ ((x + y));
+        return (this.x + this.y + this.z) ^ (((int) (worldId >> 32))) ^ ((int) worldId);
     }
 
     /**
-     * 判断两个Position是否相等
+     * 判断两个WorldPosition是否相等
      *
      * @param obj 要判断的对象
-     * @return 如果判断的对象不是 {@link Position}，或者坐标不相等，返回false。否则返回true。如果obj参数为空，始终返回false。
+     * @return 如果判断的对象不是 {@link WorldPosition}，或者坐标不相等，返回false。否则返回true
      */
     @Override
     public boolean equals(@NotNull Object obj) {
         if(obj == null)
             return false;
 
-        if (obj instanceof Position pos) {
+        if (obj instanceof WorldPosition pos) {
             return pos.x == this.x &&
                     pos.y == this.y &&
-                    pos.z == this.z;
+                    pos.z == this.z &&
+                    pos.worldId == this.worldId;
         }
 
         return false;

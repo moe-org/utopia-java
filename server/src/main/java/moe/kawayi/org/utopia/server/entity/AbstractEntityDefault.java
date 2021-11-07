@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.entity;
 
-import moe.kawayi.org.utopia.server.map.WorldPosition;
+import moe.kawayi.org.utopia.core.map.WorldPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 

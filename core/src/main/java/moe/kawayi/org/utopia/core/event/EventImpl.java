@@ -6,6 +6,9 @@
 
 package moe.kawayi.org.utopia.core.event;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,7 +22,7 @@ public class EventImpl<Param> implements Event{
     private final Param param;
     private boolean cancel = false;
 
-    public EventImpl(Param param){
+    public EventImpl(@Nullable Param param){
         this.param = param;
     }
 
@@ -40,6 +43,7 @@ public class EventImpl<Param> implements Event{
     }
 
     @Override
+    @NotNull
     public Optional<Object> getParameter() {
         return Optional.ofNullable(param);
     }

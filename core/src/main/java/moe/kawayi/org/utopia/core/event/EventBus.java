@@ -56,6 +56,7 @@ public final class EventBus<EventT extends Event> {
      * @param caller 调用者
      * @return 注册id
      */
+    @NotNull
     public EventRegistrationId register(@NotNull Function<EventT,Void> caller){
         Objects.requireNonNull(caller);
 
@@ -82,7 +83,8 @@ public final class EventBus<EventT extends Event> {
 
     /**
      * 发布事件。发布事件之后，此函数当前调用返回之前，
-     * 调用{@link EventBus#unregister(EventRegistrationId)}和{@link EventBus#register(Function)} )}将对此函数当前调用无效，直到当前调用返回或者发起一次新调用。
+     * 调用{@link EventBus#unregister(EventRegistrationId)}和
+     * {@link EventBus#register(Function)} )}将对此函数当前调用无效，直到当前调用返回或者发起一次新调用。
      *
      * @param obj 事件对象
      */

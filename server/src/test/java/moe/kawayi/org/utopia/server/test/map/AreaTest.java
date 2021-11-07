@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.test.map;
 
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.server.map.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

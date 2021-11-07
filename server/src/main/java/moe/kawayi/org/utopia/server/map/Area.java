@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.server.map;
 
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Optional;

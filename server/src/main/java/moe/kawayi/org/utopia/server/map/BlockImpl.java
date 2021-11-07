@@ -60,8 +60,8 @@ public final class BlockImpl implements Block {
         lock.lock();
 
         try {
-            var isPassable = entity.isPassable();
-            var collision = entity.isCollideable();
+            var isPassable = entity.canPass();
+            var collision = entity.canCollide();
 
             // 检查碰撞体
             if (collision && (this.collision.isPresent())) {
@@ -110,11 +110,11 @@ public final class BlockImpl implements Block {
 
                         // 处理后事
                         if (result) {
-                            if (!entity.isPassable()) {
+                            if (!entity.canPass()) {
                                 cannotPassableCount--;
                             }
 
-                            if (entity.isCollideable()) {
+                            if (entity.canCollide()) {
                                 collision = null;
                             }
                         }
