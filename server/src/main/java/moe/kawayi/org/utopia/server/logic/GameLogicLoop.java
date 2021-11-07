@@ -81,12 +81,12 @@ public final class GameLogicLoop {
             }
 
         } catch (@NotNull Throwable ex) {
-            LOGGER.error("逻辑线程错误", ex);
+            LOGGER.error("logic thread crash", ex);
             IS_RUNNING.set(false);
         } finally {
             // 如果没发生异常执行至此
             // 则isRunning已经为false
-            LOGGER.info("逻辑线程关闭");
+            LOGGER.info("logic thread exit");
         }
     }
 
