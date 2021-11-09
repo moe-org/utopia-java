@@ -22,16 +22,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.netty.util.AttributeKey;
-import moe.kawayi.org.utopia.client.net.NetMain;
-import moe.kawayi.org.utopia.core.net.packet.PingPacket;
+import moe.kawayi.org.utopia.desktop.net.NetMain;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import javax.swing.*;
-import javax.swing.plaf.TextUI;
-
-import java.net.URISyntaxException;
-
-import static moe.kawayi.org.utopia.client.net.PacketClassifier.CHANNEL_SERVER_PING_VERSION;
+import static moe.kawayi.org.utopia.desktop.net.PacketClassifier.CHANNEL_SERVER_PING_VERSION;
 import static moe.kawayi.org.utopia.desktop.main.DesktopApplicationListener.CAMERA_DEFAULT_HEIGHT;
 import static moe.kawayi.org.utopia.desktop.main.DesktopApplicationListener.CAMERA_DEFAULT_WIDTH;
 

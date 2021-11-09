@@ -38,5 +38,4 @@ public interface Command {
      */
     @NotNull
     UtopiaBinaryFormatObject execute(@NotNull UtopiaBinaryFormatObject args);
-
 }

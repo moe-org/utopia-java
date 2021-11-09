@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.client.net;
+package moe.kawayi.org.utopia.desktop.net;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

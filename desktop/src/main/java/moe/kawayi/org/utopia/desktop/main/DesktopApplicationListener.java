@@ -9,11 +9,7 @@ package moe.kawayi.org.utopia.desktop.main;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import moe.kawayi.org.utopia.client.net.NetMain;
+import moe.kawayi.org.utopia.desktop.net.NetMain;
 import moe.kawayi.org.utopia.desktop.screen.MainEnumScreen;
 
 /**

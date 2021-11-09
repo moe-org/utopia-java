@@ -6,10 +6,11 @@
 
 rootProject.name = 'utopia'
 
-// desktop和server和android项目应该可以独立启动
+// core项目作为核心依赖
+include 'core'
+
+// desktop和server项目作为输出
 include 'desktop'
 include 'server'
 
-include 'core'
-include 'client'
 

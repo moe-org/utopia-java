@@ -10,4 +10,4 @@
  *
  * 具体数据类型见{@link moe.kawayi.org.utopia.core.net.PackageTypeEnum}
  */
-package moe.kawayi.org.utopia.client.net;
+package moe.kawayi.org.utopia.desktop.net;

@@ -4,14 +4,14 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.client.net;
+package moe.kawayi.org.utopia.desktop.net;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import static moe.kawayi.org.utopia.client.net.NetMain.CLIENT_CHANNEL;
+import static moe.kawayi.org.utopia.desktop.net.NetMain.CLIENT_CHANNEL;
 
 /**
  * 客户端初始化句柄
