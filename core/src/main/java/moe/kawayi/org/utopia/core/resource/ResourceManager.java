@@ -74,6 +74,7 @@ public final class ResourceManager {
      */
     @NotNull
     public static Path getPath(@NotNull Path relative){
+        Objects.requireNonNull(relative);
         return getUtopiaDir().resolve(relative);
     }
 
@@ -87,6 +88,7 @@ public final class ResourceManager {
      */
     @NotNull
     public static Path getPath(@NotNull String relative){
+        Objects.requireNonNull(relative);
         return getUtopiaDir().resolve(relative);
     }
 
@@ -99,6 +101,7 @@ public final class ResourceManager {
      */
     @NotNull
     public static Path relativize(@NotNull Path absolute){
+        Objects.requireNonNull(absolute);
         return getUtopiaDir().relativize(absolute);
     }
 
