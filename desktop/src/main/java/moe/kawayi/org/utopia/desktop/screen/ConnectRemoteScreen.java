@@ -16,20 +16,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
  */
 public class ConnectRemoteScreen {
 
-    /**
-     * 摄像机
-     */
-    private OrthographicCamera camera;
-
-    /**
-     * 视窗
-     */
-    private ExtendViewport viewport;
-
-    private Stage stage;
-
-    private Label label;
-
 
 
 

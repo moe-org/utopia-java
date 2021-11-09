@@ -7,6 +7,7 @@
 package moe.kawayi.org.utopia.server.main;
 
 import io.netty.util.NettyRuntime;
+import moe.kawayi.org.utopia.core.util.JvmInfo;
 import moe.kawayi.org.utopia.core.util.LogUtil;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
@@ -34,6 +35,8 @@ public final class Main {
     public static void main(@NotNull String[] args) throws Exception {
         // set thread name
         Thread.currentThread().setName("Main");
+
+        JvmInfo.print();
 
         // 配置日志
         LogUtil.configureLog();
