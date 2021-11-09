@@ -6,7 +6,6 @@
 
 package moe.kawayi.org.utopia.desktop.resource;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;

@@ -183,12 +183,12 @@ public final class NetMain {
 
             var group = BOSS_GROUP.getAndSet(null);
 
-            if (group != null && (!group.isShutdown()) && (!group.isTerminated()) && (!group.isShuttingDown()))
+            if (group != null && !group.isShutdown())
                 group.shutdownGracefully();
 
             group = WORKER_GROUP.getAndSet(null);
 
-            if (group != null && (!group.isShutdown()) && (!group.isTerminated()) && (!group.isShuttingDown()))
+            if (group != null && !group.isShutdown())
                 group.shutdownGracefully();
         }
     }
