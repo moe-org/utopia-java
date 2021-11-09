@@ -76,7 +76,7 @@ public final class GameLogicLoop {
 
                 while ((System.nanoTime() - startTime) < 50000000) {
                     // 忙等待
-                    Thread.onSpinWait();
+                    Thread.sleep(1);
                 }
             }
 
