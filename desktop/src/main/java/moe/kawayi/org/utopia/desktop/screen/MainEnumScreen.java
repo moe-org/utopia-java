@@ -20,10 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.netty.util.AttributeKey;
 import moe.kawayi.org.utopia.desktop.net.NetMain;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.desktop.util.FPSStage;
 
 import static moe.kawayi.org.utopia.desktop.net.PacketClassifier.CHANNEL_SERVER_PING_VERSION;
 import static moe.kawayi.org.utopia.desktop.main.DesktopApplicationListener.CAMERA_DEFAULT_HEIGHT;
@@ -42,11 +43,13 @@ public class MainEnumScreen implements Screen {
     /**
      * 视窗
      */
-    private ExtendViewport viewport;
+    private FitViewport viewport;
 
     private Stage stage;
 
     private Label label;
+
+    private FPSStage fpsStage;
 
     /**
      * 输入框
@@ -57,10 +60,9 @@ public class MainEnumScreen implements Screen {
     public void show() {
         // 初始化摄像机和视图
         camera = new OrthographicCamera(CAMERA_DEFAULT_WIDTH,CAMERA_DEFAULT_HEIGHT);
-        camera.setToOrtho(false,CAMERA_DEFAULT_WIDTH,CAMERA_DEFAULT_HEIGHT);
 
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        viewport = new ExtendViewport(camera.viewportWidth, camera.viewportHeight,camera);
+        viewport = new FitViewport(camera.viewportWidth, camera.viewportHeight,camera);
 
         // 初始化输入框
         var style = new TextField.TextFieldStyle();
@@ -96,6 +98,9 @@ public class MainEnumScreen implements Screen {
 
         stage.addActor(uriInputField);
         stage.addActor(label);
+
+        // 构造fps显示器
+        fpsStage = new FPSStage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }
 
     @NotNull
@@ -134,11 +139,14 @@ public class MainEnumScreen implements Screen {
 
         stage.act(delta);
         stage.draw();
+
+        fpsStage.update();
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height,true);
+        fpsStage.resize(width,height);
         camera.update();
     }
 
@@ -159,6 +167,7 @@ public class MainEnumScreen implements Screen {
 
     @Override
     public void dispose() {
+        fpsStage.dispose();
         stage.dispose();
     }
 }

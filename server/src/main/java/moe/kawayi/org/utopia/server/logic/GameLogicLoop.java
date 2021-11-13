@@ -84,8 +84,8 @@ public final class GameLogicLoop {
             LOGGER.error("logic thread crash", ex);
             IS_RUNNING.set(false);
         } finally {
-            // 如果没发生异常执行至此
-            // 则isRunning已经为false
+            shutdown();
+            NetMain.shutdown();
             LOGGER.info("logic thread exit");
         }
     }

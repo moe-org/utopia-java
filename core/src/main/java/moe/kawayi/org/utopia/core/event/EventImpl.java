@@ -22,6 +22,10 @@ public class EventImpl<Param> implements Event{
     private final Param param;
     private boolean cancel = false;
 
+    /**
+     * 构造一个默认事件实现
+     * @param param 事件参数
+     */
     public EventImpl(@Nullable Param param){
         this.param = param;
     }
