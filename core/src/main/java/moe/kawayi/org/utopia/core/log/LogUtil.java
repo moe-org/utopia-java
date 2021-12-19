@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.core.util;
+package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import org.apache.logging.log4j.Level;
@@ -63,12 +63,14 @@ public class LogUtil {
   <Properties>
     <Property name="rolling-pattern" value=
     "[%d{HH:mm:ss.SSS}] [%t] [%highlight{%-5level}{${highlight_color}}] [%logger{36}]:%msg%exception%n" />
-    <Property name="console-pattern" value=\"""" +
+    <Property name="console-pattern" value=\""""
+        +
         "[%d{HH:mm:ss.SSS}] [%t] " +
         "[%highlight{%-5level}{FATAL=Bright red, ERROR=Red, WARN=Yellow, INFO=Black, DEBUG=Blue, TRACE=Cyan}] " +
-        "[%logger{36}]:%msg %exception%n\""+
-        """
-  />
+        "[%logger{36}]:%msg %exception%n\""
+        +
+"""
+    />
   </Properties>
   
   <Appenders>
@@ -122,7 +124,7 @@ public class LogUtil {
             );
         }
 
-        Configurator.initialize(
+        var standard = Configurator.initialize(
                     CONTEXT_NAME,
                     ClassLoader.getSystemClassLoader(),
                     ResourceManager.getPath(XML_CONFIG_FILE_PATH).toString()
@@ -131,6 +133,11 @@ public class LogUtil {
         Configurator.initialize(
                 CONTEXT_NAME,
                 ResourceManager.getPath(XML_CONFIG_FILE_PATH).toString()
+        );
+
+        // 设置全局日志
+        LogManagers.setLogManager(
+                new Log4j2LogManager(standard)
         );
     }
 

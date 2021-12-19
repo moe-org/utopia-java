@@ -130,10 +130,6 @@ subprojects {
 
         // 设置通用依赖
         dependencies{
-            // 大家都需要日志库
-            api "org.apache.logging.log4j:log4j-api:$log4j2Version"
-            api "org.apache.logging.log4j:log4j-core:$log4j2Version"
-
             // 测试框架
             testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
         }
@@ -159,42 +155,17 @@ subprojects {
         checkstyleTest {
             checkstyleClasspath += files("${rootDir}/config/checkstyle/keep-project-great.jar")
         }
+
+        // 增加编译参数
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint"
+        }
     }
 }
 
 // 输出版本号
 tasks.register("printVersion") {
     println(project.version)
-}
-
-// 打印版本号帮助
-tasks.register("printVersionHelp") {
-    println "===== version help ====="
-    println "use gradle option:-P " + buildNumber + "={Build Number}"
-    println "use gradle option:-P " + versionSuffix + "={Version Suffix}"
-    println "default buildNumber and versionSuffix is empty"
-    println "format:" + clearVersion + "{Build Number}{Version Suffix}"
-    println "current finally version:" + project.version
-    println "=====   help end   ====="
-}
-
-// 打印中国镜像帮助
-tasks.register("printMavenRepoHelp") {
-    println "===== maven help ====="
-    println "use gradle option:-P " + chinaMavenRepoKey + "=true"
-    println "will use china maven repo"
-    println "=====  help end  ====="
-}
-
-// 打印帮助
-tasks.register("printHelp"){
-    it.dependsOn(tasks.findByName("printVersionHelp"))
-    it.dependsOn(tasks.findByName("printMavenRepoHelp"))
-
-    println "===== utopia help ====="
-    println "use allJavadoc tasks to collect all subproject javadoc to docs directory"
-    println "use shadowJar tasks to generate jar for subproject desktop and server"
-    println "=====   help end  ====="
 }
 
 // 声明

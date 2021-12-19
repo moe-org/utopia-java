@@ -7,12 +7,9 @@
 package moe.kawayi.org.utopia.desktop.main;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
-import moe.kawayi.org.utopia.core.util.LogUtil;
+import moe.kawayi.org.utopia.core.log.LogUtil;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.io.IOException;

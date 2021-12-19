@@ -134,7 +134,7 @@ jobs:
       - name: Set tag
         env:
           # 版本号
-          build_number: -${{ github.run_number }}
+          build_number: ${{ github.run_number }}
 
         run: |
           chmod 777 ./gradlew
@@ -186,7 +186,7 @@ jobs:
 
         env:
           # 版本号
-          build_number: -${{ github.run_number }}
+          build_number: ${{ github.run_number }}
 
           # note:需要设置版本号
           # note:需要复制图标
@@ -252,7 +252,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
           # 版本号
-          build_number: -${{ github.run_number }}
+          build_number: ${{ github.run_number }}
 
         # 上传覆盖率
         run: |

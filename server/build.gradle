@@ -26,7 +26,7 @@ dependencies {
     api "io.netty:netty-all:$nettyVersion"
 
     // 引入HOCON
-    implementation "com.typesafe:config:$hoconVersion"
+    api "com.typesafe:config:$hoconVersion"
 
     // core
     api project(":core")

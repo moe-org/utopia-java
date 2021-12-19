@@ -17,8 +17,12 @@ dependencies {
     api "io.netty:netty-all:$nettyVersion"
 
     // 引入HOCON
-    implementation "com.typesafe:config:$hoconVersion"
+    api "com.typesafe:config:$hoconVersion"
 
+    // 日志库
+    // 我们已经提供了对外日志接口，所以不开放相关库
+    implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
+    implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
 }
 
 
