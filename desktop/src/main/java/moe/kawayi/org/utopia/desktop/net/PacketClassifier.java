@@ -64,8 +64,6 @@ public class PacketClassifier extends ByteToMessageDecoder {
 
         // 分类数据
         if(packetType == PackageTypeEnum.PING.getTypeId()){
-            System.out.println("received");
-
             try(var byteArrayInputStream = new ByteArrayInputStream(data)){
                 try(var dataInputStream = new DataInputStream(byteArrayInputStream)){
                     var nbt = converter.get().convert(dataInputStream);

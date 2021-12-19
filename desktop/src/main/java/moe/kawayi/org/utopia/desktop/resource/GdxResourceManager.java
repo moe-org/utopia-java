@@ -1,5 +1,5 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The GdxResource.java is a part of project utopia, under MIT License.
+// The GdxResourceManager.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -19,7 +19,7 @@ import java.util.Objects;
  *
  * 输入{@link FileHandle}
  */
-public class GdxResource {
+public class GdxResourceManager {
 
     /**
      * 根据路径获取基于utopia-root的路径

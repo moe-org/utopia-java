@@ -12,8 +12,10 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
+import moe.kawayi.org.utopia.core.util.LogUtil;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -76,6 +78,15 @@ public class DesktopLauncher {
 	 * @param args 命令行参数
 	 */
 	public static void main (@NotNull String[] args) {
+		// 日志系统
+		try {
+			LogUtil.configureLog();
+		}
+		catch (IOException err){
+			System.out.println("init log system failed down, but will continue gaming!");
+			err.printStackTrace();
+		}
+
 		// 一些默认值
 		boolean useSmallIcon = false;
 

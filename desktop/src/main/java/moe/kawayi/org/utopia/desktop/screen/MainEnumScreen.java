@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.netty.util.AttributeKey;
 import moe.kawayi.org.utopia.desktop.net.NetMain;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.desktop.resource.FontResourceManager;
 import moe.kawayi.org.utopia.desktop.util.FPSStage;
 
 import static moe.kawayi.org.utopia.desktop.net.PacketClassifier.CHANNEL_SERVER_PING_VERSION;
@@ -61,7 +62,6 @@ public class MainEnumScreen implements Screen {
         // 初始化摄像机和视图
         camera = new OrthographicCamera(CAMERA_DEFAULT_WIDTH,CAMERA_DEFAULT_HEIGHT);
 
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         viewport = new FitViewport(camera.viewportWidth, camera.viewportHeight,camera);
 
         // 初始化输入框
@@ -69,8 +69,8 @@ public class MainEnumScreen implements Screen {
 
         style.background = new TextureRegionDrawable(createBackground());
         style.fontColor = Color.BLACK;
-        var font = new BitmapFont();
-        font.getData().setScale(3.0f);
+        var font = FontResourceManager.loadFont(null);
+        font.getData().setScale(2.0f);
         style.font = font;
 
         uriInputField = new TextField("",style);
@@ -100,7 +100,7 @@ public class MainEnumScreen implements Screen {
         stage.addActor(label);
 
         // 构造fps显示器
-        fpsStage = new FPSStage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        fpsStage = new FPSStage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),viewport);
     }
 
     @NotNull
@@ -140,13 +140,13 @@ public class MainEnumScreen implements Screen {
         stage.act(delta);
         stage.draw();
 
-        fpsStage.update();
+        fpsStage.render();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width,height,true);
         fpsStage.resize(width,height);
+        viewport.update(width,height,true);
         camera.update();
     }
 

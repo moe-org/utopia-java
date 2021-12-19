@@ -25,10 +25,10 @@ dependencies {
     // 引入libgdx
     api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
-    // 依赖项目
-    // client 已经依赖 core
+    // 依赖core
     api project(":core")
 }
 
@@ -57,7 +57,8 @@ task createProperties {
 
     Files.writeString(
             path,
-            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),Charset.forName("UTF-8"),
+            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),
+            Charset.forName("UTF-8"),
             StandardOpenOption.WRITE,
             StandardOpenOption.TRUNCATE_EXISTING)
 }
@@ -74,7 +75,7 @@ shadowJar {
 }
 
 static void releaseFile(String origin, String des){
-    Paths.get(des).toFile().mkdirs();
+    Paths.get(des).toFile().mkdirs()
 
     Files.copy(Paths.get(origin),Paths.get(des), StandardCopyOption.REPLACE_EXISTING)
 }
@@ -86,7 +87,13 @@ tasks.register("release"){
     dependsOn rootProject.tasks.named("allJavaSourceJar")
     dependsOn rootProject.tasks.named("allJavadocJar")
 
+    // ===========
     // copy source
+    // ===========
+    // copy icon
     releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${desktopReleaseDir}/Utopia(32x32).png")
     releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${desktopReleaseDir}/Utopia(128x128).png")
+
+    // copy font
+    releaseFile("${rootDir.toString()}/assets/fonts/unifont.ttf","${desktopReleaseDir}/assets/fonts/unifont.ttf")
 }

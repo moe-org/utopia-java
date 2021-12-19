@@ -23,7 +23,6 @@ public class ClientInitHandle extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         CLIENT_CHANNEL.set(ctx.channel());
-        System.out.println("linked");
 
         var buf = ctx.alloc().buffer(8);
 

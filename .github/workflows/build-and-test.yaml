@@ -134,13 +134,12 @@ jobs:
       - name: Set tag
         env:
           # 版本号
-          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
         run: |
           chmod 777 ./gradlew
           ./gradlew build
-          tag_version=$(./gradlew printVersion -q -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix})
+          tag_version=$(./gradlew printVersion -q -P SnapshotBuild=${build_number})
           echo TAG:${tag_version}
           git tag ${tag_version}
           git push --tags
@@ -187,14 +186,13 @@ jobs:
 
         env:
           # 版本号
-          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
           # note:需要设置版本号
           # note:需要复制图标
         run: |
           chmod 777 ./gradlew
-          ./gradlew allJavadoc -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
+          ./gradlew allJavadoc -P SnapshotBuild=${build_number}
           cp -r -f ./icon/* ./docs/
 
       # 魔改文档
@@ -254,11 +252,10 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
           # 版本号
-          version_suffix: -SNAPSHOT
           build_number: -${{ github.run_number }}
 
         # 上传覆盖率
         run: |
           chmod 777 ./gradlew
-          ./gradlew test -P BuildNumber=${build_number} -P VersionSuffix=${version_suffix}
+          ./gradlew test -P SnapshotBuild=${build_number}
           bash <(curl -s https://codecov.io/bash)

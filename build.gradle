@@ -4,7 +4,7 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-// 引入插件
+// 引入gradle插件
 buildscript {
     repositories {
         mavenCentral()
@@ -15,10 +15,6 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        // spotbugs
-        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.0-beta.6"
-    }
 }
 
 
@@ -27,12 +23,9 @@ plugins{
 }
 
 // 设置版本号选项
-def buildNumber = "BuildNumber"
-def versionSuffix = "VersionSuffix"
-def clearVersion = "1.0.0"
-
-// 开启中国镜像加速选项
-def chinaMavenRepoKey = "ChinaMavenRepo"
+def clearVersion = "0.1.0"
+def SNAPSHOT_BUILD_KEY = "SnapshotBuild"
+def snapshotBuildNumber = null
 
 // 面向所有项目的设置
 allprojects {
@@ -42,9 +35,14 @@ allprojects {
     // 设置项目版本号
     def projectDef = project.getProperties()
 
-    version = clearVersion +
-            (projectDef.containsKey(buildNumber) ? projectDef.get(buildNumber) : "") +
-            (projectDef.containsKey(versionSuffix) ? projectDef.get(versionSuffix) : "")
+    snapshotBuildNumber = projectDef.containsKey(SNAPSHOT_BUILD_KEY) ? projectDef.get(SNAPSHOT_BUILD_KEY) : ""
+    def _versionString_ = clearVersion
+
+    if(snapshotBuildNumber != ""){
+        _versionString_ = _versionString_ + "-" + snapshotBuildNumber + "-SNAPSHOT"
+    }
+
+    version = _versionString_
 
     // 设置全局变量
     ext {
@@ -52,7 +50,7 @@ allprojects {
         gdxVersion = "1.10.0"
 
         // log4j2版本号
-        log4j2Version = "2.14.1"
+        log4j2Version = "2.16.0"
 
         // netty版本号
         nettyVersion = "4.1.69.Final"
@@ -63,11 +61,11 @@ allprojects {
         // jackson版本号
         jacksonVersion = "2.13.0"
 
-        // spotbugs版本号
-        spotbugsVersion = "4.4.2"
-
-        // hocon版本号
+        // hocon(com.typesafe:config)版本号
         hoconVersion = "1.4.1"
+
+        // SLF4jJ版本号
+        slf4jVersion = "1.7.32"
 
         // 发布路径
         releaseDir = "${rootDir}/output-package/"
@@ -99,7 +97,6 @@ allprojects {
 // 面向所有子项目设置插件
 subprojects {
     apply plugin: "checkstyle"
-    apply plugin: "com.github.spotbugs"
     apply plugin: "jacoco"
 
     // 设置checkstyle
@@ -111,15 +108,6 @@ subprojects {
         configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
         configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
         configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
-    }
-
-    // 代码分析器spotbugs设置
-    spotbugs {
-        ignoreFailures = false
-        showStackTraces = true
-        showProgress = true
-        maxHeapSize = '1g'
-        jvmArgs = [ '-Dfile.encoding=UTF-8','-Duser.language=es' ]
     }
 
     // 在解析之后
@@ -140,17 +128,14 @@ subprojects {
             it.finalizedBy(tasks.named("jacocoTestReport")) // 在test完成之后调用jacoco
         }
 
-        // 设置spotbugs
+        // 设置通用依赖
         dependencies{
-            // 日志库
+            // 大家都需要日志库
             api "org.apache.logging.log4j:log4j-api:$log4j2Version"
             api "org.apache.logging.log4j:log4j-core:$log4j2Version"
 
             // 测试框架
             testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
-
-            // spotbugs版本
-            spotbugs "com.github.spotbugs:spotbugs:$spotbugsVersion"
         }
 
         // 设置测试
@@ -167,6 +152,7 @@ subprojects {
         }
 
         // checkstyle任务设置
+        // 添加插件
         checkstyleMain {
             checkstyleClasspath += files("${rootDir}/config/checkstyle/keep-project-great.jar")
         }
