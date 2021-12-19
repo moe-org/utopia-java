@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.core.log;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 /**
  * 默认日志器
  */
@@ -13,82 +15,98 @@ public class DefaultLogger implements Logger{
 
 
     @Override
+    @NotNull
     public String getName() {
         return "default logger";
     }
 
     @Override
-    public void trace(String msg) {
+    @NotNull
+    public void trace(@NotNull String msg) {
         System.out.println(msg);
     }
 
     @Override
-    public void trace(String msg, Object... objects) {
+    @NotNull
+    public void trace(@NotNull String msg, @NotNull Object... objects) {
         System.out.println(msg);
     }
 
     @Override
-    public void trace(String msg, Exception exception) {
+    @NotNull
+    public void trace(@NotNull String msg, @NotNull Exception exception) {
         System.out.println(msg);
     }
 
     @Override
-    public void debug(String msg) {
+    @NotNull
+    public void debug(@NotNull String msg) {
         System.out.println(msg);
     }
 
     @Override
-    public void debug(String msg, Object... objects) {
+    @NotNull
+    public void debug(@NotNull String msg, @NotNull Object... objects) {
         System.out.println(msg);
     }
 
     @Override
-    public void debug(String msg, Exception exception) {
+    @NotNull
+    public void debug(@NotNull String msg, @NotNull Exception exception) {
         System.out.println(msg);
     }
 
     @Override
-    public void info(String msg) {
+    @NotNull
+    public void info(@NotNull String msg) {
         System.out.println(msg);
     }
 
     @Override
-    public void info(String msg, Object... objects) {
+    @NotNull
+    public void info(@NotNull String msg, @NotNull Object... objects) {
         System.out.println(msg);
     }
 
     @Override
-    public void info(String msg, Exception exception) {
+    @NotNull
+    public void info(@NotNull String msg,@NotNull  Exception exception) {
         System.out.println(msg);
     }
 
     @Override
-    public void warn(String msg) {
+    @NotNull
+    public void warn(@NotNull String msg) {
         System.out.println(msg);
     }
 
     @Override
-    public void warn(String msg, Object... objects) {
+    @NotNull
+    public void warn(@NotNull String msg, @NotNull Object... objects) {
         System.out.println(msg);
     }
 
     @Override
-    public void warn(String msg, Exception exception) {
+    @NotNull
+    public void warn(@NotNull String msg, @NotNull Exception exception) {
         System.out.println(msg);
     }
 
     @Override
-    public void error(String msg) {
+    @NotNull
+    public void error(@NotNull String msg) {
         System.out.println(msg);
     }
 
     @Override
-    public void error(String msg, Object... objects) {
+    @NotNull
+    public void error(@NotNull String msg,@NotNull  Object... objects) {
         System.out.println(msg);
     }
 
     @Override
-    public void error(String msg, Exception exception) {
+    @NotNull
+    public void error(@NotNull String msg, @NotNull Exception exception) {
         System.out.println(msg);
     }
 }

@@ -7,7 +7,6 @@
 package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class LogManagers {
 
-    private static final AtomicReference<LogManager> globalLogManager = new AtomicReference<>(
+    private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
             new DefaultLogManager()
     );
 
@@ -27,7 +26,7 @@ public class LogManagers {
      */
     @NotNull
     public static LogManager getLogManager(){
-        return globalLogManager.get();
+        return GLOBAL_LOG_MANAGER.get();
     }
 
     /**
@@ -38,7 +37,7 @@ public class LogManagers {
             @NotNull LogManager logManager
     ){
         Objects.requireNonNull(logManager);
-        globalLogManager.set(logManager);
+        GLOBAL_LOG_MANAGER.set(logManager);
     }
 
     /**
@@ -48,6 +47,6 @@ public class LogManagers {
      */
     @NotNull
     public static Logger getLogger(@NotNull Class<?> clazz){
-        return globalLogManager.get().getLogger(clazz);
+        return GLOBAL_LOG_MANAGER.get().getLogger(clazz);
     }
 }

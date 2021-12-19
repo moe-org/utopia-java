@@ -27,82 +27,83 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
+    @NotNull
     public String getName() {
         return logger.getName();
     }
 
     @Override
-    public void trace(String msg) {
+    public void trace(@NotNull String msg) {
         logger.trace(msg);
     }
 
     @Override
-    public void trace(String msg, Object[] objects) {
+    public void trace(@NotNull String msg, @NotNull Object[] objects) {
         logger.trace(msg,objects);
     }
 
     @Override
-    public void trace(String msg, Exception exception) {
+    public void trace(@NotNull String msg,@NotNull  Exception exception) {
         logger.trace(msg,exception);
     }
 
     @Override
-    public void debug(String msg) {
+    public void debug(@NotNull String msg) {
         logger.debug(msg);
     }
 
     @Override
-    public void debug(String msg, Object[] objects) {
+    public void debug(@NotNull String msg, @NotNull Object[] objects) {
         logger.debug(msg,objects);
     }
 
     @Override
-    public void debug(String msg, Exception exception) {
+    public void debug(@NotNull String msg,@NotNull  Exception exception) {
         logger.debug(msg,exception);
     }
 
     @Override
-    public void info(String msg) {
+    public void info(@NotNull String msg) {
         logger.info(msg);
     }
 
     @Override
-    public void info(String msg, Object[] objects) {
+    public void info(@NotNull String msg, @NotNull Object[] objects) {
         logger.info(msg,objects);
     }
 
     @Override
-    public void info(String msg, Exception exception) {
+    public void info(@NotNull String msg, @NotNull Exception exception) {
         logger.info(msg,exception);
     }
 
     @Override
-    public void warn(String msg) {
+    public void warn(@NotNull String msg) {
         logger.warn(msg);
     }
 
     @Override
-    public void warn(String msg, Object[] objects) {
+    public void warn(@NotNull String msg, @NotNull Object[] objects) {
         logger.warn(msg,objects);
     }
 
     @Override
-    public void warn(String msg, Exception exception) {
+    public void warn(@NotNull String msg, @NotNull Exception exception) {
         logger.warn(msg,exception);
     }
 
     @Override
-    public void error(String msg) {
+    public void error(@NotNull String msg) {
         logger.error(msg);
     }
 
     @Override
-    public void error(String msg, Object[] objects) {
+    public void error(@NotNull String msg, @NotNull Object[] objects) {
         logger.error(msg,objects);
     }
 
     @Override
-    public void error(String msg, Exception exception) {
+    public void error(@NotNull String msg, @NotNull Exception exception) {
         logger.error(msg,exception);
     }
 }

@@ -20,6 +20,7 @@ public interface Logger {
      * 获取日志的名称
      * @return 名称
      */
+    @NotNull
     String getName();
 
     /**
