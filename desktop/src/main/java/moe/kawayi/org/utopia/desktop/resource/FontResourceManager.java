@@ -9,12 +9,11 @@ package moe.kawayi.org.utopia.desktop.resource;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.utils.Null;
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -31,7 +30,7 @@ public class FontResourceManager {
      */
     public static final String FONT_DIR = Resource.RESOURCE_DIR + "/fonts";
 
-    private static final Logger LOGGER = LogManager.getLogger(FontResourceManager.class);
+    private static final Logger LOGGER = LogManagers.getLogger(FontResourceManager.class);
 
     /**
      * 获取字体文件
@@ -94,7 +93,7 @@ public class FontResourceManager {
             return generator.generateFont(parameter);
         }
         catch(@NotNull java.io.IOException ex){
-            LOGGER.error(ex);
+            LOGGER.error("load font failed. use default font",ex);
             return new BitmapFont();
         }
     }

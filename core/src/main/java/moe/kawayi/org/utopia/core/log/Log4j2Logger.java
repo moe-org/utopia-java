@@ -38,7 +38,7 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
-    public void trace(@NotNull String msg, @NotNull Object[] objects) {
+    public void trace(@NotNull String msg, @NotNull Object... objects) {
         logger.trace(msg,objects);
     }
 
@@ -53,7 +53,7 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
-    public void debug(@NotNull String msg, @NotNull Object[] objects) {
+    public void debug(@NotNull String msg, @NotNull Object... objects) {
         logger.debug(msg,objects);
     }
 
@@ -68,7 +68,7 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
-    public void info(@NotNull String msg, @NotNull Object[] objects) {
+    public void info(@NotNull String msg, @NotNull Object... objects) {
         logger.info(msg,objects);
     }
 
@@ -83,7 +83,7 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
-    public void warn(@NotNull String msg, @NotNull Object[] objects) {
+    public void warn(@NotNull String msg, @NotNull Object... objects) {
         logger.warn(msg,objects);
     }
 
@@ -98,7 +98,7 @@ public class Log4j2Logger implements Logger{
     }
 
     @Override
-    public void error(@NotNull String msg, @NotNull Object[] objects) {
+    public void error(@NotNull String msg, @NotNull Object... objects) {
         logger.error(msg,objects);
     }
 

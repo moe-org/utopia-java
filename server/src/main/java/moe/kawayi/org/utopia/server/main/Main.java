@@ -6,14 +6,14 @@
 
 package moe.kawayi.org.utopia.server.main;
 
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.JvmInfo;
 import moe.kawayi.org.utopia.core.log.LogUtil;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * 主类
@@ -23,7 +23,7 @@ public final class Main {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManager.getLogger(Main.class);;
+    private static final Logger LOGGER = LogManagers.getLogger(Main.class);;
 
     /**
      * utopia server 入口函数

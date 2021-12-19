@@ -12,12 +12,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.FastThreadLocal;
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public final class PacketClassifier extends ByteToMessageDecoder {
 
-    private static final Logger LOGGER = LogManager.getLogger(PacketClassifier.class);
+    private static final Logger LOGGER = LogManagers.getLogger(PacketClassifier.class);
 
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){

@@ -15,10 +15,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import moe.kawayi.org.utopia.core.config.Config;
 import moe.kawayi.org.utopia.core.config.ConfigManager;
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +44,7 @@ public final class NetMain {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManager.getLogger(NetMain.class);
+    private static final Logger LOGGER = LogManagers.getLogger(NetMain.class);
 
     /**
      * 服务器运行状态

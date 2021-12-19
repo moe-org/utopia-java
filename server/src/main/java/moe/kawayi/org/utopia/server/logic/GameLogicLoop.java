@@ -6,13 +6,13 @@
 
 package moe.kawayi.org.utopia.server.logic;
 
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.map.*;
 import moe.kawayi.org.utopia.server.net.NetMain;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,7 +27,7 @@ public final class GameLogicLoop {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManager.getLogger(GameLogicLoop.class);
+    private static final Logger LOGGER = LogManagers.getLogger(GameLogicLoop.class);
 
     /**
      * 是否运行
