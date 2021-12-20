@@ -8,16 +8,53 @@ package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.util.Objects;
+
 /**
  * 默认日志器
  */
 public class DefaultLogger implements Logger{
 
+    private final String name;
+
+    /**
+     * 构造一个默认日志器
+     * @param name 日志器名称
+     */
+    public DefaultLogger(@NotNull String name){
+        Objects.requireNonNull(name);
+        this.name = name;
+    }
 
     @Override
     @NotNull
     public String getName() {
-        return "default logger";
+        return name;
+    }
+
+    @Override
+    public boolean isTraceEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return true;
     }
 
     @Override

@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -31,53 +33,46 @@ public class JvmInfo {
         void print(@NotNull String msg);
     }
 
-    /**
-     * 适配函数
-     */
-    @FunctionalInterface
-    private interface PrintFuncConversion{
-        void print(@NotNull String msg,@NotNull String param);
-    }
 
     /**
      * 输出jvm信息到log(debug级别)
      */
-    public static synchronized void print(@NotNull PrintFunc printFunc){
+    public static synchronized void print(@NotNull Consumer<String> printFunc){
         Objects.requireNonNull(printFunc);
 
-        PrintFuncConversion matchFunc = (String msg,String param) -> {
-            printFunc.print(msg.replace("{}",param));
+        BiConsumer<String,String> matchFunc = (String msg, String param) -> {
+            printFunc.accept(msg.replace("{}",param));
         };
 
         // java info
-        matchFunc.print("runtime name:{}",System.getProperty("java.vm.name"));
-        matchFunc.print("runtime version:{}",System.getProperty("java.vm.version"));
-        matchFunc.print("runtime vendor:{}",System.getProperty("java.vendor"));
-        matchFunc.print("java home:{}",System.getProperty("java.version"));
-        matchFunc.print("java version:{}",System.getProperty("java.home"));
+        matchFunc.accept("runtime name:{}",System.getProperty("java.vm.name"));
+        matchFunc.accept("runtime version:{}",System.getProperty("java.vm.version"));
+        matchFunc.accept("runtime vendor:{}",System.getProperty("java.vendor"));
+        matchFunc.accept("java home:{}",System.getProperty("java.version"));
+        matchFunc.accept("java version:{}",System.getProperty("java.home"));
 
         // os info
-        matchFunc.print("os name:{}",System.getProperty("os.name"));
-        matchFunc.print("os version:{}",System.getProperty("os.version"));
-        matchFunc.print("os arch:{}",System.getProperty("os.arch"));
+        matchFunc.accept("os name:{}",System.getProperty("os.name"));
+        matchFunc.accept("os version:{}",System.getProperty("os.version"));
+        matchFunc.accept("os arch:{}",System.getProperty("os.arch"));
 
         // user info
-        matchFunc.print("user dir:{}",System.getProperty("user.dir"));
-        matchFunc.print("user home:{}",System.getProperty("user.home"));
-        matchFunc.print("user name:{}",System.getProperty("user.name"));
-        matchFunc.print("user country:{}",System.getProperty("user.country"));
+        matchFunc.accept("user dir:{}",System.getProperty("user.dir"));
+        matchFunc.accept("user home:{}",System.getProperty("user.home"));
+        matchFunc.accept("user name:{}",System.getProperty("user.name"));
+        matchFunc.accept("user country:{}",System.getProperty("user.country"));
 
         // perm info
         var runtime = Runtime.getRuntime();
 
-        matchFunc.print("max memory:{} mb", String.valueOf(runtime.maxMemory() / 1024));
-        matchFunc.print("free memory:{} mb", String.valueOf(runtime.freeMemory() / 1024));
-        matchFunc.print("processors:{}",String.valueOf( runtime.availableProcessors()));
-        matchFunc.print("pid:{}",String.valueOf(ProcessHandle.current().pid()));
+        matchFunc.accept("max memory:{} mb", String.valueOf(runtime.maxMemory() / 1024));
+        matchFunc.accept("free memory:{} mb", String.valueOf(runtime.freeMemory() / 1024));
+        matchFunc.accept("processors:{}",String.valueOf( runtime.availableProcessors()));
+        matchFunc.accept("pid:{}",String.valueOf(ProcessHandle.current().pid()));
 
         // locale info
-        matchFunc.print("encoding:{}",System.getProperty("file.encoding"));
-        matchFunc.print("default locale:{}",Locale.getDefault().toString());
+        matchFunc.accept("encoding:{}",System.getProperty("file.encoding"));
+        matchFunc.accept("default locale:{}",Locale.getDefault().toString());
     }
 
 }

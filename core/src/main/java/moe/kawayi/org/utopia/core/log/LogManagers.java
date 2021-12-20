@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * 整合日志管理器
  */
-public class LogManagers {
+public class LogManagers extends System.LoggerFinder {
 
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
             new DefaultLogManager()
@@ -48,5 +48,25 @@ public class LogManagers {
     @NotNull
     public static Logger getLogger(@NotNull Class<?> clazz){
         return GLOBAL_LOG_MANAGER.get().getLogger(clazz);
+    }
+
+
+    /**
+     * 使用全局日志管理器获取一个日志器
+     * @param name 日志器名称
+     * @return 日志器。非空
+     */
+    @NotNull
+    public static Logger getLogger(@NotNull String name){
+        return GLOBAL_LOG_MANAGER.get().getLogger(name);
+    }
+
+    @Override
+    @NotNull
+    public System.Logger getLogger(@NotNull String name,@NotNull Module module) {
+        Objects.requireNonNull(module);
+        Objects.requireNonNull(name);
+
+        return getLogger(name);
     }
 }

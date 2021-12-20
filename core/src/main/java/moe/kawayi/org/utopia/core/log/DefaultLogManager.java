@@ -8,25 +8,30 @@ package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * 默认的日志管理器
  */
 public class DefaultLogManager implements LogManager{
+
+    private final AtomicLong loggerCount = new AtomicLong(0);
+
     @Override
     @NotNull
     public Logger getLogger() {
-        return new DefaultLogger();
+        return new DefaultLogger("default logger - " + loggerCount.getAndIncrement());
     }
 
     @Override
     @NotNull
     public Logger getLogger(@NotNull String name) {
-        return new DefaultLogger();
+        return this.getLogger();
     }
 
     @Override
     @NotNull
     public Logger getLogger(@NotNull Class<?> clazz) {
-        return new DefaultLogger();
+        return this.getLogger();
     }
 }
