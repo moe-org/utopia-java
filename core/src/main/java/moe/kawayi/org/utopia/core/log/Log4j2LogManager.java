@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.core.log;
 
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -14,7 +16,7 @@ import java.util.Objects;
 /**
  * Log4j2的LogManager
  */
-public class Log4j2LogManager implements LogManager{
+public class Log4j2LogManager extends InternalLoggerFactory implements LogManager  {
 
     private final LoggerContext context;
 
@@ -46,5 +48,12 @@ public class Log4j2LogManager implements LogManager{
     @NotNull
     public Logger getLogger(@NotNull Class<?> clazz) {
         return new Log4j2Logger(context.getLogger(clazz));
+    }
+
+    @Override
+    @NotNull
+    protected InternalLogger newInstance(@NotNull String name) {
+        Objects.requireNonNull(name);
+        return (Log4j2Logger)getLogger(name);
     }
 }

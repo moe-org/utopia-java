@@ -6,9 +6,10 @@
 
 package moe.kawayi.org.utopia.core.log;
 
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
@@ -21,6 +22,7 @@ import org.apache.logging.log4j.core.config.builder.api.*;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.apache.logging.log4j.core.filter.ThresholdFilter;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -108,20 +110,37 @@ public class LogUtil {
     public static final String XML_CONFIG_FILE_PATH = "log-config.xml";
 
     /**
-     * 配置日志器
-     * @throws java.io.IOException 无法设置配置文件
+     * 配置日志器。目前实现基于log4j2
+     * <br/>
+     * 会做以下动作:<br/>
+     *  - 读取日志配置。如果不存在则创建<br/>
+     *  - 根据配置创建日志管理器<br/>
+     *  - 设置netty使用此日志管理器<br/>
+     *  - 返回此日志管理器<br/>
+     * <br/>
+     * 如果配置失败将会退出程序(推出代码为-1)
+     * <br/>
+     * @return 配置后的日志管理器
      */
-    public static synchronized void configureLog() throws java.io.IOException{
+    @NotNull
+    public static synchronized LogManager configureLog(){
 
+        // 加载日志
         if(!Files.exists(
                 ResourceManager.getPath(XML_CONFIG_FILE_PATH)
         )){
-            Files.writeString(
-                    ResourceManager.getPath(XML_CONFIG_FILE_PATH),
-                    XML_CONFIG_FILE,
-                    StandardCharsets.UTF_8,
-                    StandardOpenOption.CREATE
-            );
+            try {
+                Files.writeString(
+                        ResourceManager.getPath(XML_CONFIG_FILE_PATH),
+                        XML_CONFIG_FILE,
+                        StandardCharsets.UTF_8,
+                        StandardOpenOption.CREATE
+                );
+            }
+            catch(IOException err){
+                err.printStackTrace();
+                System.exit(-1);
+            }
         }
 
         var standard = Configurator.initialize(
@@ -135,10 +154,14 @@ public class LogUtil {
                 ResourceManager.getPath(XML_CONFIG_FILE_PATH).toString()
         );
 
-        // 设置全局日志
-        LogManagers.setLogManager(
-                new Log4j2LogManager(standard)
+        var manager = new Log4j2LogManager(standard);
+
+        // 设置netty日志
+        InternalLoggerFactory.setDefaultFactory(
+                manager
         );
+
+        return manager;
     }
 
 }

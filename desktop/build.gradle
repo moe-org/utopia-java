@@ -39,17 +39,25 @@ jar {
     finalizedBy shadowJar
 }
 
+// 设置源集
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources',"$buildDir/utopia-build-temp/"]
+        }
+    }
+}
 
 // 依赖任务
 // 创建版本号文件
 task createProperties {
-    java.nio.file.Path path = Paths.get("$buildDir/resources/main")
+    java.nio.file.Path path = Paths.get("$buildDir/utopia-build-temp/")
 
     if (!Files.exists(path)) {
         Files.createDirectories(path)
     }
 
-    path = Paths.get("$buildDir/resources/main/utopia-version.properties")
+    path = Paths.get("$buildDir/utopia-build-temp/utopia-version.properties")
 
     if(!Files.exists(path)) {
         Files.createFile(path)
@@ -57,14 +65,13 @@ task createProperties {
 
     Files.writeString(
             path,
-            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),
-            Charset.forName("UTF-8"),
+            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),Charset.forName("UTF-8"),
             StandardOpenOption.WRITE,
             StandardOpenOption.TRUNCATE_EXISTING)
 }
 
-classes {
-    finalizedBy createProperties
+processResources{
+    dependsOn createProperties
 }
 
 // 打包
@@ -74,6 +81,7 @@ shadowJar {
     destinationDirectory.set(new File("${desktopReleaseDir}"))
 }
 
+// 发布文件
 static void releaseFile(String origin, String des){
     Paths.get(des).toFile().mkdirs()
 

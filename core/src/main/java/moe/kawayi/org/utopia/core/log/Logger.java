@@ -76,7 +76,7 @@ public interface Logger extends System.Logger{
      * @param msg 信息
      * @param exception 日志异常
      */
-    void trace(@NotNull String msg, @NotNull Exception exception);
+    void trace(@NotNull String msg, @NotNull Throwable exception);
 
 
     /**
@@ -97,7 +97,7 @@ public interface Logger extends System.Logger{
      * @param msg 信息
      * @param exception 日志异常
      */
-    void debug(@NotNull String msg, @NotNull Exception exception);
+    void debug(@NotNull String msg, @NotNull Throwable exception);
 
 
     /**
@@ -118,7 +118,7 @@ public interface Logger extends System.Logger{
      * @param msg 信息
      * @param exception 日志异常
      */
-    void info(@NotNull String msg, @NotNull Exception exception);
+    void info(@NotNull String msg, @NotNull Throwable exception);
 
 
     /**
@@ -139,7 +139,7 @@ public interface Logger extends System.Logger{
      * @param msg 信息
      * @param exception 日志异常
      */
-    void warn(@NotNull String msg, @NotNull Exception exception);
+    void warn(@NotNull String msg, @NotNull Throwable exception);
 
 
     /**
@@ -160,7 +160,7 @@ public interface Logger extends System.Logger{
      * @param msg 信息
      * @param exception 日志异常
      */
-    void error(@NotNull String msg, @NotNull Exception exception);
+    void error(@NotNull String msg, @NotNull Throwable exception);
 
     @Override
     default boolean isLoggable(@NotNull Level level){

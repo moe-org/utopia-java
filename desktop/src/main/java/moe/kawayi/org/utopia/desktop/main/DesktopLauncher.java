@@ -75,15 +75,6 @@ public class DesktopLauncher {
 	 * @param args 命令行参数
 	 */
 	public static void main (@NotNull String[] args) {
-		// 日志系统
-		try {
-			LogUtil.configureLog();
-		}
-		catch (IOException err){
-			System.out.println("init log system failed down, but will continue gaming!");
-			err.printStackTrace();
-		}
-
 		// 一些默认值
 		boolean useSmallIcon = false;
 

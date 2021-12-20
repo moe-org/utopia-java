@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LogManagers extends System.LoggerFinder {
 
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
-            new DefaultLogManager()
+            LogUtil.configureLog()
     );
 
     /**

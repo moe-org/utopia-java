@@ -1,41 +1,29 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The JvmInfo.java is a part of project utopia, under MIT License.
+// The EnvironmentChecker.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * 一个简单的，输入jvm信息到debug log的类
  */
-public class JvmInfo {
+public class EnvironmentChecker {
+
+    private static final Logger LOGGER = LogManagers.getLogger(EnvironmentChecker.class);
 
     /**
-     * 打印函数
-     */
-    @FunctionalInterface
-    public interface PrintFunc{
-        /**
-         * 打印
-         * @param msg 要打印的信息
-         */
-        void print(@NotNull String msg);
-    }
-
-
-    /**
-     * 输出jvm信息到log(debug级别)
+     * 输出jvm信息
      */
     public static synchronized void print(@NotNull Consumer<String> printFunc){
         Objects.requireNonNull(printFunc);
@@ -48,8 +36,8 @@ public class JvmInfo {
         matchFunc.accept("runtime name:{}",System.getProperty("java.vm.name"));
         matchFunc.accept("runtime version:{}",System.getProperty("java.vm.version"));
         matchFunc.accept("runtime vendor:{}",System.getProperty("java.vendor"));
-        matchFunc.accept("java home:{}",System.getProperty("java.version"));
-        matchFunc.accept("java version:{}",System.getProperty("java.home"));
+        matchFunc.accept("java home:{}",System.getProperty("java.home"));
+        matchFunc.accept("java version:{}",System.getProperty("java.version"));
 
         // os info
         matchFunc.accept("os name:{}",System.getProperty("os.name"));
@@ -73,6 +61,25 @@ public class JvmInfo {
         // locale info
         matchFunc.accept("encoding:{}",System.getProperty("file.encoding"));
         matchFunc.accept("default locale:{}",Locale.getDefault().toString());
+    }
+
+    /**
+     * 做一些环境检查。如果检查失败则返回false
+     *
+     * @return 如果检查通过返回true，否则false
+     */
+    public static synchronized boolean check(){
+        // 最重要的——检查编码
+        var charset = Charset.defaultCharset();
+
+        if(!charset.name().equalsIgnoreCase("utf-8"))
+        {
+            LOGGER.error("file.encoding isn't utf-8");
+            return false;
+        }
+
+
+        return true;
     }
 
 }

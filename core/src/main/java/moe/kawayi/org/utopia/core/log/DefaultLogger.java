@@ -71,7 +71,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void trace(@NotNull String msg, @NotNull Exception exception) {
+    public void trace(@NotNull String msg, @NotNull Throwable exception) {
         System.out.println(msg);
     }
 
@@ -89,7 +89,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void debug(@NotNull String msg, @NotNull Exception exception) {
+    public void debug(@NotNull String msg, @NotNull Throwable exception) {
         System.out.println(msg);
     }
 
@@ -107,7 +107,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void info(@NotNull String msg,@NotNull  Exception exception) {
+    public void info(@NotNull String msg,@NotNull  Throwable exception) {
         System.out.println(msg);
     }
 
@@ -125,7 +125,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void warn(@NotNull String msg, @NotNull Exception exception) {
+    public void warn(@NotNull String msg, @NotNull Throwable exception) {
         System.out.println(msg);
     }
 
@@ -143,7 +143,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void error(@NotNull String msg, @NotNull Exception exception) {
+    public void error(@NotNull String msg, @NotNull Throwable exception) {
         System.out.println(msg);
     }
 }
