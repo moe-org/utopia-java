@@ -53,8 +53,11 @@ public class EnvironmentChecker {
         // perm info
         var runtime = Runtime.getRuntime();
 
-        matchFunc.accept("max memory:{} mb", String.valueOf(runtime.maxMemory() / 1024));
-        matchFunc.accept("free memory:{} mb", String.valueOf(runtime.freeMemory() / 1024));
+        // before print memory info
+        // we gc :-)
+        runtime.gc();
+        matchFunc.accept("total memory:{} mb", String.valueOf(runtime.totalMemory() / 1024 / 1024));
+        matchFunc.accept("free memory:{} mb", String.valueOf(runtime.freeMemory() / 1024 / 1024));
         matchFunc.accept("processors:{}",String.valueOf( runtime.availableProcessors()));
         matchFunc.accept("pid:{}",String.valueOf(ProcessHandle.current().pid()));
 
@@ -64,7 +67,7 @@ public class EnvironmentChecker {
     }
 
     /**
-     * 做一些环境检查。如果检查失败则返回false
+     * 做一些环境检查
      *
      * @return 如果检查通过返回true，否则false
      */
@@ -77,8 +80,7 @@ public class EnvironmentChecker {
             LOGGER.error("file.encoding isn't utf-8");
             return false;
         }
-
-
+        
         return true;
     }
 

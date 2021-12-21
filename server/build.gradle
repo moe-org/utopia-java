@@ -22,12 +22,6 @@ dependencies {
     // jackson
     api "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
-    // netty
-    api "io.netty:netty-all:$nettyVersion"
-
-    // 引入HOCON
-    api "com.typesafe:config:$hoconVersion"
-
     // core
     api project(":core")
 }
@@ -37,41 +31,6 @@ jar {
     manifest.attributes.put("Main-Class","moe.kawayi.org.utopia.server.main.Main")
 
     finalizedBy shadowJar
-}
-
-// 设置源集
-sourceSets {
-    main {
-        resources {
-            srcDirs = ['src/main/resources',"$buildDir/utopia-build-temp/"]
-        }
-    }
-}
-
-// 依赖任务
-// 创建版本号文件
-task createProperties {
-    java.nio.file.Path path = Paths.get("$buildDir/utopia-build-temp/")
-
-    if (!Files.exists(path)) {
-        Files.createDirectories(path)
-    }
-
-    path = Paths.get("$buildDir/utopia-build-temp/utopia-version.properties")
-
-    if(!Files.exists(path)) {
-        Files.createFile(path)
-    }
-
-    Files.writeString(
-            path,
-            "UtopiaVersion=".concat(rootProject.version.toString()).concat("\n"),Charset.forName("UTF-8"),
-            StandardOpenOption.WRITE,
-            StandardOpenOption.TRUNCATE_EXISTING)
-}
-
-processResources{
-    dependsOn createProperties
 }
 
 // 打包
