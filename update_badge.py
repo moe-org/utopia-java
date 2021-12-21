@@ -62,22 +62,22 @@ def generate_markdown_list(texts,jobs):
         result += "| " + CHECK_NAME + " | ![" + CHECK_NAME + "](";
 
         if (CHECK_STATUS == "success"):
-            result += "https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white";
 
         elif (CHECK_STATUS == "failure"):
-            result += "https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=githubactions&logoColor=white";
 
         elif (CHECK_STATUS == "cancelled"):
-            result += "https://img.shields.io/badge/build-cancelled-lightgrey?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-cancelled-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white";
 
         elif (CHECK_STATUS == "skipped"):
-            result += "https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white";
 
         elif (CHECK_STATUS == "timed_out"):
-            result += "https://img.shields.io/badge/build-timed_out-lightgrey?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-timed_out-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white";
 
         else:
-            result += "https://img.shields.io/badge/build-unknown_status-lightgrey?style=for-the-badge&logo=appveyor";
+            result += "https://img.shields.io/badge/build-unknown_status-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white";
 
         result += ") |\n"
 
