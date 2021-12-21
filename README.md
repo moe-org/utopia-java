@@ -80,8 +80,8 @@
 | Build-And-Test (17, zulu) | ![Build-And-Test (17, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Build-And-Test (17, temurin) | ![Build-And-Test (17, temurin)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Record-Version | ![Record-Version](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 | Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
+| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
 <!---ubadge-auto-list-end-->
 
 ---------
