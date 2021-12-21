@@ -75,13 +75,13 @@
 <!---ubadge-auto-list-begin-->
 | Checking | Status |
 | :-------:|:------:|
-| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Check | ![Check](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Build-And-Test (17, zulu) | ![Build-And-Test (17, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Build-And-Test (17, temurin) | ![Build-And-Test (17, temurin)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Record-Version | ![Record-Version](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
-| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=appveyor) |
+| Check | ![Check](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Build-And-Test (17, zulu) | ![Build-And-Test (17, zulu)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Build-And-Test (17, temurin) | ![Build-And-Test (17, temurin)](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Record-Version | ![Record-Version](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
 <!---ubadge-auto-list-end-->
 
 ---------
