@@ -7,6 +7,7 @@
 package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,6 +36,7 @@ public class WrapLogger implements Logger{
     }
 
     @Override
+    @NotNull
     public String getName() {
         return logger.get().getName();
     }
@@ -65,77 +67,77 @@ public class WrapLogger implements Logger{
     }
 
     @Override
-    public void trace(String msg) {
+    public void trace(@NotNull String msg) {
         logger.get().trace(msg);
     }
 
     @Override
-    public void trace(String msg, Object... objects) {
+    public void trace(@NotNull String msg,@NotNull Object... objects) {
         logger.get().trace(msg,objects);
     }
 
     @Override
-    public void trace(String msg, Throwable exception) {
+    public void trace(@NotNull String msg, @NotNull Throwable exception) {
         logger.get().trace(msg,exception);
     }
 
     @Override
-    public void debug(String msg) {
+    public void debug(@NotNull String msg) {
         logger.get().debug(msg);
     }
 
     @Override
-    public void debug(String msg, Object... objects) {
+    public void debug(@NotNull String msg, @NotNull Object... objects) {
         logger.get().debug(msg,objects);
     }
 
     @Override
-    public void debug(String msg, Throwable exception) {
+    public void debug(@NotNull String msg, @NotNull Throwable exception) {
         logger.get().debug(msg,exception);
     }
 
     @Override
-    public void info(String msg) {
+    public void info(@NotNull String msg) {
         logger.get().info(msg);
     }
 
     @Override
-    public void info(String msg, Object... objects) {
+    public void info(@NotNull String msg, @NotNull Object... objects) {
         logger.get().info(msg,objects);
     }
 
     @Override
-    public void info(String msg, Throwable exception) {
+    public void info(@NotNull String msg, @NotNull Throwable exception) {
         logger.get().info(msg,exception);
     }
 
     @Override
-    public void warn(String msg) {
+    public void warn(@NotNull String msg) {
         logger.get().warn(msg);
     }
 
     @Override
-    public void warn(String msg, Object... objects) {
+    public void warn(@NotNull String msg, @NotNull Object... objects) {
         logger.get().warn(msg,objects);
     }
 
     @Override
-    public void warn(String msg, Throwable exception) {
+    public void warn(@NotNull String msg, @NotNull Throwable exception) {
         logger.get().warn(msg,exception);
     }
 
     @Override
-    public void error(String msg) {
+    public void error(@NotNull String msg) {
         logger.get().error(msg);
     }
 
     @Override
-    public void error(String msg, Object... objects) {
+    public void error(@NotNull String msg, @NotNull Object... objects) {
         logger.get().error(msg,objects);
     }
 
     @Override
-    public void error(String msg, Throwable exception) {
+    public void error(@NotNull String msg, @NotNull Throwable exception) {
         logger.get().error(msg,exception);
     }
 }
