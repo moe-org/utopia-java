@@ -8,7 +8,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        mavenLocal()
         gradlePluginPortal()
         google()
         maven {
@@ -46,8 +45,8 @@ allprojects {
 
     // 设置全局变量
     ext {
-        // libgdx版本号
-        gdxVersion = "1.10.0"
+        // javafx版本号
+        javafxVersion = "17"
 
         // log4j2版本号
         log4j2Version = "2.17.0"
@@ -64,9 +63,6 @@ allprojects {
         // hocon(com.typesafe:config)版本号
         hoconVersion = "1.4.1"
 
-        // SLF4jJ版本号
-        slf4jVersion = "1.7.32"
-
         // 发布路径
         releaseDir = "${rootDir}/output-package/"
         desktopReleaseDir = "${releaseDir}/desktop"
@@ -79,7 +75,6 @@ allprojects {
     // 设置储存库
     repositories {
         mavenCentral()
-        mavenLocal()
         google()
         gradlePluginPortal()
     }

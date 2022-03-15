@@ -66,7 +66,7 @@ public class LogUtil {
     public static final String BUILT_IN_CONFIG_FILE_PATH = "/utopia-default-log4j2-config.xml";
 
     /**
-     * 值得注意的是:Log4j2的彩色输出并不是默认的
+     * 值得注意的是:Log4j2的彩色输出在Windows下并不是默认的
      */
     private static void enableLog4j2Color(){
         System.setProperty("log4j.skipJansi","false");

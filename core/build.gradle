@@ -92,7 +92,7 @@ void createPropertyFile(java.nio.file.Path dir, Map<String,String> content){
                         .append(key)
                         .append('=')
                         .append(value)
-                        .append('\n');
+                        .append('\n')
             }
     )
 

@@ -24,6 +24,7 @@ public class EnvironmentChecker {
 
     /**
      * 输出jvm信息
+     * @param printFunc 打印输出函数
      */
     public static synchronized void print(@NotNull Consumer<String> printFunc){
         Objects.requireNonNull(printFunc);

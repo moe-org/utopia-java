@@ -8,6 +8,8 @@ package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,8 +19,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LogManagers extends System.LoggerFinder {
 
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
+            // 配置日志
             LogUtil.configureLog()
     );
+
+    /**
+     * 日志器列表
+     */
+    private static final LinkedList<WrapLogger> WRAP_LOGGERS = new LinkedList<>();
 
     /**
      * 获取全局日志管理器
@@ -36,9 +44,32 @@ public class LogManagers extends System.LoggerFinder {
     public static void setLogManager(
             @NotNull LogManager logManager
     ){
-        Objects.requireNonNull(logManager);
-        GLOBAL_LOG_MANAGER.set(logManager);
+        GLOBAL_LOG_MANAGER.set(Objects.requireNonNull(logManager));
     }
+
+    /**
+     * 通过LogManager更新所有通过{@link LogManagers#getLogger(String)},
+     * {@link LogManagers#getLogger(Class)},
+     * {@link LogManagers#getLogger(String,Module)}获取的日志器。
+     * <br/>
+     * 一般用于{@link LogManagers#setLogManager(LogManager)}后更新之前获取的日志器。
+     */
+    public static void updateLogger(){
+        // get all loggers
+        WrapLogger[] loggers = null;
+        synchronized (WRAP_LOGGERS){
+            loggers = new WrapLogger[WRAP_LOGGERS.size()];
+            WRAP_LOGGERS.toArray(loggers);
+        }
+
+        // update
+        Arrays.stream(loggers).forEach((item) -> {
+            item.switchLogger(
+                    // 根据原来日志器的名称构造新的日志器
+                getLogger(item.getName()));
+            });
+    }
+
 
     /**
      * 使用全局日志管理器获取一个日志器
@@ -47,7 +78,11 @@ public class LogManagers extends System.LoggerFinder {
      */
     @NotNull
     public static Logger getLogger(@NotNull Class<?> clazz){
-        return GLOBAL_LOG_MANAGER.get().getLogger(clazz);
+        var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(clazz));
+        synchronized (WRAP_LOGGERS){
+            WRAP_LOGGERS.add(logger);
+        }
+        return logger;
     }
 
 
@@ -58,7 +93,11 @@ public class LogManagers extends System.LoggerFinder {
      */
     @NotNull
     public static Logger getLogger(@NotNull String name){
-        return GLOBAL_LOG_MANAGER.get().getLogger(name);
+        var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(name));
+        synchronized (WRAP_LOGGERS){
+            WRAP_LOGGERS.add(logger);
+        }
+        return logger;
     }
 
     @Override

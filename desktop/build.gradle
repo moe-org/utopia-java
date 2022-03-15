@@ -3,13 +3,10 @@
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-import java.nio.charset.Charset
-import java.nio.file.CopyOption
+
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
-import java.nio.file.StandardOpenOption
-
 
 // 插件设置
 plugins {
@@ -18,18 +15,21 @@ plugins {
 
     // 打包jar
     id 'com.github.johnrengelman.shadow' version '7.1.0'
+
+    // 引入javafx
+    id 'org.openjfx.javafxplugin' version '0.0.11'
 }
 
 // 依赖
 dependencies {
-    // 引入libgdx
-    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-
     // 依赖core
     api project(":core")
+}
+
+// 引入javafx
+javafx {
+    version = Integer.parseInt("$javafxVersion")
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 // 配置启动类
@@ -60,9 +60,7 @@ tasks.register("release"){
     dependsOn rootProject.tasks.named("allJavaSourceJar")
     dependsOn rootProject.tasks.named("allJavadocJar")
 
-    // ===========
-    // copy source
-    // ===========
+    //=====---------- copy source ----------=====
     // copy icon
     releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${desktopReleaseDir}/Utopia(32x32).png")
     releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${desktopReleaseDir}/Utopia(128x128).png")
