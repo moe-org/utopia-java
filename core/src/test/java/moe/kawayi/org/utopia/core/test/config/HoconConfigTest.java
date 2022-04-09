@@ -40,7 +40,7 @@ public class HoconConfigTest {
             """;
 
     @Test
-    public void praseTest() throws Exception{
+    public void parseTest() throws Exception{
         var hocon = new HoconConfig(ConfigFactory.parseString(HOCON));
 
         Assertions.assertEquals((byte)1,hocon.getByte(hocon.createPath("byte")).orElseThrow());

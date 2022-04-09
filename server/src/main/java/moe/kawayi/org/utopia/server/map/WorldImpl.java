@@ -10,6 +10,7 @@ import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,6 +62,7 @@ public final class WorldImpl implements World {
      * @param quadrantSize 象限大小。单位Area
      * @throws WorldConstructionException 如果参数quadrantSize的任意值(x或y)为负数，则抛出。
      */
+    @SuppressWarnings({"rawtypes","unchecked"})
     public WorldImpl(long worldId, @NotNull FlatPosition quadrantSize) throws WorldConstructionException {
         // null check
         Objects.requireNonNull(quadrantSize, "quadrantSize must not be null");
@@ -82,13 +84,13 @@ public final class WorldImpl implements World {
         int yAreaLength = Math.abs(maxYAreaCount) + Math.abs(minYAreaCount);
 
         // 初始化世界索引
-        areas = new AtomicReference[xAreaLength][];
+        areas = (AtomicReference<Area>[][]) new AtomicReference[xAreaLength][];
 
         int xIndex = getMinXSize();
         int yIndex = getMinYSize();
 
         for (int xPtr = 0; xPtr != areas.length; xPtr++) {
-            areas[xPtr] = new AtomicReference[yAreaLength];
+            areas[xPtr] = (AtomicReference<Area>[])new AtomicReference[yAreaLength];
 
             for(int yPtr = 0;yPtr != areas.length; yPtr++){
                 areas[xPtr][yPtr] = new AtomicReference<>(

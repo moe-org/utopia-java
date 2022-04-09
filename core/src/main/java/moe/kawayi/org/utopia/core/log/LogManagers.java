@@ -26,7 +26,7 @@ public class LogManagers extends System.LoggerFinder {
     /**
      * 日志器列表
      */
-    private static final LinkedList<WrapLogger> WRAP_LOGGERS = new LinkedList<>();
+    private static final LinkedList<WrapLogger> ALL_LOGGERS = new LinkedList<>();
 
     /**
      * 获取全局日志管理器
@@ -57,9 +57,9 @@ public class LogManagers extends System.LoggerFinder {
     public static void updateLogger(){
         // get all loggers
         WrapLogger[] loggers = null;
-        synchronized (WRAP_LOGGERS){
-            loggers = new WrapLogger[WRAP_LOGGERS.size()];
-            WRAP_LOGGERS.toArray(loggers);
+        synchronized (ALL_LOGGERS){
+            loggers = new WrapLogger[ALL_LOGGERS.size()];
+            ALL_LOGGERS.toArray(loggers);
         }
 
         // update
@@ -79,8 +79,8 @@ public class LogManagers extends System.LoggerFinder {
     @NotNull
     public static Logger getLogger(@NotNull Class<?> clazz){
         var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(clazz));
-        synchronized (WRAP_LOGGERS){
-            WRAP_LOGGERS.add(logger);
+        synchronized (ALL_LOGGERS){
+            ALL_LOGGERS.add(logger);
         }
         return logger;
     }
@@ -94,8 +94,8 @@ public class LogManagers extends System.LoggerFinder {
     @NotNull
     public static Logger getLogger(@NotNull String name){
         var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(name));
-        synchronized (WRAP_LOGGERS){
-            WRAP_LOGGERS.add(logger);
+        synchronized (ALL_LOGGERS){
+            ALL_LOGGERS.add(logger);
         }
         return logger;
     }

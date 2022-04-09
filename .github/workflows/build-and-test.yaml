@@ -79,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17','18' ]
         release: [ 'zulu', 'temurin' ]
 
     steps:

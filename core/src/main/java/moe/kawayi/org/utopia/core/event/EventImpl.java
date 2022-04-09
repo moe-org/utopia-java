@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * 可取消的事件实现。
+ * 基本的事件实现。
  *
  * 非线程安全。
  */
@@ -21,23 +21,29 @@ public class EventImpl<Param> implements Event{
 
     private final Param param;
     private boolean cancel = false;
+    private Object result = null;
+    private boolean cancelable = false;
 
     /**
      * 构造一个默认事件实现
      * @param param 事件参数
+     * @param cancelable 是否能够取消
      */
-    public EventImpl(@Nullable Param param){
+    public EventImpl(@Nullable Param param,boolean cancelable){
         this.param = param;
+        this.cancelable = cancelable;
     }
 
-
     @Override
-    public boolean isCancel() {
+    public boolean isCancelled() {
         return cancel;
     }
 
     @Override
-    public void setCancel(boolean value) {
+    public void setCancel(boolean value) throws IllegalCancellationException {
+        if((!cancelable) && value){
+            throw new IllegalCancellationException();
+        }
         cancel = value;
     }
 
@@ -50,5 +56,16 @@ public class EventImpl<Param> implements Event{
     @NotNull
     public Optional<Object> getParameter() {
         return Optional.ofNullable(param);
+    }
+
+    @Override
+    @NotNull
+    public Optional<Object> getResult() {
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public void setResult(@Nullable Object result) {
+        this.result = result;
     }
 }

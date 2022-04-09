@@ -26,14 +26,13 @@ public class EventBusTest {
         // test
         var id = eventBus.register(event -> {
             called = (boolean)event.getParameter().orElseThrow();
-            return null;
         });
 
-        eventBus.fireEvent(new EventImpl<Boolean>(true));
+        eventBus.fireEvent(new EventImpl<Boolean>(true,true));
 
         eventBus.unregister(id);
 
-        eventBus.fireEvent(new EventImpl<Boolean>(false));
+        eventBus.fireEvent(new EventImpl<Boolean>(false,true));
 
         Assertions.assertTrue(called);
     }

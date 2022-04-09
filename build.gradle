@@ -85,6 +85,7 @@ allprojects {
         options.setEncoding("UTF-8")
         options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
         options.forkOptions.jvmArgs << "-Xlint:unchecked"
+        options.compilerArgs << "-Werror"
         options.verbose(true)
     }
 }
@@ -158,6 +159,7 @@ subprojects {
     }
 }
 
+// 添加一个辅助任务，用于输出版本号
 // 输出版本号
 tasks.register("printVersion") {
     println(project.version)

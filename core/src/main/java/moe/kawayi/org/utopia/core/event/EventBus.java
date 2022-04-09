@@ -9,22 +9,13 @@ package moe.kawayi.org.utopia.core.event;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 /**
- * 事件总线
+ * 事件总线。线程安全
  *
  * @param <EventT> 事件参数
  */
@@ -33,7 +24,7 @@ public final class EventBus<EventT extends Event> {
     /**
      * 监听者列表
      */
-    private final ConcurrentHashMap<EventRegistrationId,Function<EventT,Void>> listeners = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<EventRegistrationId, Consumer<EventT>> listeners = new ConcurrentHashMap<>();
 
     /**
      * 下一个可供事件使用的id
@@ -57,7 +48,7 @@ public final class EventBus<EventT extends Event> {
      * @return 注册id
      */
     @NotNull
-    public EventRegistrationId register(@NotNull Function<EventT,Void> caller){
+    public EventRegistrationId register(@NotNull Consumer<EventT> caller){
         Objects.requireNonNull(caller);
 
         var id = nextId.getAndIncrement();
@@ -76,30 +67,29 @@ public final class EventBus<EventT extends Event> {
      */
     public void unregister(@NotNull EventRegistrationId registrationId) {
         // null check
-        Objects.requireNonNull(registrationId, "registrationId must not be null");
+        Objects.requireNonNull(registrationId);
 
         listeners.remove(registrationId);
     }
 
     /**
-     * 发布事件。发布事件之后，此函数当前调用返回之前，
-     * 调用{@link EventBus#unregister(EventRegistrationId)}和
-     * {@link EventBus#register(Function)} )}将对此函数当前调用无效，直到当前调用返回或者发起一次新调用。
+     * 发布事件。发布事件之后，如果有监听者取消了事件，将会立即返回。
+     * <p/>
+     * 监听者触发的所有异常原样传递。
      *
      * @param obj 事件对象
      */
-    public void fireEvent(@NotNull EventT obj) {
-        Objects.requireNonNull(obj);
+    public void fireEvent(@Nullable EventT obj) {
 
-        if(obj.isCancel())
+        if(obj.isCancelled())
             return;
 
         var listeners = this.listeners.values();
 
         for(var listener : listeners){
-            listener.apply(obj);
+            listener.accept(obj);
 
-            if(obj.isCancel())
+            if(obj.isCancelled())
                 return;
         }
     }
