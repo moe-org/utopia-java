@@ -74,7 +74,6 @@ public final class EventBus<EventT extends Event> {
 
     /**
      * 发布事件。发布事件之后，如果有监听者取消了事件，将会立即返回。
-     * <p/>
      * 监听者触发的所有异常原样传递。
      *
      * @param obj 事件对象
