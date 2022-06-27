@@ -2,15 +2,18 @@
   "name": "utopia",
   "version": "1.0.0",
   "description": "The utopia game",
-  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
-    "cz-conventional-changelog": "^3.3.0"
+    "@types/node": "^18.0.0",
+    "@types/semantic-release": "^17.2.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "semantic-release": "^19.0.3"
   },
   "scripts": {
     "lint-last-commit": "npx commitlint --from HEAD~1 --to HEAD --verbose",
-    "commit": "git cz"
+    "commit": "git cz",
+    "try-release": "npx tsc && node ./output-package/release.js"
   },
   "repository": {
     "type": "git",

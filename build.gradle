@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The build.gradle is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
@@ -22,7 +25,7 @@ plugins{
 }
 
 // 设置版本号选项
-def clearVersion = "0.1.0"
+def clearVersion = Files.readString(Paths.get("${rootDir}/version.txt"))
 def SNAPSHOT_BUILD_KEY = "SnapshotBuild"
 def snapshotBuildNumber = null
 
