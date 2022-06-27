@@ -112,6 +112,10 @@ subprojects {
         configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
     }
 
+    jacoco{
+        toolVersion = "0.8.8"
+    }
+
     // 在解析之后
     afterEvaluate {
         // jacoco报告设置

@@ -60,6 +60,7 @@ public class LogStream extends OutputStream {
      * 获取输出等级
      * @return 输出等级
      */
+    @NotNull
     public Level getLevel(){
         return level.get();
     }
@@ -68,6 +69,7 @@ public class LogStream extends OutputStream {
      * 获取日志器
      * @return 日志器
      */
+    @NotNull
     public Logger getLogger(){
         return logger.get();
     }
@@ -78,7 +80,7 @@ public class LogStream extends OutputStream {
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    public void write(@NotNull byte[] b, int off, int len) throws IOException {
         var str = new String(b,off,len);
         logger.get().log(level.get(),str);
     }

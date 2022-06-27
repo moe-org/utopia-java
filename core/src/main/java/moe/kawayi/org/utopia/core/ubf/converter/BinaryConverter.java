@@ -39,14 +39,14 @@ public final class BinaryConverter {
          */
         private int callStack = 0;
 
-        private void incCallStack() {
+        private void call() {
             callStack++;
 
             if (callStack > UtopiaBinaryFormat.MAX_STACK)
                 throw new IllegalStateException("递归超出UtopiaBinaryFormat.MAX_STACK限制!");
         }
 
-        private void subCallStack() {
+        private void ret() {
             callStack--;
         }
 
@@ -79,7 +79,7 @@ public final class BinaryConverter {
 
         private void convertObject(@NotNull DataOutputStream output,
                                    @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException {
-            incCallStack();
+            call();
 
             // object布局:
             // object length:
@@ -96,12 +96,12 @@ public final class BinaryConverter {
                 convertValue(output, value.getValue());
             }
 
-            subCallStack();
+            ret();
         }
 
         private void convertArray(@NotNull DataOutputStream output,
                                   @NotNull UtopiaBinaryFormatArray array) throws java.io.IOException {
-            incCallStack();
+            call();
 
             // array布局:
             // array length:
@@ -115,7 +115,7 @@ public final class BinaryConverter {
                 convertValue(output, value);
             }
 
-            subCallStack();
+            ret();
         }
 
         private void convertValue(
@@ -168,7 +168,7 @@ public final class BinaryConverter {
          */
         public void convert(
                 @NotNull DataOutputStream output,
-                @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException,java.io.IOException {
+                @NotNull UtopiaBinaryFormatObject obj) throws java.io.IOException,IllegalStateException {
             Objects.requireNonNull(output, "output must not be null");
             Objects.requireNonNull(obj, "obj must not be null");
 
@@ -193,14 +193,14 @@ public final class BinaryConverter {
          */
         private int callStack = 0;
 
-        private void incCallStack() {
+        private void call() {
             callStack++;
 
             if (callStack > UtopiaBinaryFormat.MAX_STACK)
                 throw new IllegalStateException("递归超出UtopiaBinaryFormat.MAX_STACK限制!");
         }
 
-        private void subCallStack() {
+        private void ret() {
             callStack--;
         }
 
@@ -234,7 +234,7 @@ public final class BinaryConverter {
         private UtopiaBinaryFormatObjectImpl convertObject(
                 @NotNull DataInputStream input
         ) throws java.io.IOException {
-            incCallStack();
+            call();
 
             // 读取object长度
             int length = input.readInt();
@@ -255,7 +255,7 @@ public final class BinaryConverter {
                 obj.put(name, value);
             }
 
-            subCallStack();
+            ret();
 
             return obj;
         }
@@ -264,7 +264,7 @@ public final class BinaryConverter {
         private UtopiaBinaryFormatArrayImpl convertArray(
                 @NotNull DataInputStream input
         ) throws java.io.IOException {
-            incCallStack();
+            call();
 
             // 读取数组长度
             int length = input.readInt();
@@ -282,7 +282,7 @@ public final class BinaryConverter {
                 array.add(value);
             }
 
-            subCallStack();
+            ret();
 
             return array;
         }

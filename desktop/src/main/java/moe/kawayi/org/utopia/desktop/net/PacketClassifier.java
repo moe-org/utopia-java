@@ -1,7 +1,7 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The PacketClassifier.java is a part of project utopia, under MIT License.
+// The PacketClassifier.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.net;
@@ -31,6 +31,11 @@ import java.util.List;
  * 线程安全的
  */
 public class PacketClassifier extends ByteToMessageDecoder {
+
+    /**
+     * 默认构造
+     */
+    public PacketClassifier(){}
 
     /**
      * 获取服务器版本号的key的netty attr

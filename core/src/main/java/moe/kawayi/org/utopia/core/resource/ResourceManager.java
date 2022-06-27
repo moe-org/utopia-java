@@ -23,11 +23,6 @@ public final class ResourceManager {
     private ResourceManager(){}
 
     /**
-     * utopia的根目录
-     */
-    private static final AtomicReference<Path> UTOPIA_DIR = new AtomicReference<>();
-
-    /**
      * 默认utopia根路径的系统PROPERTY。
      * <p>
      * 即默认根目录将会是
@@ -37,19 +32,10 @@ public final class ResourceManager {
     public static final String DEFAULT_UTOPIA_DIR_PROPERTY = "user.dir";
 
     /**
-     * 设置utopia根目录
-     * <br/>
-     * 不应该在除了utopia启动的时候设置这个值(即从有人调用任何getPath函数族之前)。
-     * <br/>
-     * 否则会导致现有的，已经加载的plugin或者其他代码无法找到资源。并且有更多未知造成的影响。
-     *
-     * @param utopiaRoot 根目录。非空。
+     * utopia的根目录
      */
-    public static void setUtopiaDir(@NotNull Path utopiaRoot) {
-        Objects.requireNonNull(utopiaRoot);
-
-        UTOPIA_DIR.set(utopiaRoot);
-    }
+    private static final AtomicReference<Path> UTOPIA_DIR =
+            new AtomicReference<>(Path.of(System.getProperty(DEFAULT_UTOPIA_DIR_PROPERTY)));
 
     /**
      * 获取utopia根目录。有时称为utopia-root
@@ -58,15 +44,7 @@ public final class ResourceManager {
      */
     @NotNull
     public static Path getUtopiaDir() {
-        var got = UTOPIA_DIR.get();
-        if (got == null) {
-            var defaultValue = Path.of(System.getProperty("user.dir"));
-            UTOPIA_DIR.compareAndSet(null, defaultValue);
-
-            return defaultValue;
-        } else {
-            return got;
-        }
+        return UTOPIA_DIR.get();
     }
 
     /**

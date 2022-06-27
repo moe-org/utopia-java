@@ -65,12 +65,7 @@ public final class Main {
 
         try {
             // 启动逻辑服务器
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    GameLogicLoop.mainLoop();
-                }
-            });
+            Thread t = new Thread(GameLogicLoop::mainLoop);
             t.setName("Main Logic Thread");
             t.start();
 
@@ -82,8 +77,6 @@ public final class Main {
 
         } catch (@NotNull Throwable err) {
             LOGGER.error("Server crash", err);
-
-            throw err;
         } finally {
             LOGGER.error("Server shutdown");
 

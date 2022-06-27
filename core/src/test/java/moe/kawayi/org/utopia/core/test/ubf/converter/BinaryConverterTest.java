@@ -9,6 +9,7 @@ package moe.kawayi.org.utopia.core.test.ubf.converter;
 import moe.kawayi.org.utopia.core.ubf.*;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,6 +21,7 @@ public class BinaryConverterTest {
     /**
      * 递归调用测试
      */
+    @Test
     public void stackCallTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObjectImpl caller = obj;
@@ -55,6 +57,7 @@ public class BinaryConverterTest {
     /**
      * 递归调用测试
      */
+    @Test
     public void stackCallErrorTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObjectImpl caller = obj;
@@ -85,6 +88,7 @@ public class BinaryConverterTest {
     /**
      * 检查基础类型转换一致性
      */
+    @Test
     public void convertBaseRightTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         obj.put("BYTE", new UtopiaBinaryFormatValueImpl((byte) 1));
@@ -141,14 +145,14 @@ public class BinaryConverterTest {
 
         Assertions.assertTrue(value.isPresent());
         Assertions.assertTrue(value.get().getFloat().isPresent());
-        Assertions.assertEquals((float) 0.0, value.get().getFloat().get());
+        Assertions.assertEquals((float) 5.0, value.get().getFloat().get());
 
 
         value = obj.get("DOUBLE");
 
         Assertions.assertTrue(value.isPresent());
         Assertions.assertTrue(value.get().getDouble().isPresent());
-        Assertions.assertEquals(0.0, value.get().getDouble().get());
+        Assertions.assertEquals(6.0, value.get().getDouble().get());
 
 
         value = obj.get("BOOLEAN");
@@ -168,6 +172,7 @@ public class BinaryConverterTest {
     /**
      * 检查数组转换一致性
      */
+    @Test
     public void convertArrayTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatArray array = new UtopiaBinaryFormatArrayImpl();
@@ -204,7 +209,7 @@ public class BinaryConverterTest {
         Assertions.assertEquals(3, array.get(2).getInt().orElseThrow());
     }
 
-
+    @Test
     public void convertObjectTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObject testObj = new UtopiaBinaryFormatObjectImpl();
