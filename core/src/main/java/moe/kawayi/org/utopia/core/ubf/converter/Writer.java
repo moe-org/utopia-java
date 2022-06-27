@@ -140,6 +140,7 @@ public final class Writer {
      *
      * @param stream 输出流
      * @param input  输入的对象
+     * @throws IOException IO错误
      */
     public void write(@NotNull UtopiaBinaryFormatObject input, @NotNull DataOutputStream stream) throws IOException {
         Objects.requireNonNull(stream);

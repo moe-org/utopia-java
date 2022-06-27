@@ -24,22 +24,22 @@ public class ResourceID {
 
     private final ArrayList<String> namespace = new ArrayList<>(2);
 
-    public final String name;
+    private final String name;
 
     /**
      * 初始化一个资源id。
+     *
      * @param namespace 根据路径分割的id。如root:subRoot:name则使用参数("root","subRoot","name")
      */
-    public ResourceID(@NotNull String ...namespace){
-        if(Objects.requireNonNull(namespace).length < 2){
+    public ResourceID(@NotNull String... namespace) {
+        if (Objects.requireNonNull(namespace).length < 2) {
             throw new IllegalArgumentException
                     ("too less arguments(at least two,one is root-namespace,another is name)");
         }
         Arrays.stream(namespace).forEach((str) -> {
-            if(!str.matches("[a-zA-Z\\d-_ ]+")){
+            if (!str.matches("[a-zA-Z\\d-_ ]+")) {
                 throw new IllegalArgumentException("Illegal Resource Id");
-            }
-            else{
+            } else {
                 this.namespace.add(str);
             }
         });
@@ -49,19 +49,21 @@ public class ResourceID {
 
     /**
      * 获取命名空间
+     *
      * @return 此id的命名空间
      */
     @NotNull
-    public List<String> getNamespace(){
+    public List<String> getNamespace() {
         return namespace;
     }
 
     /**
      * 获取名称
+     *
      * @return 名称
      */
     @NotNull
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -74,13 +76,12 @@ public class ResourceID {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
-        if(obj instanceof ResourceID id){
+        if (obj instanceof ResourceID id) {
             return id.name.equals(this.name) && id.namespace.equals(this.namespace);
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -88,8 +89,10 @@ public class ResourceID {
     @Override
     @NotNull
     public String toString() {
-        StringBuilder  builder = new StringBuilder();
-        namespace.forEach((str) -> {builder.append(str).append(":");});
+        StringBuilder builder = new StringBuilder();
+        namespace.forEach((str) -> {
+            builder.append(str).append(":");
+        });
         builder.append(this.name);
         return builder.toString();
     }

@@ -116,6 +116,7 @@ public final class Parser {
      *
      * @param stream 输入流
      * @return 解析获得的对象
+     * @throws IOException IO错误
      */
     @NotNull
     public UtopiaBinaryFormatObject parse(@NotNull DataInputStream stream) throws IOException {
