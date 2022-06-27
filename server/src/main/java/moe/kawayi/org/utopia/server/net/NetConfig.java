@@ -10,6 +10,12 @@ package moe.kawayi.org.utopia.server.net;
  * 网络配置类key
  */
 public final class NetConfig {
+
+    /**
+     * private
+     */
+    private NetConfig(){}
+
     /**
      * netty的boss线程数量
      */

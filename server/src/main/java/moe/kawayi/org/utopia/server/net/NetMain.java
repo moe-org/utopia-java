@@ -20,7 +20,6 @@ import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +34,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * 设置网络
  */
 public final class NetMain {
+
+    /**
+     * private
+     */
+    private NetMain(){}
 
     /**
      * 配置文件路径

@@ -1,7 +1,7 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The ResourceManager.java is a part of project utopia, under MIT License.
+// The ResourceManager.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.resource;
@@ -9,7 +9,6 @@ package moe.kawayi.org.utopia.core.resource;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,13 +18,18 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class ResourceManager {
 
     /**
+     * private
+     */
+    private ResourceManager(){}
+
+    /**
      * utopia的根目录
      */
     private static final AtomicReference<Path> UTOPIA_DIR = new AtomicReference<>();
 
     /**
      * 默认utopia根路径的系统PROPERTY。
-     *
+     * <p>
      * 即默认根目录将会是
      * <br/>
      * {@link System#getProperty(String)} with argument {@link ResourceManager#DEFAULT_UTOPIA_DIR_PROPERTY}的调用结果
@@ -41,7 +45,7 @@ public final class ResourceManager {
      *
      * @param utopiaRoot 根目录。非空。
      */
-    public static void setUtopiaDir(@NotNull Path utopiaRoot){
+    public static void setUtopiaDir(@NotNull Path utopiaRoot) {
         Objects.requireNonNull(utopiaRoot);
 
         UTOPIA_DIR.set(utopiaRoot);
@@ -49,17 +53,18 @@ public final class ResourceManager {
 
     /**
      * 获取utopia根目录。有时称为utopia-root
+     *
      * @return utopia的根目录。保证不为空。
      */
     @NotNull
-    public static Path getUtopiaDir(){
+    public static Path getUtopiaDir() {
         var got = UTOPIA_DIR.get();
-        if(got == null){
+        if (got == null) {
             var defaultValue = Path.of(System.getProperty("user.dir"));
-            UTOPIA_DIR.compareAndSet(null,defaultValue);
+            UTOPIA_DIR.compareAndSet(null, defaultValue);
 
             return defaultValue;
-        }else {
+        } else {
             return got;
         }
     }
@@ -68,12 +73,13 @@ public final class ResourceManager {
      * 根据路径获取基于utopia-root的路径
      * <br/>
      * 等价于: getUtopiaDir().resolve(other);
+     *
      * @param relative 应该为基于utopia-root的相对路径。
-     * @see ResourceManager#getPath(String)
      * @return 获取到的路径
+     * @see ResourceManager#getPath(String)
      */
     @NotNull
-    public static Path getPath(@NotNull Path relative){
+    public static Path getPath(@NotNull Path relative) {
         Objects.requireNonNull(relative);
         return getUtopiaDir().resolve(relative);
     }
@@ -82,12 +88,13 @@ public final class ResourceManager {
      * 根据路径获取基于utopia-root的路径
      * <br/>
      * 等价于: getUtopiaDir().resolve(other);
+     *
      * @param relative 应该为基于utopia-root的相对路径。
-     * @see ResourceManager#getPath(Path)
      * @return 获取到的路径
+     * @see ResourceManager#getPath(Path)
      */
     @NotNull
-    public static Path getPath(@NotNull String relative){
+    public static Path getPath(@NotNull String relative) {
         Objects.requireNonNull(relative);
         return getUtopiaDir().resolve(relative);
     }
@@ -96,15 +103,15 @@ public final class ResourceManager {
      * 获取基于utopia-root路径的相对路径
      * <br/>
      * 等价于: getUtopiaDir().relativize(other);
+     *
      * @param absolute 绝对路径
      * @return 相对于utopia-root的相对路径。
      */
     @NotNull
-    public static Path relativize(@NotNull Path absolute){
+    public static Path relativize(@NotNull Path absolute) {
         Objects.requireNonNull(absolute);
         return getUtopiaDir().relativize(absolute);
     }
-
 
 
 }

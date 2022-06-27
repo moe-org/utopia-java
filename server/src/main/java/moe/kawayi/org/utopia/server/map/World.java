@@ -33,21 +33,25 @@ public interface World {
     long getWorldId();
 
     /**
+     * 获取X轴最大值
      * @return 返回X轴最大值
      */
     int getMaxXSize();
 
     /**
+     * 获取X轴最小值
      * @return 返回X轴最小值
      */
     int getMinXSize();
 
     /**
+     * 获取Y轴最大值
      * @return 返回Y轴最大值
      */
     int getMaxYSize();
 
     /**
+     * 获取Y轴最小值
      * @return 返回Y轴最小值
      */
     int getMinYSize();

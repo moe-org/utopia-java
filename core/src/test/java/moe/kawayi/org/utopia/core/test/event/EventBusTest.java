@@ -28,11 +28,11 @@ public class EventBusTest {
             called = (boolean)event.getParameter().orElseThrow();
         });
 
-        eventBus.fireEvent(new EventImpl<Boolean>(true,true));
+        eventBus.fireEvent(new EventImpl<>(true, true));
 
         eventBus.unregister(id);
 
-        eventBus.fireEvent(new EventImpl<Boolean>(false,true));
+        eventBus.fireEvent(new EventImpl<>(false, true));
 
         Assertions.assertTrue(called);
     }

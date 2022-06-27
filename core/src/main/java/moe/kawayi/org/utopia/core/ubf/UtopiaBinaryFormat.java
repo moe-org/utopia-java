@@ -12,6 +12,12 @@ package moe.kawayi.org.utopia.core.ubf;
  * 供转换器和使用者参考
  */
 public final class UtopiaBinaryFormat {
+
+    /**
+     * private
+     */
+    private UtopiaBinaryFormat() {}
+
     /**
      * 最大object/array层数;
      * <p>

@@ -9,15 +9,20 @@ package moe.kawayi.org.utopia.server.main;
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.EnvironmentChecker;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 主类
  */
 public final class Main {
+
+    /**
+     * private
+     */
+    private Main(){}
 
     /**
      * 日志器

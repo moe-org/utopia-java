@@ -10,31 +10,21 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.async.AsyncLoggerConfig;
-import org.apache.logging.log4j.core.async.AsyncLoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.*;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.filter.ThresholdFilter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * log设置
  */
 public class LogUtil {
+
+    /**
+     * private
+     */
+    private LogUtil(){}
 
     /**
      * 控制台日志样式
@@ -116,7 +106,8 @@ public class LogUtil {
         // 配置文件
         var standard = Configurator.initialize(
                     CONTEXT_NAME,
-                    ClassLoader.getSystemClassLoader(),
+                    // ClassLoader.getSystemClassLoader(),
+                    LogUtil.class.getClassLoader(),
                     ResourceManager.getPath(CONFIG_FILE_PATH).toString()
                 );
 

@@ -10,7 +10,6 @@ import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -60,15 +59,15 @@ public final class WorldImpl implements World {
      *
      * @param worldId      世界id
      * @param quadrantSize 象限大小。单位Area
-     * @throws WorldConstructionException 如果参数quadrantSize的任意值(x或y)为负数，则抛出。
+     * @throws IllegalArgumentException 如果参数quadrantSize的任意值(x或y)为负数，则抛出。
      */
     @SuppressWarnings({"rawtypes","unchecked"})
-    public WorldImpl(long worldId, @NotNull FlatPosition quadrantSize) throws WorldConstructionException {
+    public WorldImpl(long worldId, @NotNull FlatPosition quadrantSize) throws IllegalArgumentException {
         // null check
         Objects.requireNonNull(quadrantSize, "quadrantSize must not be null");
 
         if (quadrantSize.x <= 0 || quadrantSize.y <= 0) {
-            throw new WorldConstructionException("参数quadrantSize的x , y 值为负数.");
+            throw new IllegalArgumentException("参数quadrantSize的x , y 值为负数.");
         }
 
         this.worldId = worldId;

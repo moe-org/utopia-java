@@ -6,7 +6,6 @@
 
 package moe.kawayi.org.utopia.core.ubf;
 
-import io.netty.util.SuppressForbidden;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.ArrayList;

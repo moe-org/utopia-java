@@ -20,6 +20,11 @@ import java.util.function.Consumer;
  */
 public class EnvironmentChecker {
 
+    /**
+     * private
+     */
+    private EnvironmentChecker(){}
+
     private static final Logger LOGGER = LogManagers.getLogger(EnvironmentChecker.class);
 
     /**

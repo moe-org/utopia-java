@@ -1,15 +1,16 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The PacketClassifier.java is a part of project utopia, under MIT License.
+// The PacketClassifier.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.server.net;
+package moe.kawayi.org.utopia.server.logic.desktop.net;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.FastThreadLocal;
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
@@ -18,6 +19,8 @@ import moe.kawayi.org.utopia.core.net.packet.PingPacket;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.util.List;
 
 /**
@@ -27,14 +30,19 @@ import java.util.List;
  *
  * 线程安全的
  */
-public final class PacketClassifier extends ByteToMessageDecoder {
+public class PacketClassifier extends ByteToMessageDecoder {
 
     /**
      * 默认构造
      */
     public PacketClassifier(){}
 
-    private static final Logger LOGGER = LogManagers.getLogger(PacketClassifier.class);
+    /**
+     * 获取服务器版本号的key的netty attr
+     */
+    public static final String CHANNEL_SERVER_PING_VERSION = "utopia.client.received_ping_packet.server_version";
+
+    private final Logger logger = LogManagers.getLogger(this.getClass());
 
     @NotNull
     private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){
@@ -52,7 +60,7 @@ public final class PacketClassifier extends ByteToMessageDecoder {
             @NotNull ByteBuf in,
             @NotNull List<Object> out) throws Exception {
 
-        // 读取type
+        // 读取数据类型
         var packetType = in.readInt();
 
         // LengthFieldBasedFrameDecoder为我们准备好了完整的数据长度
@@ -61,17 +69,20 @@ public final class PacketClassifier extends ByteToMessageDecoder {
 
         // 分类数据
         if(packetType == PackageTypeEnum.PING.getTypeId()){
-            out.add(new PingPacket());
-            LOGGER.debug("received ping type packet");
+            try(var byteArrayInputStream = new ByteArrayInputStream(data)){
+                try(var dataInputStream = new DataInputStream(byteArrayInputStream)){
+                    var nbt = converter.get().convert(dataInputStream);
+
+                    var attr = ctx.channel().attr(AttributeKey.valueOf(CHANNEL_SERVER_PING_VERSION));
+
+                    attr.set(nbt.get(PingPacket.UBF_VERSION_KEY).orElseThrow().getString().orElseThrow());
+                }
+            }
         } else if(packetType == PackageTypeEnum.COMMAND.getTypeId()){
-            // TODO
-            // out.add(converter.get().convert(new DataInputStream(new ByteArrayInputStream(data))));
-            LOGGER.debug("received command type packet");
+            logger.debug("received command type packet");
         }
         else{
-            // TODO
-            LOGGER.debug("received unknown type packet");
+            logger.debug("received unknown type packet");
         }
     }
-
 }

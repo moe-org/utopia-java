@@ -427,3 +427,7 @@ docs/
 
 ## output
 output-package/
+
+## arguments
+server-arguments.txt
+desktop-arguments.txt

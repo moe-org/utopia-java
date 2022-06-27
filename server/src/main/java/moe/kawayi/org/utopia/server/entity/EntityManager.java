@@ -19,6 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class EntityManager {
 
     /**
+     * private
+     */
+    private EntityManager(){}
+
+    /**
      * 实体列表
      */
     private static final ConcurrentHashMap<String, EntityFactory> ENTITIES_FACTORY = new ConcurrentHashMap<>();

@@ -8,7 +8,6 @@ package moe.kawayi.org.utopia.server.test.map;
 
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
-import moe.kawayi.org.utopia.server.map.WorldConstructionException;
 import moe.kawayi.org.utopia.server.map.WorldImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ public class WorldImplTest {
 
     private final WorldImpl world;
 
-    public WorldImplTest() throws moe.kawayi.org.utopia.server.map.WorldConstructionException {
+    public WorldImplTest() {
         world = new WorldImpl(0, new FlatPosition(4, 4));
     }
 
@@ -74,7 +73,7 @@ public class WorldImplTest {
     @CsvSource({"-1,0", "0,-1", "0,0", "-1,-1"})
     public void wrongConstructionTest(int x, int y) {
         Assertions.assertThrows(
-                WorldConstructionException.class,
+                IllegalArgumentException.class,
                 () -> {
                     new WorldImpl(0, new FlatPosition(x, y));
                 }

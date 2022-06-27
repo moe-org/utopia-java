@@ -18,6 +18,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * 从JAR的utopia-version.properties中读取Utopia-Version条目
  */
 public final class UtopiaVersion {
+    /**
+     * should not be called
+     */
+    private UtopiaVersion(){}
 
     private static final AtomicReference<String> VERSION = new AtomicReference<>(null);
 

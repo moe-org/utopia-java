@@ -7,7 +7,6 @@
 package moe.kawayi.org.utopia.core.log;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;

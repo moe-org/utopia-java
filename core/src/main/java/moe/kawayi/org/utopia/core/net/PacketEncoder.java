@@ -7,14 +7,12 @@
 package moe.kawayi.org.utopia.core.net;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.concurrent.FastThreadLocal;
-import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
+import moe.kawayi.org.utopia.core.net.packet.UbfPacket;
 import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.net.packet.UbfPacket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

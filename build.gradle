@@ -33,10 +33,9 @@ allprojects {
 
     // 设置项目版本号
     def projectDef = project.getProperties()
-
-    snapshotBuildNumber = projectDef.containsKey(SNAPSHOT_BUILD_KEY) ? projectDef.get(SNAPSHOT_BUILD_KEY) : ""
     def _versionString_ = clearVersion
 
+    snapshotBuildNumber = projectDef.containsKey(SNAPSHOT_BUILD_KEY) ? projectDef.get(SNAPSHOT_BUILD_KEY) : ""
     if(snapshotBuildNumber != ""){
         _versionString_ = _versionString_ + "-" + snapshotBuildNumber + "-SNAPSHOT"
     }
@@ -45,8 +44,8 @@ allprojects {
 
     // 设置全局变量
     ext {
-        // javafx版本号
-        javafxVersion = "17"
+        // lwjgl版本号
+        lwjglVersion = "3.3.1"
 
         // log4j2版本号
         log4j2Version = "2.17.0"
@@ -87,6 +86,13 @@ allprojects {
         options.forkOptions.jvmArgs << "-Xlint:unchecked"
         options.compilerArgs << "-Werror"
         options.verbose(true)
+    }
+
+    // 设置Java版本
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(18))
+        }
     }
 }
 
@@ -136,10 +142,6 @@ subprojects {
 
             testLogging {
                 events "passed", "skipped", "failed"
-            }
-
-            reports {
-                html.enabled(true)
             }
         }
 
@@ -204,7 +206,7 @@ gradle.projectsEvaluated {
                 it.from subprojects.collect { project -> project.sourceSets.main.allSource }
 
                 it.destinationDirectory.set(file("${releaseDir}"))
-                it.archiveName("utopia-source-${rootProject.version.toString()}.jar")
+                it.archiveFileName = "utopia-source-${rootProject.version.toString()}.jar"
             }
             // 生成所有子项目的javadoc的jar
             tasks.named("allJavadocJar",Jar){
@@ -215,7 +217,9 @@ gradle.projectsEvaluated {
                 it.from "${rootProject.rootDir.toString()}/${javadocReleasePath.toString()}"
 
                 it.destinationDirectory.set(file("${releaseDir}"))
-                it.archiveName("utopia-javadoc-${rootProject.version.toString()}.jar")
+                it.archiveFileName = "utopia-javadoc-${rootProject.version.toString()}.jar"
             }
         }
 }
+
+defaultTasks 'tasks'

@@ -10,6 +10,12 @@ package moe.kawayi.org.utopia.server.map;
  * 世界信息
  */
 public final class WorldInfo {
+
+    /**
+     * should not be called
+     */
+    private WorldInfo(){}
+
     /**
      * 地图层X轴大小
      */

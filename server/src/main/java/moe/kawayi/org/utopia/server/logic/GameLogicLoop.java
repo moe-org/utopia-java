@@ -11,7 +11,9 @@ import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.server.map.*;
+import moe.kawayi.org.utopia.server.map.World;
+import moe.kawayi.org.utopia.server.map.WorldImpl;
+import moe.kawayi.org.utopia.server.map.WorldInfo;
 import moe.kawayi.org.utopia.server.net.NetMain;
 
 import java.util.concurrent.atomic.AtomicBoolean;

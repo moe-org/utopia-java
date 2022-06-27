@@ -18,6 +18,11 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class LogManagers extends System.LoggerFinder {
 
+    /**
+     * 默认构造函数
+     */
+    public LogManagers(){}
+
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
             // 配置日志
             LogUtil.configureLog()

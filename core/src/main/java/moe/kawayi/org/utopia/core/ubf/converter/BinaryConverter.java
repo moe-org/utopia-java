@@ -21,9 +21,19 @@ import java.util.Objects;
 public final class BinaryConverter {
 
     /**
+     * private
+     */
+    private BinaryConverter(){}
+
+    /**
      * UtopiaBinaryFormat转换到Binary的线程不安全类
      */
     public static final class ConvertTo {
+        /**
+         * 默认构造
+         */
+        public ConvertTo(){}
+
         /**
          * 递归层数
          */
@@ -172,6 +182,11 @@ public final class BinaryConverter {
      * 从Binary转换到UtopiaBinaryFormat的线程不安全类
      */
     public static final class ConvertFrom {
+
+        /**
+         * 默认构造
+         */
+        public ConvertFrom(){}
 
         /**
          * 递归层数

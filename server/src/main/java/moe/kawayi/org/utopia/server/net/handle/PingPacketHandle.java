@@ -6,7 +6,6 @@
 
 package moe.kawayi.org.utopia.server.net.handle;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
@@ -19,6 +18,10 @@ import moe.kawayi.org.utopia.core.util.NotNull;
  */
 public final class PingPacketHandle extends SimpleChannelInboundHandler<PingPacket> {
 
+    /**
+     * 默认构造函数
+     */
+    public PingPacketHandle(){}
 
     @Override
     protected void channelRead0(

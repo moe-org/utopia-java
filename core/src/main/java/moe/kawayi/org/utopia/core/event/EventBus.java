@@ -22,6 +22,11 @@ import java.util.function.Consumer;
 public final class EventBus<EventT extends Event> {
 
     /**
+     * 默认构造
+     */
+    public EventBus(){}
+
+    /**
      * 监听者列表
      */
     private final ConcurrentHashMap<EventRegistrationId, Consumer<EventT>> listeners = new ConcurrentHashMap<>();

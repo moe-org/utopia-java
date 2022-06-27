@@ -18,6 +18,11 @@ import java.util.Optional;
  */
 public abstract class AbstractEntityDefault implements Entity {
 
+    /**
+     * 默认构造
+     */
+    public AbstractEntityDefault(){}
+
     @Nullable
     private WorldPosition worldPosition = null;
 

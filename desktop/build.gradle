@@ -4,9 +4,16 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+
+import javax.swing.RootPaneContainer
+import java.lang.reflect.Method
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import org.gradle.internal.os.OperatingSystem
+
+import java.util.stream.Stream
 
 // 插件设置
 plugins {
@@ -16,20 +23,47 @@ plugins {
     // 打包jar
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 
-    // 引入javafx
-    id 'org.openjfx.javafxplugin' version '0.0.11'
+}
+
+// LWJGL
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+                : "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+        break
+    case OperatingSystem.WINDOWS:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.contains("64")
+                ? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+                : "natives-windows-x86"
+        break
 }
 
 // 依赖
 dependencies {
     // 依赖core
     api project(":core")
-}
 
-// 引入javafx
-javafx {
-    version = Integer.parseInt("$javafxVersion")
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    // LWJGL
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-assimp"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 }
 
 // 配置启动类
@@ -41,9 +75,13 @@ jar {
 
 // 打包
 shadowJar {
+    archiveBaseName.set("desktop")
+    archiveVersion.set("${rootProject.version}")
     archiveClassifier.set("release")
 
     destinationDirectory.set(new File("${desktopReleaseDir}"))
+
+    rootProject.ext.desktopReleaseFile = new File("${desktopReleaseDir}").toPath().resolve("desktop-${rootProject.version}-release.jar")
 }
 
 // 发布文件
@@ -67,4 +105,56 @@ tasks.register("release"){
 
     // copy font
     releaseFile("${rootDir.toString()}/assets/fonts/unifont.ttf","${desktopReleaseDir}/assets/fonts/unifont.ttf")
+}
+
+// 启动任务
+tasks.register("run"){
+    dependsOn "release"
+
+    doLast {
+        println "server at:${file("${desktopReleaseFile}").toURI().toURL().toString()}"
+
+        // 获取参数文件
+        // 按行来获取参数
+        var args = new ArrayList<String>()
+
+        var argFile = rootProject.rootDir.toPath().resolve("desktop-arguments.txt")
+
+        if (Files.exists(argFile)) {
+            try (Stream<String> stream = Files.lines(argFile)) {
+                stream.forEach(args::add)
+            }
+        } else {
+            // 创建一个新的默认文件
+            var lines = new ArrayList<String>()
+            lines.add("-jar")
+            lines.add(file("${desktopReleaseFile}").toString())
+
+            args.add("-jar")
+            args.add(file("${desktopReleaseFile}").toString())
+
+            var builder = new StringBuilder()
+            lines.forEach((str) -> {builder.append(str);builder.append("\n")})
+
+            Files.write(argFile,builder.toString().getBytes(Charset.defaultCharset()))
+        }
+
+        // load
+        var ending = ""
+        if(OperatingSystem.current() == OperatingSystem.WINDOWS){
+            ending = ".exe"
+        }
+
+        var exec = file(System.getProperty('java.home')).toPath().resolve("bin/java${ending}")
+        var builder = new ProcessBuilder()
+
+        builder.command(exec.toString())
+
+        args.forEach((str) -> {builder.command().add(str)})
+
+        builder.directory(file("${desktopReleaseDir}"))
+
+        println "execute:${builder.command()}"
+        println "exit code:${builder.start().waitFor()}"
+    }
 }

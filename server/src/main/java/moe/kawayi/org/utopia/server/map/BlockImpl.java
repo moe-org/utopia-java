@@ -6,8 +6,8 @@
 
 package moe.kawayi.org.utopia.server.map;
 
-import moe.kawayi.org.utopia.server.entity.Entity;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.server.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,6 +21,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * 线程安全
  */
 public final class BlockImpl implements Block {
+
+    /**
+     * 默认构造
+     */
+    public BlockImpl(){}
 
     /**
      * 实体列表

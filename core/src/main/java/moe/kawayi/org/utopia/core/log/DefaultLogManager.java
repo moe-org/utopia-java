@@ -15,6 +15,11 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class DefaultLogManager implements LogManager{
 
+    /**
+     * 默认构造函数
+     */
+    public DefaultLogManager(){}
+
     private final AtomicLong loggerCount = new AtomicLong(0);
 
     @Override

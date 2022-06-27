@@ -19,6 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class WorldManager {
 
     /**
+     * private
+     */
+    private WorldManager(){}
+
+    /**
      * 世界列表
      */
     private static final ConcurrentHashMap<Long, World> WORLDS = new ConcurrentHashMap<>();
