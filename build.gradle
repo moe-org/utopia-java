@@ -20,7 +20,7 @@ buildscript {
 }
 
 
-plugins{
+plugins {
     id 'java'
 }
 
@@ -39,7 +39,7 @@ allprojects {
     def _versionString_ = clearVersion
 
     snapshotBuildNumber = projectDef.containsKey(SNAPSHOT_BUILD_KEY) ? projectDef.get(SNAPSHOT_BUILD_KEY) : ""
-    if(snapshotBuildNumber != ""){
+    if (snapshotBuildNumber != "") {
         _versionString_ = _versionString_ + "-" + snapshotBuildNumber + "-SNAPSHOT"
     }
 
@@ -68,10 +68,14 @@ allprojects {
         // 发布路径
         releaseDir = "${rootDir}/output-package/"
         desktopReleaseDir = "${releaseDir}/desktop"
-        serverReleaseDir =  "${releaseDir}/server"
+        serverReleaseDir = "${releaseDir}/server"
 
         // javadoc输出路径
         javadocReleasePath = "docs"
+
+        // 工具的版本
+        jacocoVersion = "0.8.8"
+        checkstyleVersion = "10.3.1"
     }
 
     // 设置储存库
@@ -82,7 +86,7 @@ allprojects {
     }
 
     // 面向所有项目设置Java编译参数
-    compileJava{
+    compileJava {
         options.encoding("UTF-8")
         options.setEncoding("UTF-8")
         options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
@@ -110,13 +114,13 @@ subprojects {
 
         // 定义一些变量
         // 小驼峰和大驼峰的命名设置
-        configProperties.put("utopia.checkstyle.small_hump","[a-z]+[A-Za-z0-9]*")
-        configProperties.put("utopia.checkstyle.large_hump","[A-Z]+[A-Za-z0-9]*")
-        configProperties.put("utopia.checkstyle.always_large","[A-Z]+[A-Z0-9_]*")
+        configProperties.put("utopia.checkstyle.small_hump", "[a-z]+[A-Za-z0-9]*")
+        configProperties.put("utopia.checkstyle.large_hump", "[A-Z]+[A-Za-z0-9]*")
+        configProperties.put("utopia.checkstyle.always_large", "[A-Z]+[A-Z0-9_]*")
     }
 
-    jacoco{
-        toolVersion = "0.8.8"
+    jacoco {
+        toolVersion = "${jacocoVersion}"
     }
 
     // 在解析之后
@@ -133,12 +137,12 @@ subprojects {
         }
 
         // test调用jacoco
-        tasks.named("test"){
+        tasks.named("test") {
             it.finalizedBy(tasks.named("jacocoTestReport")) // 在test完成之后调用jacoco
         }
 
         // 设置通用依赖
-        dependencies{
+        dependencies {
             // 测试框架
             testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
         }
@@ -166,6 +170,10 @@ subprojects {
             options.compilerArgs << "-Xlint"
         }
     }
+
+    dependencies {
+        checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+    }
 }
 
 // 添加一个辅助任务，用于输出版本号
@@ -175,16 +183,16 @@ tasks.register("printVersion") {
 }
 
 // 声明
-tasks.register("allJavadoc",Javadoc)
-tasks.register("allJavaSourceJar",Jar)
-tasks.register("allJavadocJar",Jar)
+tasks.register("allJavadoc", Javadoc)
+tasks.register("allJavaSourceJar", Jar)
+tasks.register("allJavadocJar", Jar)
 
 // 解析项目过后的设置
 gradle.projectsEvaluated {
     gradle ->
         {
             // 生成所有子项目的javadoc
-            tasks.named("allJavadoc",Javadoc) {
+            tasks.named("allJavadoc", Javadoc) {
                 description "Collect all subproject javadoc into one directory"
 
                 it.source subprojects.collect { project -> project.sourceSets.main.allJava }
@@ -196,7 +204,7 @@ gradle.projectsEvaluated {
 
                 // 设置
                 it.failOnError = true
-                it.options.setJFlags(["-Dfile.encoding=UTF-8","-Duser.language=es"])
+                it.options.setJFlags(["-Dfile.encoding=UTF-8", "-Duser.language=es"])
                 it.options.setEncoding("UTF-8")
                 it.options.encoding("UTF-8")
                 it.options.setLocale("zh-cn")
@@ -205,7 +213,7 @@ gradle.projectsEvaluated {
                 it.title = "Utopia Javadoc ver." + rootProject.version.toString()
             }
             // 生成所有子项目的源代码的jar
-            tasks.named("allJavaSourceJar",Jar){
+            tasks.named("allJavaSourceJar", Jar) {
                 description "Collect all subproject source code into one jar"
 
                 it.dependsOn(tasks.named("classes"))
@@ -216,7 +224,7 @@ gradle.projectsEvaluated {
                 it.archiveFileName = "utopia-source-${rootProject.version.toString()}.jar"
             }
             // 生成所有子项目的javadoc的jar
-            tasks.named("allJavadocJar",Jar){
+            tasks.named("allJavadocJar", Jar) {
                 description "Collect all subproject javadoc into one jar"
 
                 it.dependsOn(tasks.named("allJavadoc"))

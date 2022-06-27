@@ -9,7 +9,6 @@ package moe.kawayi.org.utopia.core.net.packet;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
-import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatValueImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.UtopiaVersion;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,8 @@ public final class PingPacket implements UbfPacket {
     /**
      * 默认构造
      */
-    public PingPacket(){}
+    public PingPacket() {
+    }
 
     private static final Logger LOGGER = LogManager.getLogger(PingPacket.class);
 
@@ -36,14 +36,13 @@ public final class PingPacket implements UbfPacket {
 
     @NotNull
     @Override
-    public UtopiaBinaryFormatObject getUtopiaBinaryFormatObject(){
+    public UtopiaBinaryFormatObject getUtopiaBinaryFormatObject() {
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
         try {
-            obj.put(UBF_VERSION_KEY, new UtopiaBinaryFormatValueImpl(UtopiaVersion.getUtopiaVersion()));
-        }
-        catch(@NotNull IOException err){
-            LOGGER.error("get utopia version failed down",err);
+            obj.put(UBF_VERSION_KEY, UtopiaVersion.getUtopiaVersion());
+        } catch (@NotNull IOException err) {
+            LOGGER.error("get utopia version failed down", err);
         }
 
         return obj;

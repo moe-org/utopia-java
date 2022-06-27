@@ -16,7 +16,7 @@ import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
-import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
+import moe.kawayi.org.utopia.core.ubf.converter.Parser;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.io.ByteArrayInputStream;
@@ -25,9 +25,9 @@ import java.util.List;
 
 /**
  * 包分类器。根据包id进行分类。
- *
+ * <p>
  * 我们已经使用{@link LengthFieldBasedFrameDecoder}来解码长度数据了。所以我们不需要再检查长度。
- *
+ * <p>
  * 线程安全的
  */
 public class PacketClassifier extends ByteToMessageDecoder {
@@ -35,7 +35,8 @@ public class PacketClassifier extends ByteToMessageDecoder {
     /**
      * 默认构造
      */
-    public PacketClassifier(){}
+    public PacketClassifier() {
+    }
 
     /**
      * 获取服务器版本号的key的netty attr
@@ -45,11 +46,11 @@ public class PacketClassifier extends ByteToMessageDecoder {
     private final Logger logger = LogManagers.getLogger(this.getClass());
 
     @NotNull
-    private final FastThreadLocal<BinaryConverter.ConvertFrom> converter = new FastThreadLocal<>(){
+    private final FastThreadLocal<Parser> converter = new FastThreadLocal<>() {
         @Override
         @NotNull
-        protected BinaryConverter.ConvertFrom initialValue() throws Exception {
-            return new BinaryConverter.ConvertFrom();
+        protected Parser initialValue() throws Exception {
+            return new Parser();
         }
     };
 
@@ -68,20 +69,19 @@ public class PacketClassifier extends ByteToMessageDecoder {
         in.readBytes(data);
 
         // 分类数据
-        if(packetType == PackageTypeEnum.PING.getTypeId()){
-            try(var byteArrayInputStream = new ByteArrayInputStream(data)){
-                try(var dataInputStream = new DataInputStream(byteArrayInputStream)){
-                    var nbt = converter.get().convert(dataInputStream);
+        if (packetType == PackageTypeEnum.PING.getTypeId()) {
+            try (var byteArrayInputStream = new ByteArrayInputStream(data)) {
+                try (var dataInputStream = new DataInputStream(byteArrayInputStream)) {
+                    var nbt = converter.get().parse(dataInputStream);
 
                     var attr = ctx.channel().attr(AttributeKey.valueOf(CHANNEL_SERVER_PING_VERSION));
 
-                    attr.set(nbt.get(PingPacket.UBF_VERSION_KEY).orElseThrow().getString().orElseThrow());
+                    attr.set(nbt.getString(PingPacket.UBF_VERSION_KEY).orElseThrow());
                 }
             }
-        } else if(packetType == PackageTypeEnum.COMMAND.getTypeId()){
+        } else if (packetType == PackageTypeEnum.COMMAND.getTypeId()) {
             logger.debug("received command type packet");
-        }
-        else{
+        } else {
             logger.debug("received unknown type packet");
         }
     }

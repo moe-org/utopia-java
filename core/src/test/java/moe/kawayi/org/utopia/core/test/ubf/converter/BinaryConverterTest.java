@@ -7,14 +7,12 @@
 package moe.kawayi.org.utopia.core.test.ubf.converter;
 
 import moe.kawayi.org.utopia.core.ubf.*;
-import moe.kawayi.org.utopia.core.ubf.converter.BinaryConverter;
+import moe.kawayi.org.utopia.core.ubf.converter.Parser;
+import moe.kawayi.org.utopia.core.ubf.converter.Writer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.*;
 
 public class BinaryConverterTest {
 
@@ -29,9 +27,8 @@ public class BinaryConverterTest {
         for (int stack = 1; stack != UtopiaBinaryFormat.MAX_STACK; stack++) {
 
             var newCaller = new UtopiaBinaryFormatObjectImpl();
-            var newValue = new UtopiaBinaryFormatValueImpl(newCaller);
 
-            caller.put("", newValue);
+            caller.put("", 1);
 
             caller = newCaller;
         }
@@ -41,15 +38,15 @@ public class BinaryConverterTest {
                     var memoryOutput = new ByteArrayOutputStream();
                     var outputStream = new DataOutputStream(memoryOutput);
 
-                    var to = new BinaryConverter.ConvertTo();
-                    var from = new BinaryConverter.ConvertFrom();
+                    var to = new Writer();
+                    var from = new Parser();
 
                     // 不抛异常就算成功
-                    to.convert(outputStream, obj);
+                    to.write(obj, outputStream);
 
                     var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
 
-                    from.convert(inputStream);
+                    from.parse(inputStream);
                 }
         );
     }
@@ -65,9 +62,8 @@ public class BinaryConverterTest {
         for (int stack = 1; stack != (UtopiaBinaryFormat.MAX_STACK + 1); stack++) {
 
             var newCaller = new UtopiaBinaryFormatObjectImpl();
-            var newValue = new UtopiaBinaryFormatValueImpl(newCaller);
 
-            caller.put("", newValue);
+            caller.put("", newCaller);
 
             caller = newCaller;
         }
@@ -77,10 +73,9 @@ public class BinaryConverterTest {
                     var memoryOutput = new ByteArrayOutputStream();
                     var outputStream = new DataOutputStream(memoryOutput);
 
-                    var to = new BinaryConverter.ConvertTo();
+                    var to = new Writer();
 
-                    // 不抛异常就算成功
-                    to.convert(outputStream, obj);
+                    to.write(obj, outputStream);
                 }
         );
     }
@@ -89,84 +84,69 @@ public class BinaryConverterTest {
      * 检查基础类型转换一致性
      */
     @Test
-    public void convertBaseRightTest() throws java.io.IOException {
-        UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
-        obj.put("BYTE", new UtopiaBinaryFormatValueImpl((byte) 1));
-        obj.put("SHORT", new UtopiaBinaryFormatValueImpl((short) 2));
-        obj.put("INT", new UtopiaBinaryFormatValueImpl(3));
-        obj.put("LONG", new UtopiaBinaryFormatValueImpl((long) 4));
-        obj.put("FLOAT", new UtopiaBinaryFormatValueImpl((float) 5));
-        obj.put("DOUBLE", new UtopiaBinaryFormatValueImpl((double) 6));
-        obj.put("BOOLEAN", new UtopiaBinaryFormatValueImpl(false));
-        obj.put("STRING", new UtopiaBinaryFormatValueImpl("STR"));
+    public void convertTest() {
+        Assertions.assertDoesNotThrow(() -> {
+            UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
+            obj.put("BYTE", (byte) 1);
+            obj.put("SHORT", (short) 2);
+            obj.put("INT", 3);
+            obj.put("LONG", (long) 4);
+            obj.put("FLOAT", (float) 5);
+            obj.put("DOUBLE", (double) 6);
+            obj.put("BOOLEAN", false);
+            obj.put("STRING", "STR");
 
-        var memoryOutput = new ByteArrayOutputStream();
-        var outputStream = new DataOutputStream(memoryOutput);
+            var memoryOutput = new ByteArrayOutputStream();
+            var outputStream = new DataOutputStream(memoryOutput);
 
-        var to = new BinaryConverter.ConvertTo();
-        var from = new BinaryConverter.ConvertFrom();
+            var to = new Writer();
+            var from = new Parser();
 
-        to.convert(outputStream, obj);
+            to.write(obj, outputStream);
 
-        var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
+            var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
 
-        obj = from.convert(inputStream);
+            obj = (UtopiaBinaryFormatObjectImpl) from.parse(inputStream);
 
-        // 检验
-        var value = obj.get("BYTE");
+            // 检验
+            var value = obj.get("BYTE");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getByte().isPresent());
-        Assertions.assertEquals((byte) 1, value.get().getByte().get());
-
-
-        value = obj.get("SHORT");
-
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getShort().isPresent());
-        Assertions.assertEquals((short) 2, value.get().getShort().get());
+            Assertions.assertEquals((byte) 1, (byte) value.orElseThrow());
 
 
-        value = obj.get("INT");
+            value = obj.get("SHORT");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getInt().isPresent());
-        Assertions.assertEquals(3, value.get().getInt().get());
+            Assertions.assertEquals((short) 2, (short) value.orElseThrow());
 
 
-        value = obj.get("LONG");
+            value = obj.get("INT");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getLong().isPresent());
-        Assertions.assertEquals(4, value.get().getLong().get());
+            Assertions.assertEquals(3, (int) value.orElseThrow());
 
 
-        value = obj.get("FLOAT");
+            value = obj.get("LONG");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getFloat().isPresent());
-        Assertions.assertEquals((float) 5.0, value.get().getFloat().get());
+            Assertions.assertEquals(4L, (long) value.orElseThrow());
 
 
-        value = obj.get("DOUBLE");
+            value = obj.get("FLOAT");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getDouble().isPresent());
-        Assertions.assertEquals(6.0, value.get().getDouble().get());
+            Assertions.assertEquals(5.0f, (float) value.orElseThrow());
 
 
-        value = obj.get("BOOLEAN");
+            value = obj.get("DOUBLE");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getBoolean().isPresent());
-        Assertions.assertEquals(false, value.get().getBoolean().get());
+            Assertions.assertEquals(6.0, (double) value.orElseThrow());
 
 
-        value = obj.get("STRING");
+            value = obj.get("BOOLEAN");
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getString().isPresent());
-        Assertions.assertEquals("STR", value.get().getString().get());
+            Assertions.assertFalse((boolean) value.orElseThrow());
+
+            value = obj.get("STRING");
+
+            Assertions.assertEquals("STR", value.orElseThrow());
+        });
     }
 
     /**
@@ -177,36 +157,31 @@ public class BinaryConverterTest {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatArray array = new UtopiaBinaryFormatArrayImpl();
 
-        array.add(new UtopiaBinaryFormatValueImpl(1));
-        array.add(new UtopiaBinaryFormatValueImpl(2));
-        array.add(new UtopiaBinaryFormatValueImpl(3));
-        obj.put("", new UtopiaBinaryFormatValueImpl(array));
+        array.add(1);
+        array.add(2);
+        array.add(3);
+        obj.put("", array);
 
         // 转换
         var memoryOutput = new ByteArrayOutputStream();
         var outputStream = new DataOutputStream(memoryOutput);
 
-        var to = new BinaryConverter.ConvertTo();
-        var from = new BinaryConverter.ConvertFrom();
+        var to = new Writer();
+        var from = new Parser();
 
-        to.convert(outputStream, obj);
+        to.write(obj, outputStream);
 
         var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
 
-        obj = from.convert(inputStream);
+        obj = (UtopiaBinaryFormatObjectImpl) from.parse(inputStream);
 
         // 检查
-        var value = obj.get("");
+        var value = obj.getArray("").orElseThrow();
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getArray().isPresent());
-
-        array = value.get().getArray().get();
-
-        Assertions.assertEquals(3, array.getLength());
-        Assertions.assertEquals(1, array.get(0).getInt().orElseThrow());
-        Assertions.assertEquals(2, array.get(1).getInt().orElseThrow());
-        Assertions.assertEquals(3, array.get(2).getInt().orElseThrow());
+        Assertions.assertEquals(3, value.size());
+        Assertions.assertEquals(1, value.getInt(0).orElseThrow());
+        Assertions.assertEquals(2, value.getInt(1).orElseThrow());
+        Assertions.assertEquals(3, value.getInt(2).orElseThrow());
     }
 
     @Test
@@ -214,45 +189,37 @@ public class BinaryConverterTest {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObject testObj = new UtopiaBinaryFormatObjectImpl();
 
-        testObj.put("AK", new UtopiaBinaryFormatValueImpl("AV"));
-        testObj.put("BK", new UtopiaBinaryFormatValueImpl("BV"));
-        testObj.put("CK", new UtopiaBinaryFormatValueImpl("CV"));
-        obj.put("", new UtopiaBinaryFormatValueImpl(testObj));
+        testObj.put("AK", "AV");
+        testObj.put("BK", "BV");
+        testObj.put("CK", "CV");
+        obj.put("", testObj);
 
         // 转换
         var memoryOutput = new ByteArrayOutputStream();
         var outputStream = new DataOutputStream(memoryOutput);
 
-        var to = new BinaryConverter.ConvertTo();
-        var from = new BinaryConverter.ConvertFrom();
+        var to = new Writer();
+        var from = new Parser();
 
-        to.convert(outputStream, obj);
+        to.write(obj, outputStream);
 
         var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
 
-        obj = from.convert(inputStream);
+        obj = (UtopiaBinaryFormatObjectImpl) from.parse(inputStream);
 
         // 检查
-        var value = obj.get("");
+        var value = obj.getObject("").orElseThrow();
 
-        Assertions.assertTrue(value.isPresent());
-        Assertions.assertTrue(value.get().getObject().isPresent());
-
-        testObj = value.get().getObject().get();
-
-        Assertions.assertEquals(3, testObj.getLength());
+        Assertions.assertEquals(3, value.size());
 
         Assertions.assertTrue(testObj.get("AK").isPresent());
-        Assertions.assertTrue(testObj.get("AK").get().getString().isPresent());
-        Assertions.assertEquals("AV", testObj.get("AK").get().getString().get());
+        Assertions.assertEquals("AV", testObj.getString("AK").orElseThrow());
 
         Assertions.assertTrue(testObj.get("BK").isPresent());
-        Assertions.assertTrue(testObj.get("BK").get().getString().isPresent());
-        Assertions.assertEquals("BV", testObj.get("BK").get().getString().get());
+        Assertions.assertEquals("BV", testObj.getString("BK").orElseThrow());
 
         Assertions.assertTrue(testObj.get("CK").isPresent());
-        Assertions.assertTrue(testObj.get("CK").get().getString().isPresent());
-        Assertions.assertEquals("CV", testObj.get("CK").get().getString().get());
+        Assertions.assertEquals("CV", testObj.getString("CK").orElseThrow());
     }
 
 }

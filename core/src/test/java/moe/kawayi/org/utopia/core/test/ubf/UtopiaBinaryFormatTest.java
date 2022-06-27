@@ -12,46 +12,13 @@ import org.junit.jupiter.api.Test;
 
 public class UtopiaBinaryFormatTest {
 
-
-    @Test
-    public void utopiaBinaryFormatValueImplNullTest() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatValueImpl((String) null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatValueImpl((UtopiaBinaryFormatArray) null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatValueImpl((UtopiaBinaryFormatObject) null);
-        });
-    }
-
-    @Test
-    public void utopiaBinaryFormatArrayImplNullTest() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatArrayImpl().add(null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            var array = new UtopiaBinaryFormatArrayImpl();
-
-            // 填充
-            array.add(new UtopiaBinaryFormatValueImpl(1));
-
-            // note
-            array.set(0, null);
-        });
-    }
-
     @Test
     public void utopiaBinaryFormatObjectImplNullTest() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatObjectImpl().put(null, null);
+            new UtopiaBinaryFormatObjectImpl().put(null, (String) null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatObjectImpl().put("key", null);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new UtopiaBinaryFormatObjectImpl().put(null, new UtopiaBinaryFormatValueImpl(0));
+            new UtopiaBinaryFormatObjectImpl().put("key", (String) null);
         });
     }
 
