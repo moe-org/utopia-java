@@ -27,34 +27,34 @@ public final class ConfigManager {
     /**
      * private
      */
-    private ConfigManager(){}
+    private ConfigManager() {
+    }
 
     /**
      * 加载配置文件
+     *
      * @param path 配置文件路径
      * @return 加载到的配置文件。如果配置文件不存在则返回empty
      * @throws IllegalArgumentException 如果文件不以.conf结尾则抛出
      */
     @NotNull
-    public static Optional<Config> loadConfig(@NotNull Path path) throws IllegalArgumentException{
+    public static Optional<Config> loadConfig(@NotNull Path path) throws IllegalArgumentException {
         Objects.requireNonNull(path);
 
-        if(!Files.exists(path)){
+        if (!Files.exists(path)) {
             return Optional.empty();
-        }
-        else{
-            if(path.toFile().getName().endsWith(".conf")){
+        } else {
+            if (path.toFile().getName().endsWith(".conf")) {
                 var options = ConfigParseOptions.defaults();
                 options = options.setClassLoader(null);
                 options = options.setAllowMissing(false);
                 options = options.setIncluder(null);
                 options = options.setSyntax(ConfigSyntax.CONF);
 
-                com.typesafe.config.Config config = ConfigFactory.parseFile(path.toFile(),options);
+                com.typesafe.config.Config config = ConfigFactory.parseFile(path.toFile(), options);
 
                 return Optional.of(new HoconConfig(config));
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("unknown file type");
             }
         }
@@ -85,51 +85,52 @@ public final class ConfigManager {
      * <br/>
      * 不支持任何Map,List等复杂类型。
      * <br/>
+     *
      * @param configClazz 配置类
      * @return Hocon配置字符串。同时可以被HOCON解析。
      * @throws IllegalAccessException java的反射API所抛出的异常
      */
     @NotNull
-    public static String createDefaultHocon(@NotNull Class<?> configClazz) throws java.lang.IllegalAccessException{
+    public static String createDefaultHocon(@NotNull Class<?> configClazz) throws java.lang.IllegalAccessException {
         Field[] declaredFields = configClazz.getDeclaredFields();
 
         var statics = Arrays.stream(declaredFields).toList().stream().filter(
-                value -> java.lang.reflect.Modifier.isStatic(value.getModifiers())).collect(Collectors.toList());
+                value -> java.lang.reflect.Modifier.isStatic(value.getModifiers())).toList();
 
-        var keys = statics.stream().filter(value -> !value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
+        var keys = statics.stream().filter(value -> !value.getName().endsWith("_DEFAULT")).toList();
 
         var values =
-                statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).collect(Collectors.toList());
+                statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).toList();
 
         // key as field name
         // value[0] as json key
         // value[1] as json value
-        HashMap<String,Object[]> hashMap = new HashMap<>();
+        HashMap<String, Object[]> hashMap = new HashMap<>();
 
-        for (var field : keys){
+        for (var field : keys) {
             Object[] objs = new Object[2];
             objs[0] = field.get(null);
             objs[1] = null;
 
-            hashMap.put(field.getName(),objs);
+            hashMap.put(field.getName(), objs);
         }
 
-        for(var field : values){
-            var got = hashMap.get(field.getName().substring(0,field.getName().length() - "_DEFAULT".length()));
+        for (var field : values) {
+            var got = hashMap.get(field.getName().substring(0, field.getName().length() - "_DEFAULT".length()));
 
-            if(got == null){
+            if (got == null) {
                 continue;
             }
 
             got[1] = field.get(null);
 
-            hashMap.put(field.getName().substring(0,field.getName().length() - "_DEFAULT".length() - 1),got);
+            hashMap.put(field.getName().substring(0, field.getName().length() - "_DEFAULT".length() - 1), got);
         }
 
-        HashMap<String,Object> keyValues = new HashMap<>();
+        HashMap<String, Object> keyValues = new HashMap<>();
         hashMap.values().forEach(
                 value -> {
-                    keyValues.put((String)value[0],value[1]);
+                    keyValues.put((String) value[0], value[1]);
                 }
         );
 
