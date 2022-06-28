@@ -7,6 +7,7 @@
 package moe.kawayi.org.utopia.desktop.main;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 
 /**
  * 主类
@@ -16,13 +17,15 @@ public class DesktopLauncher {
     /**
      * private
      */
-    private DesktopLauncher(){}
+    private DesktopLauncher() {
+    }
 
     /**
      * 入口函数
+     *
      * @param args 命令行参数
      */
-    public static void main(@NotNull String[] args){
+    public static void main(@NotNull String[] args) throws OpenGLException {
         DesktopApplication application = new DesktopApplication();
 
         application.init();
