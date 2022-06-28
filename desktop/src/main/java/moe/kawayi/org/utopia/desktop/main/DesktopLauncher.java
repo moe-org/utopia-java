@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.desktop.main;
 
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 
@@ -13,6 +15,8 @@ import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
  * 主类
  */
 public class DesktopLauncher {
+
+    private static final Logger LOGGER = LogManagers.getLogger(DesktopLauncher.class);
 
     /**
      * private
@@ -25,11 +29,17 @@ public class DesktopLauncher {
      *
      * @param args 命令行参数
      */
-    public static void main(@NotNull String[] args) throws OpenGLException {
+    public static void main(@NotNull String[] args) {
         DesktopApplication application = new DesktopApplication();
 
-        application.init();
-        application.start();
+        try {
+            application.init();
+            application.start();
+        } catch (OpenGLException err) {
+            LOGGER.error("crash by OpenGL", err);
+        } catch (Exception other) {
+            LOGGER.error("crash", other);
+        }
     }
 
 }

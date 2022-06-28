@@ -69,6 +69,7 @@ public class Window {
      *
      * @return 数组的第一个元素即窗口宽度，第二个元素为窗口高度
      */
+    @NotNull
     public int[] getSize() {
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
@@ -195,7 +196,10 @@ public class Window {
 
         /**
          * 生成窗口
+         *
+         * @throws OpenGLException 创建窗口失败时抛出
          */
+        @NotNull
         public Window build() throws OpenGLException {
             glfwDefaultWindowHints();
 

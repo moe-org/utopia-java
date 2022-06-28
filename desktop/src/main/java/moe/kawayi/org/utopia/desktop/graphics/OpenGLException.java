@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL33;
 /**
  * OpenGL异常
  */
+@SuppressWarnings("serial")
 public class OpenGLException extends Exception {
 
     @Nullable
