@@ -19,4 +19,5 @@ import java.lang.annotation.*;
 })
 @Retention(RetentionPolicy.CLASS)
 @Documented
-public @interface NotNull {/*Dot nothing*/}
+public @interface NotNull {/*Do nothing*/
+}

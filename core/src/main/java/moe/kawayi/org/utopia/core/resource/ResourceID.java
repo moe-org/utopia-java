@@ -43,8 +43,7 @@ public class ResourceID {
                 this.namespace.add(str);
             }
         });
-        this.name = namespace[namespace.length - 1];
-        this.namespace.remove(this.namespace.size() - 1);
+        this.name = this.namespace.remove(this.namespace.size() - 1);
     }
 
     /**

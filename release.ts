@@ -15,7 +15,8 @@ semanticRelease({
     repositoryUrl: 'https://github.com/moe-org/utopia.git',
     dryRun: true,
     ci: true,
-    plugins: ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator']
+    plugins: ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator'],
+    tagFormat: "${version}"
 }, {})
     .then((result) => {
         if (result) {
