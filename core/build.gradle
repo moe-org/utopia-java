@@ -57,7 +57,7 @@ sourceSets {
 }
 
 // 一些辅助函数
-static void createTempPropertyFileDir() {
+void createTempPropertyFileDir() {
     java.nio.file.Path path = Paths.get(TEMP_PROPERTY_FILE_DIR)
 
     if (!Files.exists(path)) {
@@ -65,7 +65,7 @@ static void createTempPropertyFileDir() {
     }
 }
 
-static void createPropertyTxtFile(java.nio.file.Path dir, String content) {
+void createPropertyTxtFile(java.nio.file.Path dir, String content) {
     createTempPropertyFileDir()
 
     Files.writeString(
@@ -75,7 +75,7 @@ static void createPropertyTxtFile(java.nio.file.Path dir, String content) {
             StandardOpenOption.TRUNCATE_EXISTING)
 }
 
-static void createPropertyFile(java.nio.file.Path dir, Map<String, String> content) {
+void createPropertyFile(java.nio.file.Path dir, Map<String, String> content) {
     createTempPropertyFileDir()
 
     if (!Files.exists(dir)) {

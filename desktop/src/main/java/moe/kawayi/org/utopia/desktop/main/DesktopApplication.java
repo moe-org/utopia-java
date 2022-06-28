@@ -9,6 +9,8 @@ package moe.kawayi.org.utopia.desktop.main;
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
 import moe.kawayi.org.utopia.core.log.Logger;
+import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
+import moe.kawayi.org.utopia.desktop.graphics.Window;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -35,7 +37,8 @@ public class DesktopApplication {
     /**
      * 默认构造函数
      */
-    public DesktopApplication(){}
+    public DesktopApplication() {
+    }
 
     /**
      * 最小窗口高度
@@ -50,7 +53,7 @@ public class DesktopApplication {
     /**
      * 宽高比
      */
-    private static final double W_H_RATIO = (double)MIN_WIDTH / (double)MIN_HEIGHT;
+    private static final double W_H_RATIO = (double) MIN_WIDTH / (double) MIN_HEIGHT;
 
     /**
      * 小图标(32x32)路径。基于Utopia Root。
@@ -70,91 +73,62 @@ public class DesktopApplication {
     /**
      * 窗口句柄
      */
-    public long window = 0;
+    public Window window;
 
     /**
      * 初始化客户端
      */
-    public void init(){
+    public void init() throws OpenGLException {
         LogStream stream = new LogStream(logger, System.Logger.Level.ERROR);
         GLFWErrorCallback.createPrint(new PrintStream(stream)).set();
 
-        if(!glfwInit()){
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
-
-        window = GLFW.glfwCreateWindow(300, 300, "Hello World!", MemoryUtil.NULL, MemoryUtil.NULL);
-        if ( window == MemoryUtil.NULL )
-            throw new RuntimeException("Failed to create the GLFW window");
-
-        glfwSetKeyCallback(window, (w, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(w, true); // We will detect this in the rendering loop
+        var builder = new Window.Builder("utopia", 300, 300);
+        builder.setOption(() -> {
+            glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+            glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         });
 
-        // Get the thread stack and push a new frame
-        try ( MemoryStack stack = stackPush() ) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
+        window = builder.build();
 
-            // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(window, pWidth, pHeight);
+        glfwSetKeyCallback(window.getHandle(), (w, key, scancode, action, mods) -> {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+                glfwSetWindowShouldClose(w, true);
+        });
 
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the window
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
-        } // the stack frame is popped automatically
-
-        // Make the OpenGL context current
-        glfwMakeContextCurrent(window);
-        // Enable v-sync
-        glfwSwapInterval(1);
-
-        // Make the window visible
-        glfwShowWindow(window);
+        window.makeCurrentContext();
+        window.enableVsync();
+        window.show();
     }
 
     /**
      * 启动客户端
      */
-    public void start(){
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
+    public void start() {
         GL.createCapabilities();
 
-        // Set the clear color
         GL11.glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
-        while ( !glfwWindowShouldClose(window) ) {
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+        while (!window.isCloseNeeded()) {
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-            glfwSwapBuffers(window); // swap the color buffers
+            window.swapBuffer();
 
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
             glfwPollEvents();
         }
 
-        Callbacks.glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
+        window.destroy();
 
         glfwTerminate();
-        glfwSetErrorCallback(null).free();
+
+        var callback = glfwSetErrorCallback(null);
+        if (callback != null) {
+            callback.free();
+            callback.close();
+        }
     }
 
 }
