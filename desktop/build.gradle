@@ -8,6 +8,7 @@
 import javax.swing.RootPaneContainer
 import java.lang.reflect.Method
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
@@ -68,7 +69,7 @@ dependencies {
 
 // 配置启动类
 jar {
-    manifest.attributes.put("Main-Class","moe.kawayi.org.utopia.desktop.main.DesktopLauncher")
+    manifest.attributes.put("Main-Class", "moe.kawayi.org.utopia.desktop.main.DesktopLauncher")
 
     finalizedBy shadowJar
 }
@@ -85,14 +86,14 @@ shadowJar {
 }
 
 // 发布文件
-static void releaseFile(String origin, String des){
+static void releaseFile(String origin, String des) {
     Paths.get(des).toFile().mkdirs()
 
-    Files.copy(Paths.get(origin),Paths.get(des), StandardCopyOption.REPLACE_EXISTING)
+    Files.copy(Paths.get(origin), Paths.get(des), StandardCopyOption.REPLACE_EXISTING)
 }
 
 // 发布
-tasks.register("release"){
+tasks.register("release") {
     description "package and copy assets"
     dependsOn ":desktop:shadowJar"
     dependsOn rootProject.tasks.named("allJavaSourceJar")
@@ -100,19 +101,19 @@ tasks.register("release"){
 
     //=====---------- copy source ----------=====
     // copy icon
-    releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png","${desktopReleaseDir}/Utopia(32x32).png")
-    releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png","${desktopReleaseDir}/Utopia(128x128).png")
+    releaseFile("${rootDir.toString()}/icon/Utopia(32x32).png", "${desktopReleaseDir}/Utopia(32x32).png")
+    releaseFile("${rootDir.toString()}/icon/Utopia(128x128).png", "${desktopReleaseDir}/Utopia(128x128).png")
 
     // copy font
-    releaseFile("${rootDir.toString()}/assets/fonts/unifont.ttf","${desktopReleaseDir}/assets/fonts/unifont.ttf")
+    releaseFile("${rootDir.toString()}/assets/fonts/unifont.ttf", "${desktopReleaseDir}/assets/fonts/unifont.ttf")
 }
 
 // 启动任务
-tasks.register("run"){
+tasks.register("run") {
     dependsOn "release"
 
     doLast {
-        println "server at:${file("${desktopReleaseFile}").toURI().toURL().toString()}"
+        println "desktop at:${file("${desktopReleaseFile}").toURI().toURL().toString()}"
 
         // 获取参数文件
         // 按行来获取参数
@@ -134,14 +135,14 @@ tasks.register("run"){
             args.add(file("${desktopReleaseFile}").toString())
 
             var builder = new StringBuilder()
-            lines.forEach((str) -> {builder.append(str);builder.append("\n")})
+            lines.forEach((str) -> { builder.append(str); builder.append("\n") })
 
-            Files.write(argFile,builder.toString().getBytes(Charset.defaultCharset()))
+            Files.write(argFile, builder.toString().getBytes(Charset.defaultCharset()))
         }
 
         // load
         var ending = ""
-        if(OperatingSystem.current() == OperatingSystem.WINDOWS){
+        if (OperatingSystem.current() == OperatingSystem.WINDOWS) {
             ending = ".exe"
         }
 
@@ -150,11 +151,15 @@ tasks.register("run"){
 
         builder.command(exec.toString())
 
-        args.forEach((str) -> {builder.command().add(str)})
+        args.forEach((str) -> { builder.command().add(str) })
 
         builder.directory(file("${desktopReleaseDir}"))
+        
+        builder.inheritIO()
 
-        println "execute:${builder.command()}"
-        println "exit code:${builder.start().waitFor()}"
+        println "execute:${builder.command()} at ${builder.directory()}"
+
+        var started = builder.start()
+        println "exit code:${started.waitFor()}"
     }
 }

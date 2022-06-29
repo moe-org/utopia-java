@@ -6,16 +6,25 @@
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
+import moe.kawayi.org.utopia.core.event.Event;
+import moe.kawayi.org.utopia.core.event.EventBus;
+import moe.kawayi.org.utopia.core.event.EventImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.opengl.GL33;
+import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.IOException;
 import java.nio.IntBuffer;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -27,11 +36,19 @@ public class Window {
 
     private final long handle;
 
+    private final EventBus<EventImpl<int[]>> framebufferSizeEvent = new EventBus<>();
+
+
     /**
      * 使用handle初始化此类。窗口通常由builder创建。
      */
     private Window(long handle) {
         this.handle = handle;
+        glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
+            var size = new int[]{width, height};
+
+            framebufferSizeEvent.fireEvent(new EventImpl<>(size, false));
+        });
     }
 
     /**
@@ -105,6 +122,25 @@ public class Window {
         glfwDestroyWindow(handle);
     }
 
+    /**
+     * 获取窗口大小改变事件
+     *
+     * @return 事件。事件参数见{@link Window#getSize()}
+     */
+    public EventBus<EventImpl<int[]>> getSizeEvent() {
+        return this.framebufferSizeEvent;
+    }
+
+    /**
+     * 启动自动viewport设置
+     */
+    public void enableAutoViewport() {
+        getSizeEvent().register((register) -> {
+            var param = (int[]) register.getParameter().orElseThrow();
+
+            GL33.glViewport(0, 0, param[0], param[1]);
+        });
+    }
 
     /**
      * 窗口构造者
@@ -117,6 +153,12 @@ public class Window {
          * 使用此函数来设置窗口
          */
         private Runnable setup;
+
+        /**
+         * 窗口图标
+         */
+        @Nullable
+        private GLFWImage icon = null;
 
         /**
          * 新的默认窗口
@@ -211,9 +253,36 @@ public class Window {
                 throw new OpenGLException("failed to create window");
             }
 
+            if (icon != null) {
+                nglfwSetWindowIcon(handle, 1, icon.address());
+            }
+
             return new Window(handle);
         }
 
+        /**
+         * 添加路径
+         */
+        public void setIcon(@NotNull Path icon) throws IOException {
+            try (var stack = MemoryStack.stackPush()) {
+                var x = stack.mallocInt(1);
+                var y = stack.mallocInt(1);
+                var channels = stack.mallocInt(1);
 
+                var src = STBImage.stbi_load(icon.toString(), x, y, channels, 4);
+
+                if (src == null) {
+                    throw new IOException("couldn't load image");
+                }
+
+                var image = GLFWImage.create();
+
+                image.width(x.get());
+                image.height(y.get());
+                image.pixels(src);
+
+                this.icon = image;
+            }
+        }
     }
 }

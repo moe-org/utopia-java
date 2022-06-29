@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint-last-commit": "npx commitlint --from HEAD~1 --to HEAD --verbose",
-    "commit": "git cz",
+    "commit": "git status && git cz",
     "try-release": "npx tsc && node ./output-package/release.js"
   },
   "repository": {

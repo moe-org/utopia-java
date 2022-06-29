@@ -8,7 +8,6 @@ package moe.kawayi.org.utopia.desktop.graphics;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-import org.lwjgl.opengl.GL33;
 
 /**
  * OpenGL异常

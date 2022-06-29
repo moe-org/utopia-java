@@ -24,7 +24,8 @@ public final class EventBus<EventT extends Event> {
     /**
      * 默认构造
      */
-    public EventBus(){}
+    public EventBus() {
+    }
 
     /**
      * 监听者列表
@@ -49,18 +50,19 @@ public final class EventBus<EventT extends Event> {
 
     /**
      * 注册一个lambda表达式到事件
+     *
      * @param caller 调用者
      * @return 注册id
      */
     @NotNull
-    public EventRegistrationId register(@NotNull Consumer<EventT> caller){
+    public EventRegistrationId register(@NotNull Consumer<EventT> caller) {
         Objects.requireNonNull(caller);
 
         var id = nextId.getAndIncrement();
 
         var registrationId = new EventRegistrationId(id);
 
-        listeners.put(registrationId,caller);
+        listeners.put(registrationId, caller);
 
         return registrationId;
     }
@@ -78,6 +80,13 @@ public final class EventBus<EventT extends Event> {
     }
 
     /**
+     * 清除所有注册者
+     */
+    public void clear() {
+        listeners.clear();
+    }
+
+    /**
      * 发布事件。发布事件之后，如果有监听者取消了事件，将会立即返回。
      * 监听者触发的所有异常原样传递。
      *
@@ -85,15 +94,15 @@ public final class EventBus<EventT extends Event> {
      */
     public void fireEvent(@Nullable EventT obj) {
 
-        if(obj.isCancelled())
+        if (obj.isCancelled())
             return;
 
         var listeners = this.listeners.values();
 
-        for(var listener : listeners){
+        for (var listener : listeners) {
             listener.accept(obj);
 
-            if(obj.isCancelled())
+            if (obj.isCancelled())
                 return;
         }
     }

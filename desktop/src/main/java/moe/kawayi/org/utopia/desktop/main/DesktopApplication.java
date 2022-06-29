@@ -9,6 +9,8 @@ package moe.kawayi.org.utopia.desktop.main;
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
 import moe.kawayi.org.utopia.core.log.Logger;
+import moe.kawayi.org.utopia.core.resource.ResourceManager;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
 import org.lwjgl.glfw.Callbacks;
@@ -20,8 +22,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.IntBuffer;
+import java.util.Objects;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -41,31 +45,6 @@ public class DesktopApplication {
     }
 
     /**
-     * 最小窗口高度
-     */
-    public static final int MIN_HEIGHT = 768;
-
-    /**
-     * 最小窗口宽度
-     */
-    public static final int MIN_WIDTH = 1024;
-
-    /**
-     * 宽高比
-     */
-    private static final double W_H_RATIO = (double) MIN_WIDTH / (double) MIN_HEIGHT;
-
-    /**
-     * 小图标(32x32)路径。基于Utopia Root。
-     */
-    public static final String SMALL_ICON_PATH = "Utopia(32x32).png";
-
-    /**
-     * 大图标(128x128)路径。基于Utopia Root。
-     */
-    public static final String LARGE_ICON_PATH = "Utopia(128x128).png";
-
-    /**
      * 日志器
      */
     public final Logger logger = LogManagers.getLogger(this.getClass());
@@ -73,7 +52,27 @@ public class DesktopApplication {
     /**
      * 窗口句柄
      */
-    public Window window;
+    private Window window = null;
+
+    /**
+     * 使用小图标
+     */
+    public boolean useSmallIcon = false;
+
+    /**
+     * 获取游戏主要窗口
+     *
+     * @return 游戏窗口
+     */
+    @NotNull
+    public Window getMainWindow() {
+        // 如果为null则说明窗口尚未初始化
+        // 我们抛出异常来提前检查
+        if (this.window == null) {
+            throw new NullPointerException("main window not initialized");
+        }
+        return this.window;
+    }
 
     /**
      * 初始化客户端
@@ -83,14 +82,24 @@ public class DesktopApplication {
         GLFWErrorCallback.createPrint(new PrintStream(stream)).set();
 
         if (!glfwInit()) {
-            throw new IllegalStateException("Unable to initialize GLFW");
+            throw new OpenGLException("Unable to initialize GLFW");
         }
 
-        var builder = new Window.Builder("utopia", 300, 300);
+        var builder = new Window.Builder("utopia", Application.MIN_WIDTH, Application.MIN_HEIGHT);
         builder.setOption(() -> {
             glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
             glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         });
+
+        try {
+            if (useSmallIcon) {
+                builder.setIcon(ResourceManager.getPath(Application.SMALL_ICON_PATH));
+            } else {
+                builder.setIcon(ResourceManager.getPath(Application.LARGE_ICON_PATH));
+            }
+        } catch (IOException exception) {
+            logger.error("couldn't set the icon of the window", exception);
+        }
 
         window = builder.build();
 
@@ -101,6 +110,7 @@ public class DesktopApplication {
 
         window.makeCurrentContext();
         window.enableVsync();
+        window.enableAutoViewport();
         window.show();
     }
 
@@ -110,7 +120,10 @@ public class DesktopApplication {
     public void start() {
         GL.createCapabilities();
 
-        GL11.glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+        GL11.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+        // 准备我们的代码
+        
 
         while (!window.isCloseNeeded()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

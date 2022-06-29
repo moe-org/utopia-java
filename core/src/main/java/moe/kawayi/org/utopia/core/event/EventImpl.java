@@ -13,22 +13,23 @@ import java.util.Optional;
 
 /**
  * 基本的事件实现。
- *
+ * <p>
  * 非线程安全。
  */
-public class EventImpl<Param> implements Event{
+public class EventImpl<Param> implements Event {
 
     private final Param param;
     private boolean cancel = false;
     private Object result = null;
-    private boolean cancelable = false;
+    private final boolean cancelable;
 
     /**
      * 构造一个默认事件实现
-     * @param param 事件参数
+     *
+     * @param param      事件参数
      * @param cancelable 是否能够取消
      */
-    public EventImpl(@Nullable Param param,boolean cancelable){
+    public EventImpl(@Nullable Param param, boolean cancelable) {
         this.param = param;
         this.cancelable = cancelable;
     }
@@ -40,7 +41,7 @@ public class EventImpl<Param> implements Event{
 
     @Override
     public void setCancel(boolean value) throws IllegalCancellationException {
-        if((!cancelable) && value){
+        if ((!cancelable) && value) {
             throw new IllegalCancellationException();
         }
         cancel = value;

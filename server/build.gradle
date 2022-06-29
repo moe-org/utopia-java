@@ -31,7 +31,7 @@ dependencies {
 
 // 配置启动类
 jar {
-    manifest.attributes.put("Main-Class","moe.kawayi.org.utopia.server.main.Main")
+    manifest.attributes.put("Main-Class", "moe.kawayi.org.utopia.server.main.Main")
 
     finalizedBy shadowJar
 }
@@ -48,7 +48,7 @@ shadowJar {
 }
 
 // 发布
-tasks.register("release"){
+tasks.register("release") {
     description "package and copy assets"
     dependsOn ":server:shadowJar"
     dependsOn rootProject.tasks.named("allJavaSourceJar")
@@ -56,7 +56,7 @@ tasks.register("release"){
 }
 
 // 启动任务
-tasks.register("run"){
+tasks.register("run") {
     dependsOn "release"
 
     doLast {
@@ -82,14 +82,14 @@ tasks.register("run"){
             args.add(file("${serverReleaseFile}").toString())
 
             var builder = new StringBuilder()
-            lines.forEach((str) -> {builder.append(str);builder.append("\n")})
+            lines.forEach((str) -> { builder.append(str); builder.append("\n") })
 
-            Files.write(argFile,builder.toString().getBytes(Charset.defaultCharset()))
+            Files.write(argFile, builder.toString().getBytes(Charset.defaultCharset()))
         }
 
         // load
         var ending = ""
-        if(org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.WINDOWS){
+        if (org.gradle.internal.os.OperatingSystem.current() == org.gradle.internal.os.OperatingSystem.WINDOWS) {
             ending = ".exe"
         }
 
@@ -98,11 +98,15 @@ tasks.register("run"){
 
         builder.command(exec.toString())
 
-        args.forEach((str) -> {builder.command().add(str)})
+        args.forEach((str) -> { builder.command().add(str) })
 
         builder.directory(file("${serverReleaseDir}"))
 
-        println "execute:${builder.command()}"
-        println "exit code:${builder.start().waitFor()}"
+        builder.inheritIO()
+
+        println "execute:${builder.command()} at ${builder.directory()}"
+
+        var started = builder.start()
+        println "exit code:${started.waitFor()}"
     }
 }

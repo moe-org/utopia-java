@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- The utopia-default-log4j2-config.xml is a part of project utopia, under MIT License. -->
+<!-- See https://opensource.org/licenses/MIT for license information. -->
+<!-- Copyright (c) 2021 moe-org All rights reserved. -->
+<!--* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<Configuration>
+
+    <Properties>
+        <Property name="rolling-pattern" value=
+                "[%d{HH:mm:ss.SSS}] [%t] [%highlight{%-5level}{${highlight_color}}] [%logger{36}]:%msg%exception%n" />
+        <Property
+                name="console-pattern"
+                value="[%d{HH:mm:ss.SSS}] [%t] [%highlight{%-5level}{FATAL=Bright red, ERROR=Red, WARN=Yellow, INFO=Bright White, DEBUG=Blue, TRACE=White}] [%logger{36}]:%msg %exception%n"  />
+    </Properties>
+
+    <Appenders>
+
+        <console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${console-pattern}"/>
+        </console>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="rolling"/>
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

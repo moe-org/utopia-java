@@ -10,6 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
+          <option value="desktop:release" />
           <option value="desktop:run" />
         </list>
       </option>
