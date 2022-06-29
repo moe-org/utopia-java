@@ -18,6 +18,7 @@ import moe.kawayi.org.utopia.core.config.ConfigManager;
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
+import moe.kawayi.org.utopia.core.resource.ResourceUtil;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.nio.charset.StandardCharsets;
@@ -38,7 +39,8 @@ public final class NetMain {
     /**
      * private
      */
-    private NetMain(){}
+    private NetMain() {
+    }
 
     /**
      * 配置文件路径
@@ -72,10 +74,11 @@ public final class NetMain {
 
     /**
      * 获取网络服务器配置文件
+     *
      * @return 网络服务器配置文件。如果未加载则返回empty
      */
     @NotNull
-    public static Optional<Config> getInternetConfig(){
+    public static Optional<Config> getInternetConfig() {
         return Optional.ofNullable(CONFIG.get());
     }
 
@@ -86,13 +89,15 @@ public final class NetMain {
     private static Config createDefaultConfiguration(@NotNull Path path) throws Exception {
         Objects.requireNonNull(path);
 
-        if(!path.toFile().exists())
+        if (!path.toFile().exists()) {
+            ResourceUtil.touchFile(path);
             Files.writeString(
-                path,
-                ConfigManager.createDefaultHocon(NetConfig.class),
-                StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
+                    path,
+                    ConfigManager.createDefaultHocon(NetConfig.class),
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        }
 
         return ConfigManager.loadConfig(path).orElseThrow();
     }
@@ -113,19 +118,19 @@ public final class NetMain {
 
         // 获取设置
         int boosThreadCount =
-                        config.getInt(config.createPath(NetConfig.NETTY_BOOS_THREAD_COUNT))
+                config.getInt(config.createPath(NetConfig.NETTY_BOOS_THREAD_COUNT))
                         .orElse(NetConfig.NETTY_BOOS_THREAD_COUNT_DEFAULT);
 
         int workerThreadCount =
-                                config.getInt(config.createPath(NetConfig.NETTY_WORKER_THREAD_COUNT))
+                config.getInt(config.createPath(NetConfig.NETTY_WORKER_THREAD_COUNT))
                         .orElse(NetConfig.NETTY_WORKER_THREAD_COUNT_DEFAULT);
 
         int port =
-                                config.getInt(config.createPath(NetConfig.PORT))
+                config.getInt(config.createPath(NetConfig.PORT))
                         .orElse(NetConfig.PORT_DEFAULT);
 
         int maxWaitList =
-                                config.getInt(config.createPath(NetConfig.MAX_WAIT_LIST))
+                config.getInt(config.createPath(NetConfig.MAX_WAIT_LIST))
                         .orElse(NetConfig.MAX_WAIT_LIST_DEFAULT);
 
         CONFIG.set(config);
@@ -150,11 +155,11 @@ public final class NetMain {
                 // 设置链接等待队列
                 .option(ChannelOption.SO_BACKLOG, maxWaitList)
                 // 地址复用。来允许绑定多个channel到同一个port
-                .option(ChannelOption.SO_REUSEADDR,true)
+                .option(ChannelOption.SO_REUSEADDR, true)
                 // 关闭Nagle算法，降低延迟
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 // 自动读取
-                .childOption(ChannelOption.AUTO_READ,true)
+                .childOption(ChannelOption.AUTO_READ, true)
                 // 保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
