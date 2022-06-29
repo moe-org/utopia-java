@@ -15,9 +15,15 @@ import moe.kawayi.org.utopia.core.util.Nullable;
 @SuppressWarnings("serial")
 public class OpenGLException extends Exception {
 
+    /**
+     * 异常详细（通常来自Opengl报告）
+     */
     @Nullable
     private final String detail;
 
+    /**
+     * 异常信息
+     */
     private final String message;
 
     /**

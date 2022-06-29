@@ -25,8 +25,17 @@ public class Texture {
      * 环绕方式
      */
     public enum Wrap {
+        /**
+         * {@link org.lwjgl.opengl.GL21#GL_REPEAT}
+         */
         REPEAT,
+        /**
+         * {@link org.lwjgl.opengl.GL21#GL_MIRRORED_REPEAT}
+         */
         MIRRORED_REPEAT,
+        /**
+         * {@link org.lwjgl.opengl.GL21#GL_CLAMP_TO_EDGE}
+         */
         CLAMP_TO_EDGE,
     }
 
@@ -34,7 +43,13 @@ public class Texture {
      * 过滤器
      */
     public enum Filter {
+        /**
+         * {@link org.lwjgl.opengl.GL20#GL_NEAREST}
+         */
         NEAREST,
+        /**
+         * {@link org.lwjgl.opengl.GL20#GL_LINEAR}
+         */
         LINEAR,
     }
 

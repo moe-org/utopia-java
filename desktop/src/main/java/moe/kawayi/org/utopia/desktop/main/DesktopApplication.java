@@ -76,6 +76,8 @@ public class DesktopApplication {
 
     /**
      * 初始化客户端
+     *
+     * @throws OpenGLException opengl错误
      */
     public void init() throws OpenGLException {
         LogStream stream = new LogStream(logger, System.Logger.Level.ERROR);
@@ -123,7 +125,7 @@ public class DesktopApplication {
         GL11.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
         // 准备我们的代码
-        
+
 
         while (!window.isCloseNeeded()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

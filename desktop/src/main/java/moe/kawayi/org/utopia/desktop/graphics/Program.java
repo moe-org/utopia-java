@@ -27,6 +27,7 @@ public class Program {
      *
      * @param vertex   顶点着色器源代码
      * @param fragment 片段着色器源代码
+     * @throws OpenGLException 编译时出现错误
      */
     public Program(@NotNull String vertex, @NotNull String fragment) throws OpenGLException {
         Objects.requireNonNull(vertex);

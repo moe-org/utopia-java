@@ -12,6 +12,12 @@ package moe.kawayi.org.utopia.desktop.main;
 public class Application {
 
     /**
+     * private
+     */
+    private Application() {
+    }
+
+    /**
      * 最小窗口高度
      */
     public static final int MIN_HEIGHT = 360;

@@ -127,6 +127,7 @@ public class Window {
      *
      * @return 事件。事件参数见{@link Window#getSize()}
      */
+    @NotNull
     public EventBus<EventImpl<int[]>> getSizeEvent() {
         return this.framebufferSizeEvent;
     }
@@ -239,6 +240,7 @@ public class Window {
         /**
          * 生成窗口
          *
+         * @return 生成的窗口
          * @throws OpenGLException 创建窗口失败时抛出
          */
         @NotNull
@@ -262,6 +264,9 @@ public class Window {
 
         /**
          * 添加路径
+         *
+         * @param icon 图标图片的路径
+         * @throws IOException IO异常
          */
         public void setIcon(@NotNull Path icon) throws IOException {
             try (var stack = MemoryStack.stackPush()) {
