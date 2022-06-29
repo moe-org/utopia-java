@@ -22,6 +22,9 @@ buildscript {
 
 plugins {
     id 'java'
+
+    // 检查依赖许可证
+    id 'com.github.jk1.dependency-license-report' version '2.0'
 }
 
 // 设置版本号选项
@@ -238,3 +241,14 @@ gradle.projectsEvaluated {
 }
 
 defaultTasks 'tasks'
+
+// 设置检查依赖许可证
+licenseReport {
+    outputDir = "${releaseDir}/licenses"
+
+    allowedLicensesFile = new File("${rootDir}/config/allowed-licenses.json")
+}
+
+tasks.named("check") {
+    it.finalizedBy(tasks.named("checkLicense"))
+}
