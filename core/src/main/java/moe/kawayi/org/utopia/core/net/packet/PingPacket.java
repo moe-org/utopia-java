@@ -27,6 +27,9 @@ public final class PingPacket implements UbfPacket {
     public PingPacket() {
     }
 
+    /**
+     * 日志器
+     */
     private static final Logger LOGGER = LogManager.getLogger(PingPacket.class);
 
     /**

@@ -93,8 +93,7 @@ allprojects {
         options.encoding("UTF-8")
         options.setEncoding("UTF-8")
         options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
-        options.forkOptions.jvmArgs << "-Xlint:unchecked"
-        options.compilerArgs << "-Werror"
+        options.compilerArgs << "-Werror" << "-Xlint:all" << "-Xdoclint"
         options.verbose(true)
     }
 
@@ -169,9 +168,19 @@ subprojects {
         }
 
         // 增加编译参数
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint"
+        compileJava {
+            options.encoding("UTF-8")
+            options.setEncoding("UTF-8")
+            options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
+            options.compilerArgs << "-Werror" << "-Xlint:all" << "-Xdoclint:all/public"
         }
+        compileTestJava {
+            options.encoding("UTF-8")
+            options.setEncoding("UTF-8")
+            options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
+            options.compilerArgs << "-Werror" << "-Xlint:all" // different from compileJava: no check javadoc
+        }
+
     }
 
     dependencies {
