@@ -1,15 +1,16 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The ClientInitHandle.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.net;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.util.NotNull;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import static moe.kawayi.org.utopia.desktop.net.NetMain.CLIENT_CHANNEL;
 
@@ -23,7 +24,7 @@ public class ClientInitHandle extends ChannelInboundHandlerAdapter {
     /**
      * 默认构造函数
      */
-    public ClientInitHandle(){}
+    public ClientInitHandle() {}
 
     @Override
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {

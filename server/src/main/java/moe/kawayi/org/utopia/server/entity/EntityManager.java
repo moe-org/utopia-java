@@ -1,17 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The EntityManager.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.entity;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 实体管理器
@@ -21,7 +21,7 @@ public final class EntityManager {
     /**
      * private
      */
-    private EntityManager(){}
+    private EntityManager() {}
 
     /**
      * 实体列表
@@ -37,7 +37,6 @@ public final class EntityManager {
     public static Collection<EntityFactory> getEntities() {
         return ENTITIES_FACTORY.values();
     }
-
 
     /**
      * 注册实体

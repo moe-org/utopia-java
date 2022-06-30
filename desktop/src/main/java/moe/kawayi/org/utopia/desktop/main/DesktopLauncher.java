@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DesktopLauncher.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
 
@@ -21,8 +21,7 @@ public class DesktopLauncher {
     /**
      * private
      */
-    private DesktopLauncher() {
-    }
+    private DesktopLauncher() {}
 
     /**
      * 入口函数
@@ -43,5 +42,4 @@ public class DesktopLauncher {
             LOGGER.error("crash", other);
         }
     }
-
 }

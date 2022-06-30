@@ -1,25 +1,10 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The NetMain.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.net;
-
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import moe.kawayi.org.utopia.core.config.Config;
-import moe.kawayi.org.utopia.core.config.ConfigManager;
-import moe.kawayi.org.utopia.core.log.LogManagers;
-import moe.kawayi.org.utopia.core.log.Logger;
-import moe.kawayi.org.utopia.core.resource.ResourceManager;
-import moe.kawayi.org.utopia.core.resource.ResourceUtil;
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -31,6 +16,22 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import moe.kawayi.org.utopia.core.config.Config;
+import moe.kawayi.org.utopia.core.config.ConfigManager;
+import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.Logger;
+import moe.kawayi.org.utopia.core.resource.ResourceManager;
+import moe.kawayi.org.utopia.core.resource.ResourceUtil;
+import moe.kawayi.org.utopia.core.util.NotNull;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+
 /**
  * 设置网络
  */
@@ -39,8 +40,7 @@ public final class NetMain {
     /**
      * private
      */
-    private NetMain() {
-    }
+    private NetMain() {}
 
     /**
      * 配置文件路径
@@ -109,42 +109,30 @@ public final class NetMain {
      */
     public static void internetBootstrap() throws Exception {
         // never run at same time
-        if (IS_RUNNING.getAndSet(true))
-            return;
+        if (IS_RUNNING.getAndSet(true)) return;
 
         // 处理配置
         var configPath = ResourceManager.getPath(Paths.get(CONFIG_PATH));
         var config = ConfigManager.loadConfig(configPath).orElse(createDefaultConfiguration(configPath));
 
         // 获取设置
-        int boosThreadCount =
-                config.getInt(config.createPath(NetConfig.NETTY_BOOS_THREAD_COUNT))
-                        .orElse(NetConfig.NETTY_BOOS_THREAD_COUNT_DEFAULT);
+        int boosThreadCount = config.getInt(config.createPath(NetConfig.NETTY_BOOS_THREAD_COUNT))
+                .orElse(NetConfig.NETTY_BOOS_THREAD_COUNT_DEFAULT);
 
-        int workerThreadCount =
-                config.getInt(config.createPath(NetConfig.NETTY_WORKER_THREAD_COUNT))
-                        .orElse(NetConfig.NETTY_WORKER_THREAD_COUNT_DEFAULT);
+        int workerThreadCount = config.getInt(config.createPath(NetConfig.NETTY_WORKER_THREAD_COUNT))
+                .orElse(NetConfig.NETTY_WORKER_THREAD_COUNT_DEFAULT);
 
-        int port =
-                config.getInt(config.createPath(NetConfig.PORT))
-                        .orElse(NetConfig.PORT_DEFAULT);
+        int port = config.getInt(config.createPath(NetConfig.PORT)).orElse(NetConfig.PORT_DEFAULT);
 
         int maxWaitList =
-                config.getInt(config.createPath(NetConfig.MAX_WAIT_LIST))
-                        .orElse(NetConfig.MAX_WAIT_LIST_DEFAULT);
+                config.getInt(config.createPath(NetConfig.MAX_WAIT_LIST)).orElse(NetConfig.MAX_WAIT_LIST_DEFAULT);
 
         CONFIG.set(config);
 
         // 初始化事件循环线程
-        BOSS_GROUP.set(
-                new NioEventLoopGroup(
-                        boosThreadCount,
-                        new NetThreadFactory("boos-thread-")));
+        BOSS_GROUP.set(new NioEventLoopGroup(boosThreadCount, new NetThreadFactory("boos-thread-")));
 
-        WORKER_GROUP.set(
-                new NioEventLoopGroup(
-                        workerThreadCount,
-                        new NetThreadFactory("worker-thread-")));
+        WORKER_GROUP.set(new NioEventLoopGroup(workerThreadCount, new NetThreadFactory("worker-thread-")));
 
         // 设置启动类
         ServerBootstrap b = new ServerBootstrap();
@@ -192,14 +180,11 @@ public final class NetMain {
 
             var group = BOSS_GROUP.getAndSet(null);
 
-            if (group != null && !group.isShutdown())
-                group.shutdownGracefully();
+            if (group != null && !group.isShutdown()) group.shutdownGracefully();
 
             group = WORKER_GROUP.getAndSet(null);
 
-            if (group != null && !group.isShutdown())
-                group.shutdownGracefully();
+            if (group != null && !group.isShutdown()) group.shutdownGracefully();
         }
     }
-
 }

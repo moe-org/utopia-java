@@ -1,20 +1,21 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The LogUtil.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
-
-import io.netty.util.internal.logging.InternalLoggerFactory;
-import moe.kawayi.org.utopia.core.resource.ResourceManager;
-import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.UtopiaVersion;
-import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+
+import moe.kawayi.org.utopia.core.resource.ResourceManager;
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.UtopiaVersion;
+
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.apache.logging.log4j.core.config.Configurator;
 
 /**
  * log设置
@@ -24,15 +25,14 @@ public class LogUtil {
     /**
      * private
      */
-    private LogUtil(){}
+    private LogUtil() {}
 
     /**
      * 控制台日志样式
      */
-    private static final String CONSOLE_LOG_PATTERN =
-            "[%d{HH:mm:ss.SSS}] [%t] " +
-            "[%highlight{%-5level}{FATAL=Bright red, ERROR=Red, WARN=Yellow, INFO=Black, DEBUG=Blue, TRACE=Cyan}] " +
-            "[%logger{36}]:%msg %exception%n";
+    private static final String CONSOLE_LOG_PATTERN = "[%d{HH:mm:ss.SSS}] [%t] "
+            + "[%highlight{%-5level}{FATAL=Bright red, ERROR=Red, WARN=Yellow, INFO=Black, DEBUG=Blue, TRACE=Cyan}] "
+            + "[%logger{36}]:%msg %exception%n";
 
     /**
      * 滚动文件输出格式
@@ -58,8 +58,8 @@ public class LogUtil {
     /**
      * 值得注意的是:Log4j2的彩色输出在Windows下并不是默认的
      */
-    private static void enableLog4j2Color(){
-        System.setProperty("log4j.skipJansi","false");
+    private static void enableLog4j2Color() {
+        System.setProperty("log4j.skipJansi", "false");
     }
 
     /**
@@ -77,13 +77,12 @@ public class LogUtil {
      * @return 配置后的日志管理器
      */
     @NotNull
-    public static synchronized LogManager configureLog(){
+    public static synchronized LogManager configureLog() {
         enableLog4j2Color();
 
         // 配置日志配置文件
         try {
-            if(!Files.exists(
-                    ResourceManager.getPath(CONFIG_FILE_PATH))) {
+            if (!Files.exists(ResourceManager.getPath(CONFIG_FILE_PATH))) {
                 var is = UtopiaVersion.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH);
 
                 if (is == null)
@@ -91,39 +90,28 @@ public class LogUtil {
 
                 var datas = is.readAllBytes();
 
-                Files.write(
-                        ResourceManager.getPath(CONFIG_FILE_PATH),
-                        datas,
-                        StandardOpenOption.CREATE
-                        );
+                Files.write(ResourceManager.getPath(CONFIG_FILE_PATH), datas, StandardOpenOption.CREATE);
             }
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
             System.exit(-1);
         }
 
         // 配置文件
         var standard = Configurator.initialize(
-                    CONTEXT_NAME,
-                    // ClassLoader.getSystemClassLoader(),
-                    LogUtil.class.getClassLoader(),
-                    ResourceManager.getPath(CONFIG_FILE_PATH).toString()
-                );
+                CONTEXT_NAME,
+                // ClassLoader.getSystemClassLoader(),
+                LogUtil.class.getClassLoader(),
+                ResourceManager.getPath(CONFIG_FILE_PATH).toString());
 
         Configurator.initialize(
-                CONTEXT_NAME,
-                ResourceManager.getPath(CONFIG_FILE_PATH).toString()
-        );
+                CONTEXT_NAME, ResourceManager.getPath(CONFIG_FILE_PATH).toString());
 
         var manager = new Log4j2LogManager(standard);
 
         // 设置netty日志
-        InternalLoggerFactory.setDefaultFactory(
-                manager
-        );
+        InternalLoggerFactory.setDefaultFactory(manager);
 
         return manager;
     }
-
 }

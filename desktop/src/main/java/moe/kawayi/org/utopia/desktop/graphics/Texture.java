@@ -1,16 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Texture.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
+import java.nio.ByteBuffer;
+
 import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
-
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
@@ -74,10 +75,7 @@ public class Texture {
      * @param filter 纹理过滤器选项
      * @param wrap   纹理拉伸选项
      */
-    public Texture(
-            int width, int height,
-            @NotNull ByteBuffer pixels,
-            boolean mipmap, Wrap wrap, Filter filter) {
+    public Texture(int width, int height, @NotNull ByteBuffer pixels, boolean mipmap, Wrap wrap, Filter filter) {
         textureId = GL33.glGenTextures();
 
         GL33.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
@@ -108,11 +106,7 @@ public class Texture {
             }
         }
 
-        GL33.glTexImage2D(
-                textureId, 0, GL11.GL_RGBA,
-                width, height, 0,
-                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
-                pixels);
+        GL33.glTexImage2D(textureId, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixels);
 
         if (mipmap) {
             GL33.glGenerateMipmap(GL11.GL_TEXTURE_2D);

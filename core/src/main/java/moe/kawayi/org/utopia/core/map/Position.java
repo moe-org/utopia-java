@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Position.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.map;
 
@@ -62,7 +62,6 @@ public final class Position {
         return String.format("Position{ x:%s y:%s z:%s }", x, y, z);
     }
 
-
     /**
      * 获取对象hash值
      *
@@ -81,13 +80,10 @@ public final class Position {
      */
     @Override
     public boolean equals(@NotNull Object obj) {
-        if(obj == null)
-            return false;
+        if (obj == null) return false;
 
         if (obj instanceof Position pos) {
-            return pos.x == this.x &&
-                    pos.y == this.y &&
-                    pos.z == this.z;
+            return pos.x == this.x && pos.y == this.y && pos.z == this.z;
         }
 
         return false;

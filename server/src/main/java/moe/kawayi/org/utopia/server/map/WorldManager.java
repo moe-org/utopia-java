@@ -1,17 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The WorldManager.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.map;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 世界管理器
@@ -21,7 +21,7 @@ public final class WorldManager {
     /**
      * private
      */
-    private WorldManager(){}
+    private WorldManager() {}
 
     /**
      * 世界列表
@@ -37,7 +37,6 @@ public final class WorldManager {
     public static Collection<World> getWorlds() {
         return WORLDS.values();
     }
-
 
     /**
      * 注册世界

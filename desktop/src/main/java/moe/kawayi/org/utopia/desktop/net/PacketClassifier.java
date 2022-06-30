@@ -1,17 +1,15 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The PacketClassifier.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.net;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.util.AttributeKey;
-import io.netty.util.concurrent.FastThreadLocal;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.util.List;
+
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
@@ -19,9 +17,12 @@ import moe.kawayi.org.utopia.core.net.packet.PingPacket;
 import moe.kawayi.org.utopia.core.ubf.converter.Parser;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.util.List;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.util.AttributeKey;
+import io.netty.util.concurrent.FastThreadLocal;
 
 /**
  * 包分类器。根据包id进行分类。
@@ -35,8 +36,7 @@ public class PacketClassifier extends ByteToMessageDecoder {
     /**
      * 默认构造
      */
-    public PacketClassifier() {
-    }
+    public PacketClassifier() {}
 
     /**
      * 获取服务器版本号的key的netty attr
@@ -54,12 +54,9 @@ public class PacketClassifier extends ByteToMessageDecoder {
         }
     };
 
-
     @Override
-    protected void decode(
-            @NotNull ChannelHandlerContext ctx,
-            @NotNull ByteBuf in,
-            @NotNull List<Object> out) throws Exception {
+    protected void decode(@NotNull ChannelHandlerContext ctx, @NotNull ByteBuf in, @NotNull List<Object> out)
+            throws Exception {
 
         // 读取数据类型
         var packetType = in.readInt();

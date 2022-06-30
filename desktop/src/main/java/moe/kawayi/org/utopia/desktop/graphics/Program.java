@@ -1,17 +1,18 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Program.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
+import java.util.Objects;
+
 import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.system.MemoryStack;
-
-import java.util.Objects;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -51,16 +52,13 @@ public class Program {
 
             if (buf.get(0) == GL_FALSE) {
                 throw new OpenGLException(
-                        "fail to compile OpenGL fragment shader",
-                        GL33.glGetShaderInfoLog(fragmentId));
+                        "fail to compile OpenGL fragment shader", GL33.glGetShaderInfoLog(fragmentId));
             }
 
             GL33.glGetShaderiv(vertexId, GL_COMPILE_STATUS, buf);
 
             if (buf.get(0) == GL_FALSE) {
-                throw new OpenGLException(
-                        "fail to compile OpenGL vertex shader",
-                        GL33.glGetShaderInfoLog(vertexId));
+                throw new OpenGLException("fail to compile OpenGL vertex shader", GL33.glGetShaderInfoLog(vertexId));
             }
         }
 
@@ -77,9 +75,7 @@ public class Program {
             GL33.glGetProgramiv(programId, GL_LINK_STATUS, buf);
 
             if (buf.get(0) == GL_FALSE) {
-                throw new OpenGLException(
-                        "fail to link OpenGL program",
-                        GL33.glGetProgramInfoLog(programId));
+                throw new OpenGLException("fail to link OpenGL program", GL33.glGetProgramInfoLog(programId));
             }
         }
     }
@@ -113,8 +109,7 @@ public class Program {
     /**
      * 删除程序自己
      */
-    public void delete(){
+    public void delete() {
         GL20.glDeleteProgram(getProgramId());
     }
-
 }

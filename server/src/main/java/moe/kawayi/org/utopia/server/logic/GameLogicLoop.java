@@ -1,10 +1,12 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The GameLogicLoop.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.logic;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
@@ -16,15 +18,12 @@ import moe.kawayi.org.utopia.server.map.WorldImpl;
 import moe.kawayi.org.utopia.server.map.WorldInfo;
 import moe.kawayi.org.utopia.server.net.NetMain;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * 游戏逻辑循环
  */
 public final class GameLogicLoop {
 
-    private GameLogicLoop() {
-    }
+    private GameLogicLoop() {}
 
     /**
      * 日志器
@@ -41,8 +40,7 @@ public final class GameLogicLoop {
      */
     public static void mainLoop() {
         // 防止二次进入
-        if (IS_RUNNING.getAndSet(true))
-            return;
+        if (IS_RUNNING.getAndSet(true)) return;
 
         try {
             // update
@@ -92,7 +90,6 @@ public final class GameLogicLoop {
         }
     }
 
-
     /**
      * 获取逻辑线程运行状态
      *
@@ -108,5 +105,4 @@ public final class GameLogicLoop {
     public static void shutdown() {
         IS_RUNNING.set(false);
     }
-
 }

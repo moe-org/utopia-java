@@ -1,21 +1,22 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The HoconConfig.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.config.hocon;
-
-import com.typesafe.config.ConfigRenderOptions;
-import com.typesafe.config.ConfigUtil;
-import moe.kawayi.org.utopia.core.config.Config;
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import moe.kawayi.org.utopia.core.config.Config;
+import moe.kawayi.org.utopia.core.util.NotNull;
+
+import com.typesafe.config.ConfigRenderOptions;
+import com.typesafe.config.ConfigUtil;
 
 /**
  * HOCON的config实现
@@ -32,13 +33,13 @@ public class HoconConfig implements Config {
     /**
      * 导航路径
      */
-    public record NavigationPath(@NotNull String path) implements Config.NavigationPath{ }
+    public record NavigationPath(@NotNull String path) implements Config.NavigationPath {}
 
     /**
      * 构造一个HoconConfig
      * @param config Hocon的Config，非空
      */
-    public HoconConfig(@NotNull com.typesafe.config.Config config){
+    public HoconConfig(@NotNull com.typesafe.config.Config config) {
         Objects.requireNonNull(config);
 
         obj = config;
@@ -56,83 +57,78 @@ public class HoconConfig implements Config {
     @NotNull
     public Optional<Byte> getByte(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getNumber(((NavigationPath)path).path).byteValue());
+        return Optional.of(obj.getNumber(((NavigationPath) path).path).byteValue());
     }
 
     @Override
     @NotNull
     public Optional<Short> getShort(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getNumber(((NavigationPath)path).path).shortValue());
+        return Optional.of(obj.getNumber(((NavigationPath) path).path).shortValue());
     }
 
     @Override
     @NotNull
     public Optional<Integer> getInt(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getNumber(((NavigationPath)path).path).intValue());
+        return Optional.of(obj.getNumber(((NavigationPath) path).path).intValue());
     }
 
     @Override
     @NotNull
     public Optional<Long> getLong(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getNumber(((NavigationPath)path).path).longValue());
+        return Optional.of(obj.getNumber(((NavigationPath) path).path).longValue());
     }
 
     @Override
     @NotNull
     public Optional<Boolean> getBoolean(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getBoolean(((NavigationPath)path).path));
+        return Optional.of(obj.getBoolean(((NavigationPath) path).path));
     }
 
     @Override
     @NotNull
     public Optional<Float> getFloat(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(((Double)obj.getDouble(((NavigationPath)path).path)).floatValue());
+        return Optional.of(((Double) obj.getDouble(((NavigationPath) path).path)).floatValue());
     }
 
     @Override
     @NotNull
     public Optional<Double> getDouble(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getDouble(((NavigationPath)path).path));
+        return Optional.of(obj.getDouble(((NavigationPath) path).path));
     }
 
     @Override
     @NotNull
     public Optional<String> getString(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(obj.getString(((NavigationPath)path).path));
+        return Optional.of(obj.getString(((NavigationPath) path).path));
     }
 
     @Override
     @NotNull
     public Optional<UUID> getUUID(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(
-                UUID.fromString(obj.getString(((NavigationPath)path).path)));
+        return Optional.of(UUID.fromString(obj.getString(((NavigationPath) path).path)));
     }
 
     @Override
     @NotNull
     public Optional<List<Config>> getArray(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        var list = obj.getList(((NavigationPath)path).path);
-        return Optional.of(
-                list.parallelStream().map(HoconValue::new).collect(Collectors.toList())
-        );
+        var list = obj.getList(((NavigationPath) path).path);
+        return Optional.of(list.parallelStream().map(HoconValue::new).collect(Collectors.toList()));
     }
 
     @Override
     @NotNull
     public Optional<Config> getObject(@NotNull Config.NavigationPath path) throws Exception {
         Objects.requireNonNull(path);
-        return Optional.of(
-                new HoconConfig(obj.getConfig(((NavigationPath)path).path))
-        );
+        return Optional.of(new HoconConfig(obj.getConfig(((NavigationPath) path).path)));
     }
 
     @Override
@@ -140,5 +136,4 @@ public class HoconConfig implements Config {
     public String renderToString() {
         return obj.root().render(ConfigRenderOptions.concise());
     }
-
 }

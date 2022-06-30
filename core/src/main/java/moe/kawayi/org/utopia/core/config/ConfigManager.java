@@ -1,14 +1,10 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The ConfigManager.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.config;
-
-import com.typesafe.config.*;
-import moe.kawayi.org.utopia.core.config.hocon.HoconConfig;
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -17,7 +13,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import moe.kawayi.org.utopia.core.config.hocon.HoconConfig;
+import moe.kawayi.org.utopia.core.util.NotNull;
+
+import com.typesafe.config.*;
 
 /**
  * 配置文件管理器
@@ -27,8 +27,7 @@ public final class ConfigManager {
     /**
      * private
      */
-    private ConfigManager() {
-    }
+    private ConfigManager() {}
 
     /**
      * 加载配置文件
@@ -94,13 +93,17 @@ public final class ConfigManager {
     public static String createDefaultHocon(@NotNull Class<?> configClazz) throws java.lang.IllegalAccessException {
         Field[] declaredFields = configClazz.getDeclaredFields();
 
-        var statics = Arrays.stream(declaredFields).toList().stream().filter(
-                value -> java.lang.reflect.Modifier.isStatic(value.getModifiers())).toList();
+        var statics = Arrays.stream(declaredFields).toList().stream()
+                .filter(value -> java.lang.reflect.Modifier.isStatic(value.getModifiers()))
+                .toList();
 
-        var keys = statics.stream().filter(value -> !value.getName().endsWith("_DEFAULT")).toList();
+        var keys = statics.stream()
+                .filter(value -> !value.getName().endsWith("_DEFAULT"))
+                .toList();
 
-        var values =
-                statics.stream().filter(value -> value.getName().endsWith("_DEFAULT")).toList();
+        var values = statics.stream()
+                .filter(value -> value.getName().endsWith("_DEFAULT"))
+                .toList();
 
         // key as field name
         // value[0] as json key
@@ -128,11 +131,9 @@ public final class ConfigManager {
         }
 
         HashMap<String, Object> keyValues = new HashMap<>();
-        hashMap.values().forEach(
-                value -> {
-                    keyValues.put((String) value[0], value[1]);
-                }
-        );
+        hashMap.values().forEach(value -> {
+            keyValues.put((String) value[0], value[1]);
+        });
 
         // 序列化
         return ConfigValueFactory.fromMap(keyValues).render(ConfigRenderOptions.concise());

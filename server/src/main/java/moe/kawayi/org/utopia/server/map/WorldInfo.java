@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The WorldInfo.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.map;
 
@@ -14,7 +14,7 @@ public final class WorldInfo {
     /**
      * should not be called
      */
-    private WorldInfo(){}
+    private WorldInfo() {}
 
     /**
      * 地图层X轴大小

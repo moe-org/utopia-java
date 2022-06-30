@@ -1,15 +1,15 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The UtopiaBinaryFormatArray.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf;
 
+import java.util.Optional;
+
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-
-import java.util.Optional;
 
 /**
  * UtopiaBinaryFormat数组
@@ -238,7 +238,6 @@ public sealed interface UtopiaBinaryFormatArray extends Iterable<Object> permits
      * @param value 要设置成的对象
      */
     void set(int index, @NotNull UtopiaBinaryFormatObject value);
-
 
     /**
      * 追加数组对象

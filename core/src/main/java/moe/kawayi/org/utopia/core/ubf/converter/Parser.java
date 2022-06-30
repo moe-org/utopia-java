@@ -1,20 +1,18 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Parser.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf.converter;
 
-import moe.kawayi.org.utopia.core.ubf.*;
-import moe.kawayi.org.utopia.core.util.NotNull;
-
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.concurrent.Callable;
+
+import moe.kawayi.org.utopia.core.ubf.*;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * {@link moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject}的解析器
@@ -24,8 +22,7 @@ public final class Parser {
     /**
      * 默认构造
      */
-    public Parser() {
-    }
+    public Parser() {}
 
     private int callStack = 0;
 
@@ -130,5 +127,4 @@ public final class Parser {
             throw new IOException("illegal input", err);
         }
     }
-
 }

@@ -1,16 +1,16 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Version.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 获取版本号
@@ -21,7 +21,7 @@ public final class UtopiaVersion {
     /**
      * should not be called
      */
-    private UtopiaVersion(){}
+    private UtopiaVersion() {}
 
     private static final AtomicReference<String> VERSION = new AtomicReference<>(null);
 
@@ -48,8 +48,8 @@ public final class UtopiaVersion {
      * @throws java.io.IOException IO错误
      */
     @NotNull
-    public static String getUtopiaVersion() throws java.io.IOException{
-        if(VERSION.get() == null){
+    public static String getUtopiaVersion() throws java.io.IOException {
+        if (VERSION.get() == null) {
             Properties properties = new Properties();
 
             var is = UtopiaVersion.class.getResourceAsStream(PROPERTIES_FILE_PATH);
@@ -70,10 +70,8 @@ public final class UtopiaVersion {
 
                 return ver;
             }
-        }
-        else{
+        } else {
             return VERSION.get();
         }
     }
-
 }

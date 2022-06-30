@@ -1,16 +1,16 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The BlockFloorImpl.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.map;
 
-import moe.kawayi.org.utopia.core.map.FlatPosition;
-import moe.kawayi.org.utopia.core.util.NotNull;
-
 import java.util.Objects;
 import java.util.Optional;
+
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 一个地图层
@@ -35,11 +35,9 @@ public final class BlockFloorImpl implements BlockFloor {
         for (int x = 0; x != WorldInfo.BLOCK_FLOOR_X_SIZE; x++) {
             floor[x] = new BlockImpl[WorldInfo.BLOCK_FLOOR_Y_SIZE];
 
-            for (int y = 0; y != WorldInfo.BLOCK_FLOOR_Y_SIZE; y++)
-                floor[x][y] = new BlockImpl();
+            for (int y = 0; y != WorldInfo.BLOCK_FLOOR_Y_SIZE; y++) floor[x][y] = new BlockImpl();
         }
     }
-
 
     /**
      * 获取方块
@@ -55,14 +53,10 @@ public final class BlockFloorImpl implements BlockFloor {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 
-        if (position.x < 0 || position.x >= WorldInfo.BLOCK_FLOOR_X_SIZE)
-            return Optional.empty();
+        if (position.x < 0 || position.x >= WorldInfo.BLOCK_FLOOR_X_SIZE) return Optional.empty();
 
-        if (position.y < 0 || position.y >= WorldInfo.BLOCK_FLOOR_Y_SIZE)
-            return Optional.empty();
+        if (position.y < 0 || position.y >= WorldInfo.BLOCK_FLOOR_Y_SIZE) return Optional.empty();
 
         return Optional.of(floor[position.x][position.y]);
     }
-
-
 }

@@ -1,18 +1,18 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The EventBus.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.event;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 
 /**
  * 事件总线。线程安全
@@ -24,8 +24,7 @@ public final class EventBus<EventT extends Event> {
     /**
      * 默认构造
      */
-    public EventBus() {
-    }
+    public EventBus() {}
 
     /**
      * 监听者列表
@@ -94,18 +93,14 @@ public final class EventBus<EventT extends Event> {
      */
     public void fireEvent(@Nullable EventT obj) {
 
-        if (obj.isCancelled())
-            return;
+        if (obj.isCancelled()) return;
 
         var listeners = this.listeners.values();
 
         for (var listener : listeners) {
             listener.accept(obj);
 
-            if (obj.isCancelled())
-                return;
+            if (obj.isCancelled()) return;
         }
     }
-
-
 }

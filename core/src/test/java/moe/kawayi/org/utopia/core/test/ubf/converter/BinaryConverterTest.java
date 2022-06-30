@@ -1,18 +1,19 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The BinaryConverterTest.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.test.ubf.converter;
+
+import java.io.*;
 
 import moe.kawayi.org.utopia.core.ubf.*;
 import moe.kawayi.org.utopia.core.ubf.converter.Parser;
 import moe.kawayi.org.utopia.core.ubf.converter.Writer;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.*;
 
 public class BinaryConverterTest {
 
@@ -33,22 +34,20 @@ public class BinaryConverterTest {
             caller = newCaller;
         }
 
-        Assertions.assertDoesNotThrow(
-                () -> {
-                    var memoryOutput = new ByteArrayOutputStream();
-                    var outputStream = new DataOutputStream(memoryOutput);
+        Assertions.assertDoesNotThrow(() -> {
+            var memoryOutput = new ByteArrayOutputStream();
+            var outputStream = new DataOutputStream(memoryOutput);
 
-                    var to = new Writer();
-                    var from = new Parser();
+            var to = new Writer();
+            var from = new Parser();
 
-                    // 不抛异常就算成功
-                    to.write(obj, outputStream);
+            // 不抛异常就算成功
+            to.write(obj, outputStream);
 
-                    var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
+            var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
 
-                    from.parse(inputStream);
-                }
-        );
+            from.parse(inputStream);
+        });
     }
 
     /**
@@ -68,16 +67,14 @@ public class BinaryConverterTest {
             caller = newCaller;
         }
 
-        Assertions.assertThrows(IllegalStateException.class,
-                () -> {
-                    var memoryOutput = new ByteArrayOutputStream();
-                    var outputStream = new DataOutputStream(memoryOutput);
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            var memoryOutput = new ByteArrayOutputStream();
+            var outputStream = new DataOutputStream(memoryOutput);
 
-                    var to = new Writer();
+            var to = new Writer();
 
-                    to.write(obj, outputStream);
-                }
-        );
+            to.write(obj, outputStream);
+        });
     }
 
     /**
@@ -113,31 +110,25 @@ public class BinaryConverterTest {
 
             Assertions.assertEquals((byte) 1, (byte) value.orElseThrow());
 
-
             value = obj.get("SHORT");
 
             Assertions.assertEquals((short) 2, (short) value.orElseThrow());
-
 
             value = obj.get("INT");
 
             Assertions.assertEquals(3, (int) value.orElseThrow());
 
-
             value = obj.get("LONG");
 
             Assertions.assertEquals(4L, (long) value.orElseThrow());
-
 
             value = obj.get("FLOAT");
 
             Assertions.assertEquals(5.0f, (float) value.orElseThrow());
 
-
             value = obj.get("DOUBLE");
 
             Assertions.assertEquals(6.0, (double) value.orElseThrow());
-
 
             value = obj.get("BOOLEAN");
 
@@ -221,5 +212,4 @@ public class BinaryConverterTest {
         Assertions.assertTrue(testObj.get("CK").isPresent());
         Assertions.assertEquals("CV", testObj.getString("CK").orElseThrow());
     }
-
 }

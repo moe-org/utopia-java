@@ -1,20 +1,21 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The BlockTest.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.test.map;
 
+import java.util.Optional;
+
+import moe.kawayi.org.utopia.core.map.WorldPosition;
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.entity.Entity;
 import moe.kawayi.org.utopia.server.map.Block;
 import moe.kawayi.org.utopia.server.map.BlockImpl;
-import moe.kawayi.org.utopia.core.map.WorldPosition;
-import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 public class BlockTest {
 
@@ -65,8 +66,7 @@ public class BlockTest {
             }
 
             @Override
-            public void update() {
-            }
+            public void update() {}
         };
 
         var firstAdd = block.addEntity(entity);
@@ -78,13 +78,8 @@ public class BlockTest {
 
     @Test
     public void blockNullEntityTest() {
-        Assertions.assertThrows(
-                NullPointerException.class,
-                () -> {
-                    block.addEntity(null);
-                }
-        );
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            block.addEntity(null);
+        });
     }
-
-
 }

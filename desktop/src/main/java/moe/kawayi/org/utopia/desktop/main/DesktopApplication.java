@@ -1,10 +1,13 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DesktopApplication.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
+
+import java.io.IOException;
+import java.io.PrintStream;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
@@ -14,13 +17,11 @@ import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Program;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
-
-import java.io.IOException;
-import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -36,8 +37,7 @@ public class DesktopApplication {
     /**
      * 默认构造函数
      */
-    public DesktopApplication() {
-    }
+    public DesktopApplication() {}
 
     /**
      * 日志器
@@ -96,7 +96,7 @@ public class DesktopApplication {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-            if(forwardCompat){
+            if (forwardCompat) {
                 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
             }
         });
@@ -114,8 +114,7 @@ public class DesktopApplication {
         window = builder.build();
 
         glfwSetKeyCallback(window.getHandle(), (w, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(w, true);
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(w, true);
         });
 
         window.makeCurrentContext();
@@ -133,14 +132,10 @@ public class DesktopApplication {
 
         GL11.glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-        final var VAO = GL33.glGenVertexArrays();
-        GL33.glBindVertexArray(VAO);
+        final var vao = GL33.glGenVertexArrays();
+        GL33.glBindVertexArray(vao);
 
-        float[] vertices = {
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.0f, 0.5f, 0.0f
-        };
+        float[] vertices = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 
         final var vbo = GL33.glGenBuffers();
 
@@ -155,7 +150,7 @@ public class DesktopApplication {
         GL33.glBindVertexArray(0);
 
         Program program = new Program(
-"""
+                """
 #version 330 core
 layout (location = 0) in vec3 aPos;
 
@@ -164,7 +159,7 @@ void main()
     gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }
 """,
-"""
+                """
 #version 330 core
 out vec4 FragColor;
 
@@ -172,21 +167,20 @@ void main()
 {
     FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 }
-"""
-        );
+""");
 
         while (!window.isCloseNeeded()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             program.use();
-            GL33.glBindVertexArray(VAO);
+            GL33.glBindVertexArray(vao);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
             window.swapBuffer();
             glfwPollEvents();
         }
 
-        GL33.glDeleteVertexArrays(VAO);
+        GL33.glDeleteVertexArrays(vao);
         GL33.glDeleteBuffers(vbo);
         program.delete();
 
@@ -199,5 +193,4 @@ void main()
 
         glfwTerminate();
     }
-
 }

@@ -1,17 +1,16 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The ResourceUtil.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.resource;
 
-import moe.kawayi.org.utopia.core.util.NotNull;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Objects;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 管理游戏资源的工具
@@ -20,8 +19,7 @@ public final class ResourceUtil {
     /**
      * private
      */
-    private ResourceUtil() {
-    }
+    private ResourceUtil() {}
 
     /**
      * 创建文件及其父目录
@@ -35,5 +33,4 @@ public final class ResourceUtil {
         Files.createDirectories(path.getParent());
         Files.createFile(path);
     }
-
 }

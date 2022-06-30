@@ -1,24 +1,21 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Writer.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf.converter;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormat;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatArray;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatType;
 import moe.kawayi.org.utopia.core.util.NotNull;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 /**
  * {@link moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject}的写入器
@@ -28,8 +25,7 @@ public final class Writer {
     /**
      * 默认构造函数
      */
-    public Writer() {
-    }
+    public Writer() {}
 
     private int callStack = 0;
 
@@ -45,8 +41,8 @@ public final class Writer {
         callStack--;
     }
 
-    private void writeType(@NotNull UtopiaBinaryFormatType typed,
-                           @NotNull DataOutputStream outputStream) throws IOException {
+    private void writeType(@NotNull UtopiaBinaryFormatType typed, @NotNull DataOutputStream outputStream)
+            throws IOException {
         switch (typed) {
             case BYTE -> outputStream.writeByte(UtopiaBinaryFormatType.BYTE.getMarkCode());
             case SHORT -> outputStream.writeByte(UtopiaBinaryFormatType.SHORT.getMarkCode());
@@ -99,8 +95,8 @@ public final class Writer {
         }
     }
 
-    private void writeArray(@NotNull UtopiaBinaryFormatArray array,
-                            @NotNull DataOutputStream outputStream) throws IOException {
+    private void writeArray(@NotNull UtopiaBinaryFormatArray array, @NotNull DataOutputStream outputStream)
+            throws IOException {
         call();
 
         outputStream.writeInt(array.size());
@@ -112,8 +108,8 @@ public final class Writer {
         ret();
     }
 
-    private void writeObject(@NotNull UtopiaBinaryFormatObject object,
-                             @NotNull DataOutputStream outputStream) throws IOException {
+    private void writeObject(@NotNull UtopiaBinaryFormatObject object, @NotNull DataOutputStream outputStream)
+            throws IOException {
         call();
 
         outputStream.writeInt(object.size());
@@ -150,5 +146,4 @@ public final class Writer {
 
         writeValue(input, stream);
     }
-
 }

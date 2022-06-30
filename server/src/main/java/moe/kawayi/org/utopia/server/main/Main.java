@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Main.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.main;
 
@@ -22,7 +22,7 @@ public final class Main {
     /**
      * private
      */
-    private Main(){}
+    private Main() {}
 
     /**
      * 日志器
@@ -42,14 +42,14 @@ public final class Main {
         // 打印信息
         EnvironmentChecker.print(LOGGER::info);
 
-        if(!EnvironmentChecker.check()){
+        if (!EnvironmentChecker.check()) {
             LOGGER.error("JVM check failed down");
             System.exit(-1);
         }
 
         LOGGER.info("Server start");
 
-        LOGGER.info("utopia-version:{}",UtopiaVersion.getUtopiaVersion());
+        LOGGER.info("utopia-version:{}", UtopiaVersion.getUtopiaVersion());
 
         // 添加hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -87,6 +87,4 @@ public final class Main {
             NetMain.shutdown();
         }
     }
-
-
 }

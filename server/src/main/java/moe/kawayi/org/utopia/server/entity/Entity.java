@@ -1,20 +1,20 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Entity.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.entity;
+
+import java.util.Optional;
 
 import moe.kawayi.org.utopia.core.map.WorldPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import java.util.Optional;
-
 /**
  * 实体接口
  */
-public interface Entity extends Cloneable{
+public interface Entity extends Cloneable {
 
     /**
      * 获取位置
@@ -30,7 +30,6 @@ public interface Entity extends Cloneable{
      * @param newPosition 新的实体位置
      */
     void setPosition(@NotNull WorldPosition newPosition);
-
 
     /**
      * 获取实体的唯一标识符
@@ -73,6 +72,4 @@ public interface Entity extends Cloneable{
      * 每tick调用
      */
     void update();
-
-
 }

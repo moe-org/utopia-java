@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Application.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
 
@@ -14,8 +14,7 @@ public class Application {
     /**
      * private
      */
-    private Application() {
-    }
+    private Application() {}
 
     /**
      * 最小窗口高度
@@ -41,5 +40,4 @@ public class Application {
      * 大图标(128x128)路径。基于Utopia Root。
      */
     public static final String LARGE_ICON_PATH = "Utopia(128x128).png";
-
 }

@@ -1,17 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The LogManagers.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 整合日志管理器
@@ -21,12 +21,11 @@ public class LogManagers extends System.LoggerFinder {
     /**
      * 默认构造函数
      */
-    public LogManagers(){}
+    public LogManagers() {}
 
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
             // 配置日志
-            LogUtil.configureLog()
-    );
+            LogUtil.configureLog());
 
     /**
      * 日志器列表
@@ -38,7 +37,7 @@ public class LogManagers extends System.LoggerFinder {
      * @return 日志管理器
      */
     @NotNull
-    public static LogManager getLogManager(){
+    public static LogManager getLogManager() {
         return GLOBAL_LOG_MANAGER.get();
     }
 
@@ -46,9 +45,7 @@ public class LogManagers extends System.LoggerFinder {
      * 设置全局日志管理器
      * @param logManager 日志管理器
      */
-    public static void setLogManager(
-            @NotNull LogManager logManager
-    ){
+    public static void setLogManager(@NotNull LogManager logManager) {
         GLOBAL_LOG_MANAGER.set(Objects.requireNonNull(logManager));
     }
 
@@ -59,10 +56,10 @@ public class LogManagers extends System.LoggerFinder {
      * <br/>
      * 一般用于{@link LogManagers#setLogManager(LogManager)}后更新之前获取的日志器。
      */
-    public static void updateLogger(){
+    public static void updateLogger() {
         // get all loggers
         WrapLogger[] loggers = null;
-        synchronized (ALL_LOGGERS){
+        synchronized (ALL_LOGGERS) {
             loggers = new WrapLogger[ALL_LOGGERS.size()];
             ALL_LOGGERS.toArray(loggers);
         }
@@ -71,10 +68,9 @@ public class LogManagers extends System.LoggerFinder {
         Arrays.stream(loggers).forEach((item) -> {
             item.switchLogger(
                     // 根据原来日志器的名称构造新的日志器
-                getLogger(item.getName()));
-            });
+                    getLogger(item.getName()));
+        });
     }
-
 
     /**
      * 使用全局日志管理器获取一个日志器
@@ -82,14 +78,13 @@ public class LogManagers extends System.LoggerFinder {
      * @return 日志器。非空
      */
     @NotNull
-    public static Logger getLogger(@NotNull Class<?> clazz){
+    public static Logger getLogger(@NotNull Class<?> clazz) {
         var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(clazz));
-        synchronized (ALL_LOGGERS){
+        synchronized (ALL_LOGGERS) {
             ALL_LOGGERS.add(logger);
         }
         return logger;
     }
-
 
     /**
      * 使用全局日志管理器获取一个日志器
@@ -97,9 +92,9 @@ public class LogManagers extends System.LoggerFinder {
      * @return 日志器。非空
      */
     @NotNull
-    public static Logger getLogger(@NotNull String name){
+    public static Logger getLogger(@NotNull String name) {
         var logger = new WrapLogger(GLOBAL_LOG_MANAGER.get().getLogger(name));
-        synchronized (ALL_LOGGERS){
+        synchronized (ALL_LOGGERS) {
             ALL_LOGGERS.add(logger);
         }
         return logger;
@@ -107,7 +102,7 @@ public class LogManagers extends System.LoggerFinder {
 
     @Override
     @NotNull
-    public System.Logger getLogger(@NotNull String name,@NotNull Module module) {
+    public System.Logger getLogger(@NotNull String name, @NotNull Module module) {
         Objects.requireNonNull(module);
         Objects.requireNonNull(name);
 

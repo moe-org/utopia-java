@@ -1,15 +1,15 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The UtopiaBinaryFormatObjectImpl.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf;
 
+import java.util.*;
+
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-
-import java.util.*;
 
 /**
  * {@link UtopiaBinaryFormatObject}的线程不安全实现
@@ -337,6 +337,4 @@ public final class UtopiaBinaryFormatObjectImpl implements UtopiaBinaryFormatObj
     public Set<Map.Entry<String, Object>> getEntrySet() {
         return map.entrySet();
     }
-
-
 }

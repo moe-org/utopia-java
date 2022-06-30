@@ -1,16 +1,16 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The ResourceManager.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.resource;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 资源管理器
@@ -20,7 +20,7 @@ public final class ResourceManager {
     /**
      * private
      */
-    private ResourceManager(){}
+    private ResourceManager() {}
 
     /**
      * 默认utopia根路径的系统PROPERTY。
@@ -90,6 +90,4 @@ public final class ResourceManager {
         Objects.requireNonNull(absolute);
         return getUtopiaDir().relativize(absolute);
     }
-
-
 }

@@ -1,20 +1,20 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The WrapLogger.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 /**
  * {@link Logger}的包装
  */
-public class WrapLogger implements Logger{
+public class WrapLogger implements Logger {
 
     private final AtomicReference<Logger> logger = new AtomicReference<>(null);
 
@@ -22,7 +22,7 @@ public class WrapLogger implements Logger{
      * 构造一个Logger包装器
      * @param logger 要包装的Logger，不为null
      */
-    public WrapLogger(@NotNull Logger logger){
+    public WrapLogger(@NotNull Logger logger) {
         this.logger.set(Objects.requireNonNull(logger));
     }
 
@@ -30,7 +30,7 @@ public class WrapLogger implements Logger{
      * 设置包装器的Logger到新的Logger。此函数线程安全。
      * @param logger 新的Logger，不为null。
      */
-    public void switchLogger(@NotNull Logger logger){
+    public void switchLogger(@NotNull Logger logger) {
         this.logger.set(Objects.requireNonNull(logger));
     }
 
@@ -71,13 +71,13 @@ public class WrapLogger implements Logger{
     }
 
     @Override
-    public void trace(@NotNull String msg,@NotNull Object... objects) {
-        logger.get().trace(msg,objects);
+    public void trace(@NotNull String msg, @NotNull Object... objects) {
+        logger.get().trace(msg, objects);
     }
 
     @Override
     public void trace(@NotNull String msg, @NotNull Throwable exception) {
-        logger.get().trace(msg,exception);
+        logger.get().trace(msg, exception);
     }
 
     @Override
@@ -87,12 +87,12 @@ public class WrapLogger implements Logger{
 
     @Override
     public void debug(@NotNull String msg, @NotNull Object... objects) {
-        logger.get().debug(msg,objects);
+        logger.get().debug(msg, objects);
     }
 
     @Override
     public void debug(@NotNull String msg, @NotNull Throwable exception) {
-        logger.get().debug(msg,exception);
+        logger.get().debug(msg, exception);
     }
 
     @Override
@@ -102,12 +102,12 @@ public class WrapLogger implements Logger{
 
     @Override
     public void info(@NotNull String msg, @NotNull Object... objects) {
-        logger.get().info(msg,objects);
+        logger.get().info(msg, objects);
     }
 
     @Override
     public void info(@NotNull String msg, @NotNull Throwable exception) {
-        logger.get().info(msg,exception);
+        logger.get().info(msg, exception);
     }
 
     @Override
@@ -117,12 +117,12 @@ public class WrapLogger implements Logger{
 
     @Override
     public void warn(@NotNull String msg, @NotNull Object... objects) {
-        logger.get().warn(msg,objects);
+        logger.get().warn(msg, objects);
     }
 
     @Override
     public void warn(@NotNull String msg, @NotNull Throwable exception) {
-        logger.get().warn(msg,exception);
+        logger.get().warn(msg, exception);
     }
 
     @Override
@@ -132,11 +132,11 @@ public class WrapLogger implements Logger{
 
     @Override
     public void error(@NotNull String msg, @NotNull Object... objects) {
-        logger.get().error(msg,objects);
+        logger.get().error(msg, objects);
     }
 
     @Override
     public void error(@NotNull String msg, @NotNull Throwable exception) {
-        logger.get().error(msg,exception);
+        logger.get().error(msg, exception);
     }
 }

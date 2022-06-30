@@ -1,19 +1,19 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The BlockImpl.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.map;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.server.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.server.entity.Entity;
 
 /**
  * 一个地图块
@@ -25,12 +25,12 @@ public final class BlockImpl implements Block {
     /**
      * 默认构造
      */
-    public BlockImpl(){}
+    public BlockImpl() {}
 
     /**
      * 实体列表
      */
-    private final ArrayList<Entity> entities = new ArrayList<>(/*事不过三*/3);
+    private final ArrayList<Entity> entities = new ArrayList<>(/*事不过三*/ 3);
 
     /**
      * 是否可通过
@@ -40,8 +40,7 @@ public final class BlockImpl implements Block {
     /**
      * 是否可碰撞
      */
-    private @NotNull
-    Optional<Entity> collision = Optional.empty();
+    private @NotNull Optional<Entity> collision = Optional.empty();
 
     /**
      * 读写锁
@@ -109,23 +108,22 @@ public final class BlockImpl implements Block {
 
         try {
             // remove it
-            entities.removeIf(
-                    entity -> {
-                        var result = removeCallback.callable(entity);
+            entities.removeIf(entity -> {
+                var result = removeCallback.callable(entity);
 
-                        // 处理后事
-                        if (result) {
-                            if (!entity.canPass()) {
-                                cannotPassableCount--;
-                            }
+                // 处理后事
+                if (result) {
+                    if (!entity.canPass()) {
+                        cannotPassableCount--;
+                    }
 
-                            if (entity.canCollide()) {
-                                collision = null;
-                            }
-                        }
+                    if (entity.canCollide()) {
+                        collision = null;
+                    }
+                }
 
-                        return result;
-                    });
+                return result;
+            });
         } finally {
             lock.unlock();
         }
@@ -256,9 +254,7 @@ public final class BlockImpl implements Block {
         try {
             ArrayList<Entity> result = new ArrayList<>();
 
-            for (var entity : entities)
-                if (entity.getEntityId().equals(entityId))
-                    result.add(entity);
+            for (var entity : entities) if (entity.getEntityId().equals(entityId)) result.add(entity);
 
             Entity[] outputBuffer = new Entity[result.size()];
             result.toArray(outputBuffer);
@@ -306,14 +302,11 @@ public final class BlockImpl implements Block {
         var lock = rwLock.readLock();
         lock.lock();
 
-        try{
-            for (var item : entities)
-                if (entity == item)
-                    return true;
+        try {
+            for (var item : entities) if (entity == item) return true;
 
             return false;
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }

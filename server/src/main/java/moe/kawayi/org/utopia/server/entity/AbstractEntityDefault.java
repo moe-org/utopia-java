@@ -1,17 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The EntityDefault.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.entity;
+
+import java.util.Objects;
+import java.util.Optional;
 
 import moe.kawayi.org.utopia.core.map.WorldPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * 实体类的一个基本抽象实现
@@ -21,7 +21,7 @@ public abstract class AbstractEntityDefault implements Entity {
     /**
      * 默认构造
      */
-    public AbstractEntityDefault(){}
+    public AbstractEntityDefault() {}
 
     @Nullable
     private WorldPosition worldPosition = null;

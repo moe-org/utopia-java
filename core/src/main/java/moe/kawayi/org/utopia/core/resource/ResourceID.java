@@ -1,18 +1,18 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The ResourceID.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.resource;
-
-import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 
 /**
  * 代表一个全局唯一的资源id。类似于一个URL。
@@ -33,8 +33,8 @@ public class ResourceID {
      */
     public ResourceID(@NotNull String... namespace) {
         if (Objects.requireNonNull(namespace).length < 2) {
-            throw new IllegalArgumentException
-                    ("too less arguments(at least two,one is root-namespace,another is name)");
+            throw new IllegalArgumentException(
+                    "too less arguments(at least two,one is root-namespace,another is name)");
         }
         Arrays.stream(namespace).forEach((str) -> {
             if (!str.matches("[a-zA-Z\\d-_ ]+")) {

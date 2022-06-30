@@ -1,30 +1,28 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Window.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
-import moe.kawayi.org.utopia.core.event.Event;
+import java.io.IOException;
+import java.nio.IntBuffer;
+import java.nio.file.Path;
+import java.util.Objects;
+
 import moe.kawayi.org.utopia.core.event.EventBus;
 import moe.kawayi.org.utopia.core.event.EventImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
+
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-
-import java.io.IOException;
-import java.nio.IntBuffer;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -38,14 +36,13 @@ public class Window {
 
     private final EventBus<EventImpl<int[]>> framebufferSizeEvent = new EventBus<>();
 
-
     /**
      * 使用handle初始化此类。窗口通常由builder创建。
      */
     private Window(long handle) {
         this.handle = handle;
         glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
-            var size = new int[]{width, height};
+            var size = new int[] {width, height};
 
             framebufferSizeEvent.fireEvent(new EventImpl<>(size, false));
         });
@@ -94,7 +91,7 @@ public class Window {
 
             glfwGetWindowSize(handle, pWidth, pHeight);
 
-            return new int[]{pWidth.get(0), pHeight.get(0)};
+            return new int[] {pWidth.get(0), pHeight.get(0)};
         }
     }
 

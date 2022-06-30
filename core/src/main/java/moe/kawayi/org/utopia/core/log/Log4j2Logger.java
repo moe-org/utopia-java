@@ -1,16 +1,17 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Log4j2Logger.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
 
-import io.netty.util.internal.logging.InternalLogLevel;
-import io.netty.util.internal.logging.InternalLogger;
+import java.util.Objects;
+
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import java.util.Objects;
+import io.netty.util.internal.logging.InternalLogLevel;
+import io.netty.util.internal.logging.InternalLogger;
 
 /**
  * Log4j2的logger
@@ -23,7 +24,7 @@ public class Log4j2Logger implements Logger, InternalLogger {
      * 使用Log4j2的日志器进行初始化
      * @param logger 要使用的日志器
      */
-    public Log4j2Logger(@NotNull org.apache.logging.log4j.Logger logger){
+    public Log4j2Logger(@NotNull org.apache.logging.log4j.Logger logger) {
         Objects.requireNonNull(logger);
         this.logger = logger;
     }
@@ -73,25 +74,18 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void trace(
-            /*no-null-mark*/ String format,
-            /*no-null-mark*/ Object arg) {
+    public void trace(/*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
         logger.trace(format, arg);
     }
 
     @Override
-    public void trace(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
+    public void trace(/*no-null-mark*/ String format, /*no-null-mark*/ Object argA, /*no-null-mark*/ Object argB) {
         logger.trace(format, argA, argB);
     }
 
     @Override
-    public void trace(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/ Object... objects) {
-        logger.trace(msg,objects);
+    public void trace(/*no-null-mark*/ String msg, /*no-null-mark*/ Object... objects) {
+        logger.trace(msg, objects);
     }
 
     @Override
@@ -100,8 +94,8 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void trace(/*no-null-mark*/ String msg,/*no-null-mark*/  Throwable exception) {
-        logger.trace(msg,exception);
+    public void trace(/*no-null-mark*/ String msg, /*no-null-mark*/ Throwable exception) {
+        logger.trace(msg, exception);
     }
 
     @Override
@@ -110,35 +104,28 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void debug(/*no-null-mark*/String format,/*no-null-mark*/ Object arg) {
+    public void debug(/*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
         logger.debug(format, arg);
     }
 
     @Override
-    public void debug(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
+    public void debug(/*no-null-mark*/ String format, /*no-null-mark*/ Object argA, /*no-null-mark*/ Object argB) {
         logger.debug(format, argA, argB);
     }
 
     @Override
-    public void debug(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Object... objects) {
-        logger.debug(msg,objects);
+    public void debug(/*no-null-mark*/ String msg, /*no-null-mark*/ Object... objects) {
+        logger.debug(msg, objects);
     }
 
     @Override
-    public void debug(/*no-null-mark*/Throwable t) {
+    public void debug(/*no-null-mark*/ Throwable t) {
         logger.debug(t);
     }
 
     @Override
-    public void debug(
-            /*no-null-mark*/ String msg,
-            /*no-null-mark*/Throwable exception) {
-        logger.debug(msg,exception);
+    public void debug(/*no-null-mark*/ String msg, /*no-null-mark*/ Throwable exception) {
+        logger.debug(msg, exception);
     }
 
     @Override
@@ -147,35 +134,28 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void info(/*no-null-mark*/String format,/*no-null-mark*/ Object arg) {
+    public void info(/*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
         logger.info(format, arg);
     }
 
     @Override
-    public void info(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
+    public void info(/*no-null-mark*/ String format, /*no-null-mark*/ Object argA, /*no-null-mark*/ Object argB) {
         logger.info(format, argA, argB);
     }
 
     @Override
-    public void info(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Object... objects) {
-        logger.info(msg,objects);
+    public void info(/*no-null-mark*/ String msg, /*no-null-mark*/ Object... objects) {
+        logger.info(msg, objects);
     }
 
     @Override
-    public void info(/*no-null-mark*/Throwable t) {
+    public void info(/*no-null-mark*/ Throwable t) {
         logger.info(t);
     }
 
     @Override
-    public void info(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Throwable exception) {
-        logger.info(msg,exception);
+    public void info(/*no-null-mark*/ String msg, /*no-null-mark*/ Throwable exception) {
+        logger.info(msg, exception);
     }
 
     @Override
@@ -184,37 +164,28 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void warn(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object arg) {
-        logger.warn(format,arg);
+    public void warn(/*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
+        logger.warn(format, arg);
     }
 
     @Override
-    public void warn(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Object... objects) {
-        logger.warn(msg,objects);
+    public void warn(/*no-null-mark*/ String msg, /*no-null-mark*/ Object... objects) {
+        logger.warn(msg, objects);
     }
 
     @Override
-    public void warn(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
-        logger.warn(format,argA,argB);
+    public void warn(/*no-null-mark*/ String format, /*no-null-mark*/ Object argA, /*no-null-mark*/ Object argB) {
+        logger.warn(format, argA, argB);
     }
 
     @Override
-    public void warn(/*no-null-mark*/Throwable t) {
+    public void warn(/*no-null-mark*/ Throwable t) {
         logger.warn(t);
     }
 
     @Override
-    public void warn(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Throwable exception) {
-        logger.warn(msg,exception);
+    public void warn(/*no-null-mark*/ String msg, /*no-null-mark*/ Throwable exception) {
+        logger.warn(msg, exception);
     }
 
     @Override
@@ -223,42 +194,33 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void error(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object arg) {
-        logger.error(format,arg);
+    public void error(/*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
+        logger.error(format, arg);
     }
 
     @Override
-    public void error(
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
+    public void error(/*no-null-mark*/ String format, /*no-null-mark*/ Object argA, /*no-null-mark*/ Object argB) {
         logger.error(format, argA, argB);
     }
 
     @Override
-    public void error(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Object... objects) {
-        logger.error(msg,objects);
+    public void error(/*no-null-mark*/ String msg, /*no-null-mark*/ Object... objects) {
+        logger.error(msg, objects);
     }
 
     @Override
-    public void error(/*no-null-mark*/Throwable t) {
+    public void error(/*no-null-mark*/ Throwable t) {
         logger.error(t);
     }
 
     @Override
-    public void error(
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Throwable exception) {
-        logger.error(msg,exception);
+    public void error(/*no-null-mark*/ String msg, /*no-null-mark*/ Throwable exception) {
+        logger.error(msg, exception);
     }
 
     @Override
     public boolean isEnabled(@NotNull InternalLogLevel level) {
-        return switch (Objects.requireNonNull(level)){
+        return switch (Objects.requireNonNull(level)) {
             case TRACE -> isTraceEnabled();
             case DEBUG -> isDebugEnabled();
             case INFO -> isInfoEnabled();
@@ -268,10 +230,8 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void log(
-            @NotNull InternalLogLevel level,
-            /*no-null-mark*/String msg) {
-        switch (Objects.requireNonNull(level)){
+    public void log(@NotNull InternalLogLevel level, /*no-null-mark*/ String msg) {
+        switch (Objects.requireNonNull(level)) {
             case TRACE -> logger.trace(msg);
             case DEBUG -> logger.debug(msg);
             case INFO -> logger.info(msg);
@@ -281,55 +241,45 @@ public class Log4j2Logger implements Logger, InternalLogger {
     }
 
     @Override
-    public void log(
-            @NotNull InternalLogLevel level,
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object arg) {
-        log(level,format,new Object[] {arg});
+    public void log(@NotNull InternalLogLevel level, /*no-null-mark*/ String format, /*no-null-mark*/ Object arg) {
+        log(level, format, new Object[] {arg});
     }
 
     @Override
     public void log(
             @NotNull InternalLogLevel level,
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object argA,
-            /*no-null-mark*/Object argB) {
-        log(level,format,new Object[] {argA,argB});
+            /*no-null-mark*/ String format,
+            /*no-null-mark*/ Object argA,
+            /*no-null-mark*/ Object argB) {
+        log(level, format, new Object[] {argA, argB});
     }
 
     @Override
     public void log(
-            @NotNull InternalLogLevel level,
-            /*no-null-mark*/String format,
-            /*no-null-mark*/Object... arguments) {
-        switch (Objects.requireNonNull(level)){
-            case TRACE -> logger.trace(format,arguments);
-            case DEBUG -> logger.debug(format,arguments);
-            case INFO -> logger.info(format,arguments);
-            case WARN -> logger.warn(format,arguments);
-            case ERROR -> logger.error(format,arguments);
+            @NotNull InternalLogLevel level, /*no-null-mark*/ String format, /*no-null-mark*/ Object... arguments) {
+        switch (Objects.requireNonNull(level)) {
+            case TRACE -> logger.trace(format, arguments);
+            case DEBUG -> logger.debug(format, arguments);
+            case INFO -> logger.info(format, arguments);
+            case WARN -> logger.warn(format, arguments);
+            case ERROR -> logger.error(format, arguments);
         }
     }
 
     @Override
-    public void log(
-            @NotNull InternalLogLevel level,
-            /*no-null-mark*/String msg,
-            /*no-null-mark*/Throwable t) {
-        switch (Objects.requireNonNull(level)){
-            case TRACE -> logger.trace(msg,t);
-            case DEBUG -> logger.debug(msg,t);
-            case INFO -> logger.info(msg,t);
-            case WARN -> logger.warn(msg,t);
-            case ERROR -> logger.error(msg,t);
+    public void log(@NotNull InternalLogLevel level, /*no-null-mark*/ String msg, /*no-null-mark*/ Throwable t) {
+        switch (Objects.requireNonNull(level)) {
+            case TRACE -> logger.trace(msg, t);
+            case DEBUG -> logger.debug(msg, t);
+            case INFO -> logger.info(msg, t);
+            case WARN -> logger.warn(msg, t);
+            case ERROR -> logger.error(msg, t);
         }
     }
 
     @Override
-    public void log(
-            @NotNull InternalLogLevel level,
-            /*no-null-mark*/Throwable t) {
-        switch (Objects.requireNonNull(level)){
+    public void log(@NotNull InternalLogLevel level, /*no-null-mark*/ Throwable t) {
+        switch (Objects.requireNonNull(level)) {
             case TRACE -> logger.trace(t);
             case DEBUG -> logger.debug(t);
             case INFO -> logger.info(t);

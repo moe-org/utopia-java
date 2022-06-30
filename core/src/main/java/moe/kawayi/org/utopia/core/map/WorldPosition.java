@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The WorldPosition.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.map;
 
@@ -86,14 +86,10 @@ public final class WorldPosition {
      */
     @Override
     public boolean equals(@NotNull Object obj) {
-        if(obj == null)
-            return false;
+        if (obj == null) return false;
 
         if (obj instanceof WorldPosition pos) {
-            return pos.x == this.x &&
-                    pos.y == this.y &&
-                    pos.z == this.z &&
-                    pos.worldId == this.worldId;
+            return pos.x == this.x && pos.y == this.y && pos.z == this.z && pos.worldId == this.worldId;
         }
 
         return false;

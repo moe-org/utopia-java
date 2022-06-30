@@ -1,22 +1,23 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The AreaTest.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.test.map;
+
+import java.util.ArrayList;
 
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.server.map.*;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 public class AreaTest {
 
-    private final Area area = new AreaImpl(new FlatPosition(0,0));
+    private final Area area = new AreaImpl(new FlatPosition(0, 0));
 
     @Test
     public void areaAccessTest() {
@@ -41,8 +42,7 @@ public class AreaTest {
         var result1 = area.getBlock(
                 new Position(WorldInfo.BLOCK_FLOOR_X_SIZE, WorldInfo.BLOCK_FLOOR_Y_SIZE, WorldInfo.GROUND_Z));
 
-        var result2 = area.getBlock(
-                new Position(-1, -1, WorldInfo.GROUND_Z));
+        var result2 = area.getBlock(new Position(-1, -1, WorldInfo.GROUND_Z));
 
         Assertions.assertFalse(result1.isPresent());
         Assertions.assertFalse(result2.isPresent());
@@ -50,12 +50,8 @@ public class AreaTest {
 
     @Test
     public void areaNullPointerTest() {
-        Assertions.assertThrows(
-                NullPointerException.class,
-                () -> {
-                    area.getBlock(null);
-                }
-        );
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            area.getBlock(null);
+        });
     }
-
 }

@@ -1,19 +1,19 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DefaultLogger.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
 
-import moe.kawayi.org.utopia.core.util.NotNull;
-
 import java.util.Objects;
+
+import moe.kawayi.org.utopia.core.util.NotNull;
 
 /**
  * 默认日志器
  */
-public class DefaultLogger implements Logger{
+public class DefaultLogger implements Logger {
 
     private final String name;
 
@@ -21,7 +21,7 @@ public class DefaultLogger implements Logger{
      * 构造一个默认日志器
      * @param name 日志器名称
      */
-    public DefaultLogger(@NotNull String name){
+    public DefaultLogger(@NotNull String name) {
         Objects.requireNonNull(name);
         this.name = name;
     }
@@ -107,7 +107,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void info(@NotNull String msg,@NotNull  Throwable exception) {
+    public void info(@NotNull String msg, @NotNull Throwable exception) {
         System.out.println(msg);
     }
 
@@ -137,7 +137,7 @@ public class DefaultLogger implements Logger{
 
     @Override
     @NotNull
-    public void error(@NotNull String msg,@NotNull  Object... objects) {
+    public void error(@NotNull String msg, @NotNull Object... objects) {
         System.out.println(msg);
     }
 

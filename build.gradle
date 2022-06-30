@@ -132,9 +132,10 @@ subprojects {
     // 格式修复
     spotless {
         java{
+            palantirJavaFormat("2.24.0")
             toggleOffOn()
             importOrder('java', 'javax', 'moe.kawayi.org', '', '\\#')
-            palantirJavaFormat("2.24.0")
+            removeUnusedImports()
         }
     }
 

@@ -1,21 +1,21 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The AreaImpl.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.map;
-
-import moe.kawayi.org.utopia.core.map.FlatPosition;
-import moe.kawayi.org.utopia.core.map.Position;
-import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
+
+import moe.kawayi.org.utopia.core.map.FlatPosition;
+import moe.kawayi.org.utopia.core.map.Position;
+import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Nullable;
 
 /**
  * 地图区域
@@ -48,13 +48,13 @@ public final class AreaImpl implements Area {
      * 构造一个区域
      * @param origin 区域坐标。只能是{@link WorldInfo#BLOCK_FLOOR_X_SIZE}和{@link WorldInfo#BLOCK_FLOOR_Y_SIZE}的倍数
      */
-    public AreaImpl(@NotNull FlatPosition origin){
+    public AreaImpl(@NotNull FlatPosition origin) {
         Objects.requireNonNull(origin);
 
-        if(origin.x % WorldInfo.BLOCK_FLOOR_X_SIZE != 0){
+        if (origin.x % WorldInfo.BLOCK_FLOOR_X_SIZE != 0) {
             throw new IllegalArgumentException("origin.x不是WorldInfo.BLOCK_FLOOR_X_SIZE的倍数");
         }
-        if(origin.y % WorldInfo.BLOCK_FLOOR_Y_SIZE != 0){
+        if (origin.y % WorldInfo.BLOCK_FLOOR_Y_SIZE != 0) {
             throw new IllegalArgumentException("origin.y不是WorldInfo.BLOCK_FLOOR_Y_SIZE的倍数");
         }
 
@@ -62,21 +62,18 @@ public final class AreaImpl implements Area {
     }
 
     @Nullable
-    private Position getPositionRelativeToOrigin(@NotNull Position position){
+    private Position getPositionRelativeToOrigin(@NotNull Position position) {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 
-        if(position.x >= (origin.x + WorldInfo.BLOCK_FLOOR_X_SIZE) || position.x < origin.x)
-            return null;
+        if (position.x >= (origin.x + WorldInfo.BLOCK_FLOOR_X_SIZE) || position.x < origin.x) return null;
 
-        if(position.y >= (origin.y + WorldInfo.BLOCK_FLOOR_Y_SIZE) || position.y < origin.y)
-            return null;
+        if (position.y >= (origin.y + WorldInfo.BLOCK_FLOOR_Y_SIZE) || position.y < origin.y) return null;
 
         return new Position(
-                origin.x >= 0 ?  Math.abs(position.x) - Math.abs(origin.x) : Math.abs(origin.x) - Math.abs(position.x),
-                origin.y >= 0 ?  Math.abs(position.y) - Math.abs(origin.y) : Math.abs(origin.y) - Math.abs(position.y),
-                position.z
-        );
+                origin.x >= 0 ? Math.abs(position.x) - Math.abs(origin.x) : Math.abs(origin.x) - Math.abs(position.x),
+                origin.y >= 0 ? Math.abs(position.y) - Math.abs(origin.y) : Math.abs(origin.y) - Math.abs(position.y),
+                position.z);
     }
 
     /**
@@ -94,8 +91,7 @@ public final class AreaImpl implements Area {
 
         position = getPositionRelativeToOrigin(position);
 
-        if(position == null)
-            return Optional.empty();
+        if (position == null) return Optional.empty();
 
         // it's thread safe for BlockFloorImpl
         if (position.z == WorldInfo.GROUND_Z) {

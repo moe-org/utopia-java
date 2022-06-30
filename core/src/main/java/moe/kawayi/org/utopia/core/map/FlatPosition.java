@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The FlatPosition.java is a part of project utopia, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.map;
 
@@ -44,7 +44,6 @@ public final class FlatPosition {
         return String.format("FlatPosition{ x:%s y:%s }", x, y);
     }
 
-
     /**
      * 获取对象hash值
      *
@@ -63,12 +62,10 @@ public final class FlatPosition {
      */
     @Override
     public boolean equals(@NotNull Object obj) {
-        if(obj == null)
-            return false;
+        if (obj == null) return false;
 
         if (obj instanceof FlatPosition pos) {
-            return pos.x == this.x &&
-                    pos.y == this.y;
+            return pos.x == this.x && pos.y == this.y;
         }
 
         return false;
