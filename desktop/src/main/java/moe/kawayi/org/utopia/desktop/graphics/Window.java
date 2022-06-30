@@ -1,21 +1,15 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Window.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
-
-import java.io.IOException;
-import java.nio.IntBuffer;
-import java.nio.file.Path;
-import java.util.Objects;
 
 import moe.kawayi.org.utopia.core.event.EventBus;
 import moe.kawayi.org.utopia.core.event.EventImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
-
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
@@ -24,17 +18,23 @@ import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.IOException;
+import java.nio.IntBuffer;
+import java.nio.file.Path;
+import java.util.Objects;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 /**
- * 代表一个窗口（通常是GLFW创建的）
+ * 代表一个窗口（通常是GLFW创建的）。
+ * implement {@link AutoCloseable} may be silly.
  */
 public class Window {
 
     private final long handle;
 
-    private final EventBus<EventImpl<int[]>> framebufferSizeEvent = new EventBus<>();
+    private final EventBus<EventImpl<int[]>> resizeEvent = new EventBus<>();
 
     /**
      * 使用handle初始化此类。窗口通常由builder创建。
@@ -42,9 +42,9 @@ public class Window {
     private Window(long handle) {
         this.handle = handle;
         glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
-            var size = new int[] {width, height};
+            var size = new int[]{width, height};
 
-            framebufferSizeEvent.fireEvent(new EventImpl<>(size, false));
+            resizeEvent.fireEvent(new EventImpl<>(size, false));
         });
     }
 
@@ -91,7 +91,7 @@ public class Window {
 
             glfwGetWindowSize(handle, pWidth, pHeight);
 
-            return new int[] {pWidth.get(0), pHeight.get(0)};
+            return new int[]{pWidth.get(0), pHeight.get(0)};
         }
     }
 
@@ -125,15 +125,15 @@ public class Window {
      * @return 事件。事件参数见{@link Window#getSize()}
      */
     @NotNull
-    public EventBus<EventImpl<int[]>> getSizeEvent() {
-        return this.framebufferSizeEvent;
+    public EventBus<EventImpl<int[]>> getResizeEvent() {
+        return this.resizeEvent;
     }
 
     /**
      * 启动自动viewport设置
      */
     public void enableAutoViewport() {
-        getSizeEvent().register((register) -> {
+        getResizeEvent().register((register) -> {
             var param = (int[]) register.getParameter().orElseThrow();
 
             GL33.glViewport(0, 0, param[0], param[1]);

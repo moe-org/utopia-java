@@ -1,13 +1,10 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DesktopApplication.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
-
-import java.io.IOException;
-import java.io.PrintStream;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
@@ -17,16 +14,20 @@ import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Program;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
-
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
+import org.lwjgl.opengl.GL43;
+
+import java.io.IOException;
+import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -37,7 +38,8 @@ public class DesktopApplication {
     /**
      * 默认构造函数
      */
-    public DesktopApplication() {}
+    public DesktopApplication() {
+    }
 
     /**
      * 日志器
@@ -58,6 +60,11 @@ public class DesktopApplication {
      * 是否启用向前兼容，即{@link org.lwjgl.glfw.GLFW#GLFW_OPENGL_FORWARD_COMPAT}
      */
     public boolean forwardCompat = false;
+
+    /**
+     * 是否开启opengl debug模式
+     */
+    public boolean openglDebug = false;
 
     /**
      * 获取游戏主要窗口
@@ -92,7 +99,7 @@ public class DesktopApplication {
             glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
             glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -121,10 +128,27 @@ public class DesktopApplication {
         window.enableVsync();
         window.enableAutoViewport();
         window.show();
+
+        if (openglDebug) {
+            GL43.glEnable(GL_DEBUG_OUTPUT);
+
+            GL43.glDebugMessageCallback((source, type, id, severity, length, message, userParam) -> {
+                StringBuilder msg = new StringBuilder();
+                msg.append("OpenGL debug message: ");
+                msg.append("source: ").append(source).append(", ");
+                msg.append("type: ").append(type).append(", ");
+                msg.append("id: ").append(id).append(", ");
+                msg.append("severity: ").append(severity).append(", ");
+                msg.append("length: ").append(length).append(", ");
+                msg.append("message: ").append(message);
+                logger.error("{}", msg.toString());
+            }, 0);
+        }
     }
 
     /**
      * 启动客户端
+     *
      * @throws OpenGLException opengl错误
      */
     public void start() throws OpenGLException {
@@ -151,23 +175,27 @@ public class DesktopApplication {
 
         Program program = new Program(
                 """
-#version 330 core
-layout (location = 0) in vec3 aPos;
+                        #version 330 core
+                        layout (location = 0) in vec3 aPos;
 
-void main()
-{
-    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-}
-""",
+                        void main()
+                        {
+                            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+                        }
+                        """,
                 """
-#version 330 core
-out vec4 FragColor;
+                        #version 330 core
+                        out vec4 FragColor;
 
-void main()
-{
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-}
-""");
+                        void main()
+                        {
+                            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+                        }
+                        """);
+
+        window.getResizeEvent().register((event) -> {
+            window.swapBuffer();
+        });
 
         while (!window.isCloseNeeded()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -182,7 +210,7 @@ void main()
 
         GL33.glDeleteVertexArrays(vao);
         GL33.glDeleteBuffers(vbo);
-        program.delete();
+        program.close();
 
         window.destroy();
 

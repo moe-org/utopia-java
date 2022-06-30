@@ -1,13 +1,14 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The OpenGLException.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
+import org.lwjgl.opengl.GL11;
 
 /**
  * OpenGL异常
@@ -27,13 +28,25 @@ public class OpenGLException extends Exception {
     private final String message;
 
     /**
+     * 获取最后一个Opengl错误
+     *
+     * @return 最后一个opengl错误，永远不返回null
+     */
+    @NotNull
+    private static String getLastError() {
+        var code = GL11.glGetError();
+
+        return code == 0 ? "no opengl error got" : "opengl error code: " + code;
+    }
+
+    /**
      * 构造一个opengl异常
      *
      * @param message 异常信息
      */
     public OpenGLException(@NotNull String message) {
         super(message);
-        detail = null;
+        detail = getLastError();
         this.message = message;
     }
 
@@ -45,7 +58,7 @@ public class OpenGLException extends Exception {
      */
     public OpenGLException(@NotNull String message, @NotNull Exception inner) {
         super(message, inner);
-        detail = null;
+        detail = getLastError();
         this.message = message;
     }
 
@@ -57,7 +70,7 @@ public class OpenGLException extends Exception {
      */
     public OpenGLException(@NotNull String message, @NotNull String detail) {
         super(message);
-        this.detail = detail;
+        this.detail = getLastError() + "\ndetail: " + detail;
         this.message = message;
     }
 
