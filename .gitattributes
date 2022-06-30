@@ -1,0 +1,25 @@
+*.java              text eol=lf
+*.py                text eol=lf
+*.txt               text eol=lf
+*.gradle            text eol=lf
+*.xml               text eol=lf
+*.json              text eol=lf
+*.bat               text eol=lf
+*.svg               text eol=lf
+*.js                text eol=lf
+*.ts                text eol=lf
+*.md                text eol=lf
+*.properties        text eol=lf
+*.conf              text eol=lf
+*.html              text eol=lf
+LICENSE             text eol=lf
+gradlew             text eol=lf
+.gitignore          text eol=lf
+.gitattributes      text eol=lf
+
+*.png               binary
+*.ico               binary
+*.jpg               binary
+*.ttf               binary
+*.jar               binary
+

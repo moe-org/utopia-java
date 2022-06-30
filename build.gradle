@@ -17,6 +17,9 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
+    dependencies {
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.7.2"
+    }
 }
 
 
@@ -109,6 +112,7 @@ allprojects {
 subprojects {
     apply plugin: "checkstyle"
     apply plugin: "jacoco"
+    apply plugin: "com.diffplug.spotless"
 
     // 设置checkstyle
     checkstyle {
@@ -181,6 +185,15 @@ subprojects {
             options.compilerArgs << "-Werror" << "-Xlint:all" // different from compileJava: no check javadoc
         }
 
+        // 格式修复
+        spotless {
+            java{
+                toggleOffOn()
+                importOrder('java', 'javax', 'moe.kawayi.org', '', '\\#')
+                removeUnusedImports()
+                palantirJavaFormat("2.24.0")
+            }
+        }
     }
 
     dependencies {
