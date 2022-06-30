@@ -129,6 +129,15 @@ subprojects {
         toolVersion = "${jacocoVersion}"
     }
 
+    // 格式修复
+    spotless {
+        java{
+            toggleOffOn()
+            importOrder('java', 'javax', 'moe.kawayi.org', '', '\\#')
+            palantirJavaFormat("2.24.0")
+        }
+    }
+
     // 在解析之后
     afterEvaluate {
         // jacoco报告设置
@@ -183,16 +192,6 @@ subprojects {
             options.setEncoding("UTF-8")
             options.forkOptions.jvmArgs << '-Dfile.encoding=UTF-8' << '-Duser.language=es'
             options.compilerArgs << "-Werror" << "-Xlint:all" // different from compileJava: no check javadoc
-        }
-
-        // 格式修复
-        spotless {
-            java{
-                toggleOffOn()
-                importOrder('java', 'javax', 'moe.kawayi.org', '', '\\#')
-                removeUnusedImports()
-                palantirJavaFormat("2.24.0")
-            }
         }
     }
 
