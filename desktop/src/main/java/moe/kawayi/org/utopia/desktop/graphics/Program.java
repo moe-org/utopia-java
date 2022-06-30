@@ -1,5 +1,5 @@
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The Shader.java is a part of organization moe-org, under MIT License.
+// The Program.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -7,6 +7,7 @@
 package moe.kawayi.org.utopia.desktop.graphics;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.system.MemoryStack;
 
@@ -48,7 +49,7 @@ public class Program {
             var buf = stack.mallocInt(1);
             GL33.glGetShaderiv(fragmentId, GL_COMPILE_STATUS, buf);
 
-            if (buf.get(0) == 0) {
+            if (buf.get(0) == GL_FALSE) {
                 throw new OpenGLException(
                         "fail to compile OpenGL fragment shader",
                         GL33.glGetShaderInfoLog(fragmentId));
@@ -56,7 +57,7 @@ public class Program {
 
             GL33.glGetShaderiv(vertexId, GL_COMPILE_STATUS, buf);
 
-            if (buf.get(0) == 0) {
+            if (buf.get(0) == GL_FALSE) {
                 throw new OpenGLException(
                         "fail to compile OpenGL vertex shader",
                         GL33.glGetShaderInfoLog(vertexId));
@@ -75,7 +76,7 @@ public class Program {
             var buf = stack.mallocInt(1);
             GL33.glGetProgramiv(programId, GL_LINK_STATUS, buf);
 
-            if (buf.get(0) == 0) {
+            if (buf.get(0) == GL_FALSE) {
                 throw new OpenGLException(
                         "fail to link OpenGL program",
                         GL33.glGetProgramInfoLog(programId));
@@ -107,6 +108,13 @@ public class Program {
      */
     public int getUniform(@NotNull String location) {
         return GL33.glGetUniformLocation(programId, Objects.requireNonNull(location));
+    }
+
+    /**
+     * 删除程序自己
+     */
+    public void delete(){
+        GL20.glDeleteProgram(getProgramId());
     }
 
 }

@@ -32,6 +32,8 @@ public class DesktopLauncher {
     public static void main(@NotNull String[] args) {
         DesktopApplication application = new DesktopApplication();
 
+        LOGGER.info("start");
+
         try {
             application.init();
             application.start();
