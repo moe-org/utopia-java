@@ -98,7 +98,7 @@ This project is still developing.
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
 </a>
 
-Copyright 2020-2021 moe-org
+Copyright 2020-2022 moe-org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
