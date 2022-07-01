@@ -1,0 +1,3 @@
+ignore:
+  - "desktop/src/main/java/**/*.java"  # ignore desktop
+

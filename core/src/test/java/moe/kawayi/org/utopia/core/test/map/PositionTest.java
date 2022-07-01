@@ -1,15 +1,14 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The PositionTest.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.test.map;
 
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.map.WorldPosition;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +24,7 @@ public class PositionTest {
         var pos = new FlatPosition(0, 0);
 
         Assertions.assertNotEquals(pos, null);
+        Assertions.assertNotEquals(pos, new Object());
         Assertions.assertNotEquals(pos, new FlatPosition(0, 1));
         Assertions.assertNotEquals(pos, new FlatPosition(1, 0));
 
@@ -37,6 +37,7 @@ public class PositionTest {
         var pos = new Position(0, 0, 0);
 
         Assertions.assertNotEquals(pos, null);
+        Assertions.assertNotEquals(pos, new Object());
         Assertions.assertNotEquals(pos, new Position(0, 0, 1));
         Assertions.assertNotEquals(pos, new Position(0, 1, 0));
         Assertions.assertNotEquals(pos, new Position(1, 0, 0));
@@ -53,6 +54,7 @@ public class PositionTest {
         var pos = new WorldPosition(0, 0, 0, 0);
 
         Assertions.assertNotEquals(pos, null);
+        Assertions.assertNotEquals(pos, new Object());
         Assertions.assertNotEquals(pos, new WorldPosition(0, 0, 1, 0));
         Assertions.assertNotEquals(pos, new WorldPosition(0, 1, 0, 0));
         Assertions.assertNotEquals(pos, new WorldPosition(1, 0, 0, 0));
