@@ -37,7 +37,7 @@ public class OpenGLException extends Exception {
     private static String getLastError() {
         var code = GL11.glGetError();
 
-        return code == 0 ? "no opengl error got" : "opengl error code: " + code;
+        return code == 0 ? "no opengl error got." : "opengl error code: " + code + ".";
     }
 
     /**
@@ -71,7 +71,7 @@ public class OpenGLException extends Exception {
      */
     public OpenGLException(@NotNull String message, @NotNull String detail) {
         super(message);
-        this.detail = getLastError() + "\ndetail: " + detail;
+        this.detail = getLastError() + " detail: " + detail;
         this.message = message;
     }
 
@@ -79,7 +79,7 @@ public class OpenGLException extends Exception {
     @NotNull
     public String getMessage() {
         if (detail != null) {
-            return this.message + ":" + this.detail;
+            return this.message + "\n" + this.detail;
         } else {
             return this.message;
         }

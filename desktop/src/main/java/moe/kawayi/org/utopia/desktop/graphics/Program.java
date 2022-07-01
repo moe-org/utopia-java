@@ -147,11 +147,18 @@ public class Program implements AutoCloseable {
      *
      * @param location location
      * @return 到的location
+     * @throws OpenGLException 如果location不存在
      */
-    public int getUniform(@NotNull String location) {
+    public int getUniform(@NotNull String location) throws OpenGLException {
         if (programId[0] == 0) throw new IllegalStateException("use after free");
 
-        return GL33.glGetUniformLocation(programId[0], Objects.requireNonNull(location));
+        var value = GL33.glGetUniformLocation(programId[0], Objects.requireNonNull(location));
+
+        if (value == -1) {
+            throw new OpenGLException("unknown uniform location: " + location);
+        } else {
+            return value;
+        }
     }
 
     /**

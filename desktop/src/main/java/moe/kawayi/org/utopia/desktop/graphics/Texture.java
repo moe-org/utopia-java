@@ -151,4 +151,14 @@ public final class Texture implements AutoCloseable {
     public int getTextureId() {
         return textureId[0];
     }
+
+    /**
+     * 绑定纹理
+     */
+    public void bind() {
+        if (textureId[0] == 0) {
+            throw new IllegalStateException("use after free");
+        }
+        GL20.glBindTexture(GL_TEXTURE_2D, textureId[0]);
+    }
 }

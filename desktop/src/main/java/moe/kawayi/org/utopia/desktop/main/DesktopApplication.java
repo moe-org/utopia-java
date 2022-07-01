@@ -8,6 +8,8 @@ package moe.kawayi.org.utopia.desktop.main;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
@@ -16,18 +18,19 @@ import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Program;
+import moe.kawayi.org.utopia.desktop.graphics.Texture;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GL43;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -65,6 +68,11 @@ public class DesktopApplication {
      * 是否开启opengl debug模式
      */
     public boolean openglDebug = false;
+
+    /**
+     * 是否使用线框模式。这个值支持在运行时进行更改。
+     */
+    public final AtomicBoolean wireframeMode = new AtomicBoolean(false);
 
     /**
      * 获取游戏主要窗口
@@ -121,10 +129,14 @@ public class DesktopApplication {
         window = builder.build();
 
         glfwSetKeyCallback(window.getHandle(), (w, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(w, true);
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(w, true);
+            } else if (key == GLFW_KEY_F12 && action == GLFW_RELEASE) {
+                this.wireframeMode.set(!this.wireframeMode.get());
+            }
         });
 
-        window.makeCurrentContext();
+        window.enableOpenGL();
         window.enableVsync();
         window.enableAutoViewport();
         window.show();
@@ -154,14 +166,39 @@ public class DesktopApplication {
      * @throws OpenGLException opengl错误
      */
     public void start() throws OpenGLException {
-        GL.createCapabilities();
 
         GL11.glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         final var vao = GL33.glGenVertexArrays();
         GL33.glBindVertexArray(vao);
 
-        float[] vertices = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+        float[] vertices = {
+            0.5f,
+            0.5f,
+            0.0f,
+            1.0f,
+            1.0f, // 右上
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f, // 右下
+            -0.5f,
+            -0.5f,
+            0.0f,
+            0.0f,
+            0.0f, // 左下
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            1.0f // 左上
+        };
+
+        int[] indices = {
+            0, 1, 3,
+            1, 2, 3
+        };
 
         final var vbo = GL33.glGenBuffers();
 
@@ -169,29 +206,47 @@ public class DesktopApplication {
 
         GL33.glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 
-        GL33.glVertexAttribPointer(0, 3, GL_FLOAT, false, Float.BYTES * 3, NULL);
+        GL33.glVertexAttribPointer(0, 3, GL_FLOAT, false, Float.BYTES * 5, NULL);
+        GL33.glVertexAttribPointer(1, 2, GL_FLOAT, false, Float.BYTES * 5, 3 * Float.BYTES);
         GL33.glEnableVertexAttribArray(0);
+        GL33.glEnableVertexAttribArray(1);
 
-        GL33.glBindBuffer(GL_ARRAY_BUFFER, 0);
+        final var ebo = GL33.glGenBuffers();
+
+        GL33.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+        GL33.glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+
         GL33.glBindVertexArray(0);
+        GL33.glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        GL33.glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         Program program = new Program(
                 """
                         #version 330 core
                         layout (location = 0) in vec3 aPos;
+                        layout (location = 1) in vec2 aTexCoord;
+
+                        out vec2 TexCoord;
 
                         void main()
                         {
-                            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+                            gl_Position = vec4(aPos, 1.0);
+                            TexCoord = aTexCoord;
                         }
                         """,
                 """
                         #version 330 core
                         out vec4 FragColor;
 
+                        in vec2 TexCoord;
+
+                        uniform sampler2D ourTexture;
+                        uniform vec3 textureColor;
+
                         void main()
                         {
-                            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+                            FragColor = texture(ourTexture, TexCoord) * vec4(textureColor, 1.0);
                         }
                         """);
 
@@ -199,12 +254,50 @@ public class DesktopApplication {
             window.swapBuffer();
         });
 
+        Random r = new Random();
+
+        // 加载我们的纹理
+        Texture texture;
+        try (var stack = MemoryStack.stackPush()) {
+            var xh = stack.mallocInt(1);
+            var yh = stack.mallocInt(1);
+            var channelHandle = stack.mallocInt(1);
+
+            STBImage.stbi_set_flip_vertically_on_load(true);
+
+            var image =
+                    STBImage.stbi_load(ResourceManager.getPath("texture.jpg").toString(), xh, yh, channelHandle, 4);
+
+            if (image == null) {
+                throw new IllegalStateException("failed to load texture");
+            }
+            try {
+                texture = new Texture(
+                        xh.get(0), yh.get(0), image, true, Texture.Wrap.MIRRORED_REPEAT, Texture.Filter.LINEAR);
+
+            } finally {
+                STBImage.stbi_image_free(image);
+            }
+        }
+
         while (!window.isCloseNeeded()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
+            if (wireframeMode.get()) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            } else {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+
             program.use();
             GL33.glBindVertexArray(vao);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            texture.bind();
+
+            var location = program.getUniform("textureColor");
+            r.setSeed((System.currentTimeMillis() % 2000) + System.nanoTime());
+            GL33.glUniform3f(location, r.nextFloat(), r.nextFloat(), r.nextFloat());
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             window.swapBuffer();
             glfwPollEvents();

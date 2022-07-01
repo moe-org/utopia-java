@@ -19,6 +19,7 @@ import moe.kawayi.org.utopia.core.util.Nullable;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
@@ -59,10 +60,11 @@ public class Window {
     }
 
     /**
-     * 对当前窗口调用{@link GLFW#glfwMakeContextCurrent(long)}
+     * 对当前窗口调用{@link GLFW#glfwMakeContextCurrent(long)}和{@link GL#createCapabilities()}
      */
-    public void makeCurrentContext() {
+    public void enableOpenGL() {
         glfwMakeContextCurrent(handle);
+        GL.createCapabilities();
     }
 
     /**
