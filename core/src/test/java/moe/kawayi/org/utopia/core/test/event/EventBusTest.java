@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The EventBusTest.java is a part of project utopia, under MIT License.
+// The EventBusTest.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.test.event;
@@ -19,7 +19,7 @@ public class EventBusTest {
     private final EventBus<EventImpl<Boolean>> eventBus = new EventBus<>();
 
     @Test
-    public void eventBusTestCaller() throws java.lang.Throwable {
+    public void eventBusTest() {
         // test
         var id = eventBus.register(event -> {
             called = (boolean) event.getParameter().orElseThrow();
@@ -32,5 +32,20 @@ public class EventBusTest {
         eventBus.fireEvent(new EventImpl<>(false, true));
 
         Assertions.assertTrue(called);
+    }
+
+    @Test
+    public void nullTest() {
+        var bus = new EventBus<EventImpl<Integer>>();
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            bus.register(null);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            bus.unregister(null);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            bus.fireEvent(null);
+        });
     }
 }

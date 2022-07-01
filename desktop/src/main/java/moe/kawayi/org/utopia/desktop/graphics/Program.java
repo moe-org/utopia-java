@@ -1,19 +1,20 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Program.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
+import java.lang.ref.Cleaner;
+import java.util.Objects;
+
 import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.system.MemoryStack;
-
-import java.lang.ref.Cleaner;
-import java.util.Objects;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -72,12 +73,13 @@ public class Program implements AutoCloseable {
                     GL33.glGetShaderiv(vertexId, GL_COMPILE_STATUS, buf);
 
                     if (buf.get(0) == GL_FALSE) {
-                        throw new OpenGLException("fail to compile OpenGL vertex shader", GL33.glGetShaderInfoLog(vertexId));
+                        throw new OpenGLException(
+                                "fail to compile OpenGL vertex shader", GL33.glGetShaderInfoLog(vertexId));
                     }
                 }
 
                 // 链接
-                nonThisProgramId = new int[]{GL33.glCreateProgram()};
+                nonThisProgramId = new int[] {GL33.glCreateProgram()};
                 programId = nonThisProgramId;
                 if (nonThisProgramId[0] == 0) {
                     throw new OpenGLException("failed to create OpenGL program");
@@ -94,8 +96,8 @@ public class Program implements AutoCloseable {
                         GL33.glGetProgramiv(nonThisProgramId[0], GL_LINK_STATUS, buf);
 
                         if (buf.get(0) == GL_FALSE) {
-                            throw new OpenGLException("fail to link OpenGL program",
-                                    GL33.glGetProgramInfoLog(nonThisProgramId[0]));
+                            throw new OpenGLException(
+                                    "fail to link OpenGL program", GL33.glGetProgramInfoLog(nonThisProgramId[0]));
                         }
                     }
                 } catch (Throwable t) {
@@ -126,8 +128,7 @@ public class Program implements AutoCloseable {
      * @return 着色器程度的id
      */
     public int getProgramId() {
-        if (programId[0] == 0)
-            throw new IllegalStateException("use after free");
+        if (programId[0] == 0) throw new IllegalStateException("use after free");
 
         return programId[0];
     }
@@ -136,8 +137,7 @@ public class Program implements AutoCloseable {
      * 使用opengl程序
      */
     public void use() {
-        if (programId[0] == 0)
-            throw new IllegalStateException("use after free");
+        if (programId[0] == 0) throw new IllegalStateException("use after free");
 
         GL33.glUseProgram(programId[0]);
     }
@@ -149,8 +149,7 @@ public class Program implements AutoCloseable {
      * @return 到的location
      */
     public int getUniform(@NotNull String location) {
-        if (programId[0] == 0)
-            throw new IllegalStateException("use after free");
+        if (programId[0] == 0) throw new IllegalStateException("use after free");
 
         return GL33.glGetUniformLocation(programId[0], Objects.requireNonNull(location));
     }

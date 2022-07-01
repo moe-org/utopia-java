@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The LogUtil.java is a part of project utopia, under MIT License.
+// The LogUtil.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.log;
@@ -12,7 +12,7 @@ import java.nio.file.StandardOpenOption;
 
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.UtopiaVersion;
+import moe.kawayi.org.utopia.core.util.Version;
 
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -66,14 +66,15 @@ public class LogUtil {
      * 配置日志器。目前实现基于log4j2
      * <br/>
      * 会做以下动作:<br/>
-     *  - 读取日志配置。如果不存在则创建，
-     *  复制{@link LogUtil#BUILT_IN_CONFIG_FILE_PATH}到{@link LogUtil#CONFIG_FILE_PATH}<br/>
-     *  - 根据配置创建日志管理器<br/>
-     *  - 设置netty使用此日志管理器<br/>
-     *  - 返回此日志管理器<br/>
+     * - 读取日志配置。如果不存在则创建，
+     * 复制{@link LogUtil#BUILT_IN_CONFIG_FILE_PATH}到{@link LogUtil#CONFIG_FILE_PATH}<br/>
+     * - 根据配置创建日志管理器<br/>
+     * - 设置netty使用此日志管理器<br/>
+     * - 返回此日志管理器<br/>
      * <br/>
      * 如果配置失败将会退出程序{@link System#exit(int)}(退出代码为-1)
      * <br/>
+     *
      * @return 配置后的日志管理器
      */
     @NotNull
@@ -83,7 +84,7 @@ public class LogUtil {
         // 配置日志配置文件
         try {
             if (!Files.exists(ResourceManager.getPath(CONFIG_FILE_PATH))) {
-                var is = UtopiaVersion.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH);
+                var is = Version.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH);
 
                 if (is == null)
                     throw new IOException("couldn't open built-in file in jar:" + BUILT_IN_CONFIG_FILE_PATH);

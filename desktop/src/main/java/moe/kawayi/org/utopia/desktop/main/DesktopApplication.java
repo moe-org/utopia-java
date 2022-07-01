@@ -1,10 +1,13 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DesktopApplication.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
+
+import java.io.IOException;
+import java.io.PrintStream;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
@@ -14,14 +17,12 @@ import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Program;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GL43;
-
-import java.io.IOException;
-import java.io.PrintStream;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -38,8 +39,7 @@ public class DesktopApplication {
     /**
      * 默认构造函数
      */
-    public DesktopApplication() {
-    }
+    public DesktopApplication() {}
 
     /**
      * 日志器
@@ -132,17 +132,19 @@ public class DesktopApplication {
         if (openglDebug) {
             GL43.glEnable(GL_DEBUG_OUTPUT);
 
-            GL43.glDebugMessageCallback((source, type, id, severity, length, message, userParam) -> {
-                StringBuilder msg = new StringBuilder();
-                msg.append("OpenGL debug message: ");
-                msg.append("source: ").append(source).append(", ");
-                msg.append("type: ").append(type).append(", ");
-                msg.append("id: ").append(id).append(", ");
-                msg.append("severity: ").append(severity).append(", ");
-                msg.append("length: ").append(length).append(", ");
-                msg.append("message: ").append(message);
-                logger.error("{}", msg.toString());
-            }, 0);
+            GL43.glDebugMessageCallback(
+                    (source, type, id, severity, length, message, userParam) -> {
+                        StringBuilder msg = new StringBuilder();
+                        msg.append("OpenGL debug message: ");
+                        msg.append("source: ").append(source).append(", ");
+                        msg.append("type: ").append(type).append(", ");
+                        msg.append("id: ").append(id).append(", ");
+                        msg.append("severity: ").append(severity).append(", ");
+                        msg.append("length: ").append(length).append(", ");
+                        msg.append("message: ").append(message);
+                        logger.error("{}", msg.toString());
+                    },
+                    0);
         }
     }
 

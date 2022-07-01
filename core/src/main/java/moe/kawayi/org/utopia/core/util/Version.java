@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The Version.java is a part of project utopia, under MIT License.
+// The Version.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.util;
@@ -14,18 +14,18 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * 获取版本号
- *
+ * <p>
  * 从JAR的utopia-version.properties中读取Utopia-Version条目
  */
-public final class UtopiaVersion {
+public final class Version {
     /**
      * should not be called
      */
-    private UtopiaVersion() {}
+    private Version() {}
 
     private static final AtomicReference<String> VERSION = new AtomicReference<>(null);
 
-    private static final Logger LOGGER = LogManager.getLogger(UtopiaVersion.class);
+    private static final Logger LOGGER = LogManager.getLogger(Version.class);
 
     /**
      * 读取版本号的properties文件路径（基于此类所在的jar）
@@ -44,7 +44,8 @@ public final class UtopiaVersion {
 
     /**
      * 获取版本号
-     * @return  获取到的版本号。如果获取失败返回0.0.0
+     *
+     * @return 获取到的版本号。如果获取失败返回0.0.0
      * @throws java.io.IOException IO错误
      */
     @NotNull
@@ -52,7 +53,7 @@ public final class UtopiaVersion {
         if (VERSION.get() == null) {
             Properties properties = new Properties();
 
-            var is = UtopiaVersion.class.getResourceAsStream(PROPERTIES_FILE_PATH);
+            var is = Version.class.getResourceAsStream(PROPERTIES_FILE_PATH);
 
             if (is == null) {
                 VERSION.set(DEFAULT_VERSION);

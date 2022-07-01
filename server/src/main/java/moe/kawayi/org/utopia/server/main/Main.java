@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The Main.java is a part of project utopia, under MIT License.
+// The Main.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.server.main;
@@ -10,7 +10,7 @@ import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.EnvironmentChecker;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.UtopiaVersion;
+import moe.kawayi.org.utopia.core.util.Version;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
 
@@ -49,7 +49,7 @@ public final class Main {
 
         LOGGER.info("Server start");
 
-        LOGGER.info("utopia-version:{}", UtopiaVersion.getUtopiaVersion());
+        LOGGER.info("utopia-version:{}", Version.getUtopiaVersion());
 
         // 添加hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

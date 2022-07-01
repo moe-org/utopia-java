@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The PingPacket.java is a part of project utopia, under MIT License.
+// The PingPacket.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.net.packet;
@@ -12,7 +12,7 @@ import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.UtopiaVersion;
+import moe.kawayi.org.utopia.core.util.Version;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +43,7 @@ public final class PingPacket implements UbfPacket {
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
         try {
-            obj.put(UBF_VERSION_KEY, UtopiaVersion.getUtopiaVersion());
+            obj.put(UBF_VERSION_KEY, Version.getUtopiaVersion());
         } catch (@NotNull IOException err) {
             LOGGER.error("get utopia version failed down", err);
         }

@@ -20,7 +20,7 @@ import moe.kawayi.org.utopia.core.util.Nullable;
  * 如 root:subRoot:name。
  * 命名空间和名字的都只能使用24个字母（不限制大小写）和数字和空格下划线和横线。即[a-zA-Z0-9-_ ]+
  */
-public class ResourceID {
+public final class ResourceID {
 
     private final ArrayList<String> namespace = new ArrayList<>(2);
 

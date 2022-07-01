@@ -14,9 +14,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ResourceIDTest {
-
     @Test
-    public void resourceIDConTest() {
+    public void resourceIDConstructionTest() {
         Assertions.assertDoesNotThrow(() -> {
             new ResourceID("root", "name");
             new ResourceID("root", "subRoot", "subRoot2", "subRoot3", "name");
@@ -41,6 +40,9 @@ public class ResourceIDTest {
         paths.add("root");
         paths.add("subRoot");
         paths.add("subRoot2");
+
+        Assertions.assertNotEquals(id, null);
+        Assertions.assertNotEquals(id, new ResourceID("root", "subRoot", "name"));
 
         var second = new ResourceID("root", "subRoot", "subRoot2", "name");
 

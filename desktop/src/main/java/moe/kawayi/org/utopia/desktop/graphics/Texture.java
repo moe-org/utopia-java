@@ -1,20 +1,21 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The Texture.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.graphics;
 
+import java.lang.ref.Cleaner;
+import java.nio.ByteBuffer;
+
 import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL33;
-
-import java.lang.ref.Cleaner;
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -70,7 +71,7 @@ public final class Texture implements AutoCloseable {
      * @param textureId 已有的texture
      */
     public Texture(final int textureId) {
-        var nonThisTextureId = new int[]{textureId};
+        var nonThisTextureId = new int[] {textureId};
         this.textureId = nonThisTextureId;
 
         cleanable = CleanerManager.getCleaner().register(this, () -> {
@@ -126,14 +127,7 @@ public final class Texture implements AutoCloseable {
         }
 
         GL33.glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL11.GL_RGBA,
-                width, height,
-                0,
-                GL11.GL_RGBA,
-                GL11.GL_UNSIGNED_BYTE,
-                pixels);
+                GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixels);
 
         if (mipmap) {
             GL33.glGenerateMipmap(GL11.GL_TEXTURE_2D);
@@ -157,5 +151,4 @@ public final class Texture implements AutoCloseable {
     public int getTextureId() {
         return textureId[0];
     }
-
 }

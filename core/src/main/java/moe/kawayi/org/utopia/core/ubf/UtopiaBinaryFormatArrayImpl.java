@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The UtopiaBinaryFormatArrayImpl.java is a part of project utopia, under MIT License.
+// The UtopiaBinaryFormatArrayImpl.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf;
@@ -48,7 +48,7 @@ public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArra
     }
 
     @Override
-    public boolean equal(@Nullable Object another) {
+    public boolean equals(@Nullable Object another) {
         if (another instanceof UtopiaBinaryFormatArrayImpl impl) {
             return impl.items.equals(this.items);
         } else if (another instanceof UtopiaBinaryFormatArray) {
@@ -63,7 +63,7 @@ public final class UtopiaBinaryFormatArrayImpl implements UtopiaBinaryFormatArra
     }
 
     @Override
-    public int hashcode() {
+    public int hashCode() {
         return items.hashCode();
     }
 

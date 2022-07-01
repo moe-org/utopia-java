@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The UtopiaBinaryFormatObject.java is a part of project utopia, under MIT License.
+// The UtopiaBinaryFormatObject.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.ubf;
@@ -47,14 +47,14 @@ public sealed interface UtopiaBinaryFormatObject permits UtopiaBinaryFormatObjec
      * @param another 另一个要比较的对象
      * @return 如果相等返回true，否则false
      */
-    boolean equal(@Nullable Object another);
+    boolean equals(@Nullable Object another);
 
     /**
      * 获取hash code
      *
      * @return hash code
      */
-    int hashcode();
+    int hashCode();
 
     /**
      * 清空对象

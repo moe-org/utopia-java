@@ -1,12 +1,15 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// The BinaryConverterTest.java is a part of project utopia, under MIT License.
+// The BinaryConverterTest.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
-// Copyright (c) 2021 moe-org All rights reserved.
+// Copyright (c) 2021-2022 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.test.ubf.converter;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 import moe.kawayi.org.utopia.core.ubf.*;
 import moe.kawayi.org.utopia.core.ubf.converter.Parser;
@@ -21,7 +24,7 @@ public class BinaryConverterTest {
      * 递归调用测试
      */
     @Test
-    public void stackCallTest() throws java.io.IOException {
+    public void recursionTest() {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObjectImpl caller = obj;
 
@@ -54,7 +57,7 @@ public class BinaryConverterTest {
      * 递归调用测试
      */
     @Test
-    public void stackCallErrorTest() throws java.io.IOException {
+    public void recursionOverflowTest() {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObjectImpl caller = obj;
 
@@ -81,7 +84,7 @@ public class BinaryConverterTest {
      * 检查基础类型转换一致性
      */
     @Test
-    public void convertTest() {
+    public void conversionCorrectnessTest() {
         Assertions.assertDoesNotThrow(() -> {
             UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
             obj.put("BYTE", (byte) 1);
@@ -144,7 +147,7 @@ public class BinaryConverterTest {
      * 检查数组转换一致性
      */
     @Test
-    public void convertArrayTest() throws java.io.IOException {
+    public void convertArrayCorrectnessTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatArray array = new UtopiaBinaryFormatArrayImpl();
 
@@ -176,7 +179,7 @@ public class BinaryConverterTest {
     }
 
     @Test
-    public void convertObjectTest() throws java.io.IOException {
+    public void convertObjectCorrectnessTest() throws java.io.IOException {
         UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
         UtopiaBinaryFormatObject testObj = new UtopiaBinaryFormatObjectImpl();
 
@@ -211,5 +214,21 @@ public class BinaryConverterTest {
 
         Assertions.assertTrue(testObj.get("CK").isPresent());
         Assertions.assertEquals("CV", testObj.getString("CK").orElseThrow());
+    }
+
+    @Test
+    public void nullTest() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Writer().write(null, null);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Writer().write(new UtopiaBinaryFormatObjectImpl(), null);
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Writer().write(null, new DataOutputStream(new ByteArrayOutputStream()));
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new Parser().parse(null);
+        });
     }
 }

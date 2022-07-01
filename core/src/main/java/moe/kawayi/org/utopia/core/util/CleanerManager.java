@@ -1,8 +1,8 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The CleanerManager.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.core.util;
 
@@ -32,8 +32,7 @@ public final class CleanerManager {
     /**
      * private
      */
-    private CleanerManager() {
-    }
+    private CleanerManager() {}
 
     /**
      * 设置最大清洁器数量
@@ -71,6 +70,7 @@ public final class CleanerManager {
      *
      * @return 返回一个清洁器
      */
+    @NotNull
     public static Cleaner getCleaner() {
         setMax(getMax());
 
@@ -86,6 +86,4 @@ public final class CleanerManager {
             return cleaner;
         }
     }
-
-
 }
