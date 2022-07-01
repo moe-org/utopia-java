@@ -41,7 +41,7 @@ public final class CleanerManager {
      */
     public static void setMax(final int max) {
         synchronized (CLEANERS) {
-            if (max < 0) {
+            if (max <= 0) {
                 throw new IllegalArgumentException("max must more than 0");
             }
             maxCleaner = max;
