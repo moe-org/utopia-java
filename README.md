@@ -58,21 +58,8 @@
     <!------------------------>
 </p>
 
-**LINK US!**
-<a href="https://twitter.com/ming_moe_" target="_blank">
-    <img src="https://img.shields.io/badge/%20-Tweet-green?style=for-the-badge&logo=twitter&color=blue" alt="TWEET"/>
-</a>
-<a href="https://www.reddit.com/user/Ming_moe" target="_blank">
-    <img src="https://img.shields.io/badge/%20-Reddit-green?style=for-the-badge&logo=reddit&color=black" alt="REDDIT"/>
-</a>
-<a href="https://www.zhihu.com/people/cai-hong-hai-dao-80" target="_blank">
-    <img src="https://img.shields.io/badge/%20-知乎-green?style=for-the-badge&logo=zhihu&color=white&logoColor=blue" alt="ZHI-HU"/>
-</a>
-<a href="https://jq.qq.com/?_wv=1027&k=quSXBWj1" target="_blank">
-    <img src="https://img.shields.io/badge/%20-QQ-green?style=for-the-badge&logo=tencentqq&color=red" alt="QQ"/>
-</a>
-
 <!---ubadge-auto-list-begin-->
+
 | Checking | Status |
 | :-------:|:------:|
 | Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
@@ -82,25 +69,28 @@
 | Record-Version | ![Record-Version](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-passing-green?style=for-the-badge&logo=githubactions&logoColor=white) |
+
 <!---ubadge-auto-list-end-->
 
 ---------
 
 ## What's this?
+
 This is a game as Cataclysm: Dark Days Ahead but plan to provide more features(such as multiplayer).
 
 This project is still developing.
 
 ## 我们的文档
+
 我们提供了一个[Javadoc](https://utopia.doc.kawayi.moe/)(快照版本)的在线浏览
 
 ## 贡献
+
 我们欢迎任何贡献。不计大小。
 
 有一个[贡献文档](https://github.com/moe-org/utopia/blob/master/CONTRIBUTING.md)可供参考。
 
 如果想要报告一个bug，那么[请](https://github.com/moe-org/utopia/issues)
-
 
 ## License
 
@@ -110,9 +100,16 @@ This project is still developing.
 
 Copyright 2020-2021 moe-org
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
