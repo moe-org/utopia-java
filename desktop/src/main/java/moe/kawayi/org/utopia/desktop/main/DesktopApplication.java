@@ -1,32 +1,33 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // The DesktopApplication.java is a part of organization moe-org, under MIT License.
 // See https://opensource.org/licenses/MIT for license information.
 // Copyright (c) 2021-2022 moe-org All rights reserved.
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 package moe.kawayi.org.utopia.desktop.main;
-
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import moe.kawayi.org.utopia.core.log.LogManagers;
 import moe.kawayi.org.utopia.core.log.LogStream;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.Timer;
 import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
 import moe.kawayi.org.utopia.desktop.graphics.Program;
 import moe.kawayi.org.utopia.desktop.graphics.Texture;
 import moe.kawayi.org.utopia.desktop.graphics.Window;
-
+import moe.kawayi.org.utopia.desktop.util.FpsCounter;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -42,7 +43,8 @@ public class DesktopApplication {
     /**
      * 默认构造函数
      */
-    public DesktopApplication() {}
+    public DesktopApplication() {
+    }
 
     /**
      * 日志器
@@ -173,31 +175,31 @@ public class DesktopApplication {
         GL33.glBindVertexArray(vao);
 
         float[] vertices = {
-            0.5f,
-            0.5f,
-            0.0f,
-            1.0f,
-            1.0f, // 右上
-            0.5f,
-            -0.5f,
-            0.0f,
-            1.0f,
-            0.0f, // 右下
-            -0.5f,
-            -0.5f,
-            0.0f,
-            0.0f,
-            0.0f, // 左下
-            -0.5f,
-            0.5f,
-            0.0f,
-            0.0f,
-            1.0f // 左上
+                0.5f,
+                0.5f,
+                0.0f,
+                1.0f,
+                1.0f, // 右上
+                0.5f,
+                -0.5f,
+                0.0f,
+                1.0f,
+                0.0f, // 右下
+                -0.5f,
+                -0.5f,
+                0.0f,
+                0.0f,
+                0.0f, // 左下
+                -0.5f,
+                0.5f,
+                0.0f,
+                0.0f,
+                1.0f // 左上
         };
 
         int[] indices = {
-            0, 1, 3,
-            1, 2, 3
+                0, 1, 3,
+                1, 2, 3
         };
 
         final var vbo = GL33.glGenBuffers();
@@ -280,7 +282,13 @@ public class DesktopApplication {
             }
         }
 
+        Timer timer = new Timer();
+        FpsCounter counter = new FpsCounter();
+
         while (!window.isCloseNeeded()) {
+            counter.tick();
+            timer.tick();
+
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             if (wireframeMode.get()) {
@@ -302,6 +310,7 @@ public class DesktopApplication {
             window.swapBuffer();
             glfwPollEvents();
         }
+        logger.info("fps: {}", counter.getLastFps());
 
         GL33.glDeleteVertexArrays(vao);
         GL33.glDeleteBuffers(vbo);
