@@ -4,13 +4,11 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-rootProject.name = 'utopia'
+rootProject.name = "utopia"
 
 // core项目作为核心依赖
-include 'core'
+include("core")
 
 // desktop和server项目作为输出
-include 'desktop'
-include 'server'
-
-
+include("desktop")
+include("server")
