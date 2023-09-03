@@ -72,7 +72,8 @@ public class DefaultLogger implements Logger {
     @Override
     @NotNull
     public void trace(@NotNull String msg, @NotNull Throwable exception) {
-        System.out.println(msg);
+        String builder = msg + "\nwith exception:\n" + exception.toString();
+        System.out.println(builder);
     }
 
     @Override
@@ -90,7 +91,8 @@ public class DefaultLogger implements Logger {
     @Override
     @NotNull
     public void debug(@NotNull String msg, @NotNull Throwable exception) {
-        System.out.println(msg);
+        String builder = msg + "\nwith exception:\n" + exception.toString();
+        System.out.println(builder);
     }
 
     @Override
@@ -108,7 +110,8 @@ public class DefaultLogger implements Logger {
     @Override
     @NotNull
     public void info(@NotNull String msg, @NotNull Throwable exception) {
-        System.out.println(msg);
+        String builder = msg + "\nwith exception:\n" + exception.toString();
+        System.out.println(builder);
     }
 
     @Override
@@ -126,7 +129,8 @@ public class DefaultLogger implements Logger {
     @Override
     @NotNull
     public void warn(@NotNull String msg, @NotNull Throwable exception) {
-        System.out.println(msg);
+        String builder = msg + "\nwith exception:\n" + exception.toString();
+        System.out.println(builder);
     }
 
     @Override
@@ -144,6 +148,7 @@ public class DefaultLogger implements Logger {
     @Override
     @NotNull
     public void error(@NotNull String msg, @NotNull Throwable exception) {
-        System.out.println(msg);
+        String builder = msg + "\nwith exception:\n" + exception.toString();
+        System.out.println(builder);
     }
 }

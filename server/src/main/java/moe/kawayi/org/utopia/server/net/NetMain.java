@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import moe.kawayi.org.utopia.core.config.Config;
 import moe.kawayi.org.utopia.core.config.ConfigManager;
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.resource.ResourceUtil;
@@ -50,7 +50,7 @@ public final class NetMain {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManagers.getLogger(NetMain.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(NetMain.class);
 
     /**
      * 服务器运行状态

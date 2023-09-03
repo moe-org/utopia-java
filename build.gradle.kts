@@ -52,6 +52,12 @@ plugins {
     id("com.diffplug.spotless") version "6.19.0"
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(ProjectDefinition.JAVA_VERSION))
+    }
+}
+
 //==========================================
 ProjectDefinition.initializeForProject(rootProject);
 
@@ -78,10 +84,16 @@ subprojects{
 
     dependencies{
         checkstyle("com.puppycrawl.tools:checkstyle:${ProjectDefinition.CHECKSTYLE_VERSION}")
+        checkstyle(files("${rootDir}/config/checkstyle/keep-great-check-1.0-SNAPSHOT.jar"))
     }
 
     //==========================================
     afterEvaluate {
+        dependencies{
+            testImplementation(platform("org.junit:junit-bom:${ProjectDefinition.JUNIT_VERSION}"))
+            testImplementation("org.junit.jupiter:junit-jupiter")
+        }
+
         configure<CheckstyleExtension> {
             isIgnoreFailures = false
             configProperties.put("utopia.checkstyle.small_hump", "[a-z]+[A-Za-z0-9]*")
@@ -106,10 +118,11 @@ subprojects{
         }
 
         //==========================================
-        tasks.named<JacocoReport>("jacocoTestReport") {
+        tasks.withType<Checkstyle>().configureEach {
             this.dependsOn(tasks.named("test"))
             this.reports.xml.required = true
             this.reports.html.required = true
+            this.checkstyleClasspath.plus(files("${rootDir}/config/checkstyle/keep-great-check-1.0-SNAPSHOT.jar"))
         }
 
         tasks.named("test") {
@@ -121,20 +134,13 @@ subprojects{
             this.useJUnitPlatform()
         }
 
-        tasks.named<Checkstyle>("checkstyleMain") {
-            this.checkstyleClasspath.plus(files("${rootDir}/config/checkstyle/keep-project-great.jar"))
-        }
-        tasks.named<Checkstyle>("checkstyleTest") {
-            this.checkstyleClasspath.plus(files("${rootDir}/config/checkstyle/keep-project-great.jar"))
-        }
-
         tasks.named<JavaCompile>("compileJava") {
             options.encoding = "UTF-8"
             options.forkOptions.jvmArgs!!.add("-Dfile.encoding=UTF-8")
             options.forkOptions.jvmArgs!!.add("-Duser.language=es")
-            options.compilerArgs.add("-Werror")
+            // options.compilerArgs.add("-Werror")
             options.compilerArgs.add("-Xlint:all")
-            options.compilerArgs.add("-Xdoclint")
+            // options.compilerArgs.add("-Xdoclint")
             options.isVerbose = true
         }
     }

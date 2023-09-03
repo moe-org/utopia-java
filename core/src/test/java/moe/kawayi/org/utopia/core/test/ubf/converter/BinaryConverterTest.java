@@ -6,10 +6,7 @@
 
 package moe.kawayi.org.utopia.core.test.ubf.converter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.*;
 
 import moe.kawayi.org.utopia.core.ubf.*;
 import moe.kawayi.org.utopia.core.ubf.converter.Parser;
@@ -80,33 +77,38 @@ public class BinaryConverterTest {
         });
     }
 
+    private static UtopiaBinaryFormatObjectImpl getUtopiaBinaryFormatObject() throws IOException {
+        UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
+        obj.put("BYTE", (byte) 1);
+        obj.put("SHORT", (short) 2);
+        obj.put("INT", 3);
+        obj.put("LONG", (long) 4);
+        obj.put("FLOAT", (float) 5);
+        obj.put("DOUBLE", (double) 6);
+        obj.put("BOOLEAN", false);
+        obj.put("STRING", "STR");
+
+        var memoryOutput = new ByteArrayOutputStream();
+        var outputStream = new DataOutputStream(memoryOutput);
+
+        var to = new Writer();
+        var from = new Parser();
+
+        to.write(obj, outputStream);
+
+        var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
+
+        obj = (UtopiaBinaryFormatObjectImpl) from.parse(inputStream);
+        return obj;
+    }
+
     /**
      * 检查基础类型转换一致性
      */
     @Test
     public void conversionCorrectnessTest() {
         Assertions.assertDoesNotThrow(() -> {
-            UtopiaBinaryFormatObjectImpl obj = new UtopiaBinaryFormatObjectImpl();
-            obj.put("BYTE", (byte) 1);
-            obj.put("SHORT", (short) 2);
-            obj.put("INT", 3);
-            obj.put("LONG", (long) 4);
-            obj.put("FLOAT", (float) 5);
-            obj.put("DOUBLE", (double) 6);
-            obj.put("BOOLEAN", false);
-            obj.put("STRING", "STR");
-
-            var memoryOutput = new ByteArrayOutputStream();
-            var outputStream = new DataOutputStream(memoryOutput);
-
-            var to = new Writer();
-            var from = new Parser();
-
-            to.write(obj, outputStream);
-
-            var inputStream = new DataInputStream(new ByteArrayInputStream(memoryOutput.toByteArray()));
-
-            obj = (UtopiaBinaryFormatObjectImpl) from.parse(inputStream);
+            UtopiaBinaryFormatObjectImpl obj = getUtopiaBinaryFormatObject();
 
             // 检验
             var value = obj.get("BYTE");

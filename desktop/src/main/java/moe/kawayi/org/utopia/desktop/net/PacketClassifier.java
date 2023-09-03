@@ -10,7 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.List;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
@@ -43,7 +43,7 @@ public class PacketClassifier extends ByteToMessageDecoder {
      */
     public static final String CHANNEL_SERVER_PING_VERSION = "utopia.client.received_ping_packet.server_version";
 
-    private final Logger logger = LogManagers.getLogger(this.getClass());
+    private final Logger logger = GlobalLogManager.getLogger(this.getClass());
 
     @NotNull
     private final FastThreadLocal<Parser> converter = new FastThreadLocal<>() {

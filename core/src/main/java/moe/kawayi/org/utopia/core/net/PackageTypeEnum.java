@@ -12,16 +12,16 @@ package moe.kawayi.org.utopia.core.net;
 public enum PackageTypeEnum {
     /**
      * PING包，将回复服务器基本信息
-     *
-     * 服务端将会忽略一切附带数据。返回一个服务器基本信息。
-     *
+     * <p>
+     * 服务端将会忽略一切附带数据。返回一个服务器基本信息{@link moe.kawayi.org.utopia.core.net.packet.PingPacket}
+     * <p>
      * 如果客户端接收到这个类型的包。将会解码附带的数据。并且不会回复。
      */
     PING(0),
 
     /**
      * COMMAND包，将执行服务器指令。
-     *
+     * <p>
      * 如果客户端接收到这个类型的包。将不会回复。(但仍然会执行命令)
      */
     COMMAND(1);

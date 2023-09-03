@@ -19,7 +19,6 @@ public class ResourceIDTest {
         Assertions.assertDoesNotThrow(() -> {
             new ResourceID("root", "name");
             new ResourceID("root", "subRoot", "subRoot2", "subRoot3", "name");
-            new ResourceID(" ", " ", " ");
         });
         Assertions.assertThrowsExactly(IllegalArgumentException.class, ResourceID::new);
         Assertions.assertThrowsExactly(IllegalArgumentException.class, () -> {

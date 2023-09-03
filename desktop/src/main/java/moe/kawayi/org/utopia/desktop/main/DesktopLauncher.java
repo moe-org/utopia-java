@@ -6,18 +6,19 @@
 
 package moe.kawayi.org.utopia.desktop.main;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
-import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.desktop.graphics.OpenGLException;
+
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 /**
  * 主类
  */
 public class DesktopLauncher {
 
-    private static final Logger LOGGER = LogManagers.getLogger(DesktopLauncher.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(DesktopLauncher.class);
 
     /**
      * private
@@ -30,27 +31,11 @@ public class DesktopLauncher {
      * @param args 命令行参数
      */
     public static void main(@NotNull String[] args) {
-        DesktopApplication application = new DesktopApplication();
 
         // 解析参数
         int ptr = 0;
         while (ptr != args.length) {
             String arg = args[ptr];
-
-            switch (arg) {
-                case "--enable-opengl-debug" -> application.openglDebug = true;
-                case "--use-small-icon" -> application.useSmallIcon = true;
-                case "--enable-opengl-forward-compat" -> application.forwardCompat = true;
-                case "--set-max-cleaners" -> {
-                    ptr += 1;
-                    if (ptr >= args.length) {
-                        throw new IllegalArgumentException("--max-cleaners must be followed by an integer");
-                    } else {
-                        CleanerManager.setMax(Integer.parseInt(args[ptr]));
-                    }
-                }
-                default -> throw new IllegalArgumentException("unknown argument: " + arg);
-            }
 
             ptr += 1;
         }
@@ -58,10 +43,10 @@ public class DesktopLauncher {
         LOGGER.info("start");
 
         try {
-            application.init();
-            application.start();
-        } catch (OpenGLException err) {
-            LOGGER.error("crash by OpenGL", err);
+            Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+            config.setForegroundFPS(60);
+            config.setTitle("Utopia");
+            new Lwjgl3Application(new DesktopApplication(), config);
         } catch (Exception other) {
             LOGGER.error("crash", other);
         }

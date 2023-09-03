@@ -4,30 +4,14 @@
 // Copyright (c) 2021 moe-org All rights reserved.
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
-import javax.swing.RootPaneContainer
-import java.lang.reflect.Method
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-import org.gradle.internal.os.OperatingSystem
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar;
 import moe.kawayi.org.utopia.gradle.ProjectDefinition
 import moe.kawayi.org.utopia.gradle.config.ConfigJar
 import moe.kawayi.org.utopia.gradle.tasks.ReleaseTask
-
-import java.util.stream.Stream
 
 // 插件设置
 plugins {
     // java 程序
     id("java-library")
-
-    // 打包jar
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-
 }
 
 // LWJGL
@@ -147,14 +131,32 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-xxhash", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-yoga", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-zstd", classifier = lwjglNatives)
+
+    // https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx
+    implementation("com.badlogicgames.gdx:gdx:${ProjectDefinition.LIBGDX_VERSION}")
+    api("com.badlogicgames.gdx:gdx-backend-lwjgl3:${ProjectDefinition.LIBGDX_VERSION}")
+    api("com.badlogicgames.gdx:gdx-platform:${ProjectDefinition.LIBGDX_VERSION}:natives-desktop")
 }
 
 // 打包
-ConfigJar.configJarForDesktop(tasks.named<org.gradle.api.tasks.bundling.Jar>("shadowJar").get())
+tasks.register<Jar>("releaseJar") {
+    archiveClassifier.set("release")
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+ConfigJar.configJarForDesktop(tasks.named<org.gradle.api.tasks.bundling.Jar>("releaseJar").get())
 
 // 发布
 tasks.register<ReleaseTask>("release") {
-    this.dependsOn(tasks.named("shadowJar"))
+    this.dependsOn(tasks.named("releaseJar"))
     this.dependsOn(rootProject.tasks.named("allJavaSourceJar"))
     this.dependsOn(rootProject.tasks.named("allJavadocJar"))
 

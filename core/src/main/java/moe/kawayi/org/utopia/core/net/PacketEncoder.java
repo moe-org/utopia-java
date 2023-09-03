@@ -9,6 +9,8 @@ package moe.kawayi.org.utopia.core.net;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.packet.UbfPacket;
 import moe.kawayi.org.utopia.core.ubf.converter.Writer;
 import moe.kawayi.org.utopia.core.util.NotNull;
@@ -17,8 +19,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.concurrent.FastThreadLocal;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * 编码器。输出{@link UbfPacket}类型的完整包(包含长度)。
@@ -34,7 +34,7 @@ public final class PacketEncoder extends MessageToByteEncoder<UbfPacket> {
         super(UbfPacket.class, true);
     }
 
-    private final Logger logger = LogManager.getLogger(this.getClass());
+    private final Logger logger = GlobalLogManager.getLogger(this.getClass());
 
     @NotNull
     private final FastThreadLocal<Writer> converter = new FastThreadLocal<>() {

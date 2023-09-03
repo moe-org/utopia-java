@@ -10,17 +10,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 
 /**
- * 代表一个全局唯一的资源id。类似于一个URL。
- * 资源id由多个命名空间加一个名字组成。使用`:`作为分隔符。
- * 如 root:subRoot:name。
- * 命名空间和名字的都只能使用24个字母（不限制大小写）和数字和空格下划线和横线。即[a-zA-Z0-9-_ ]+
+ * 代表一个全局唯一的资源id。类似于一个URL。<br/>
+ * 资源id由多个命名空间加一个名字组成。使用`:`作为分隔符。<br/>
+ * 如 root:subRoot:name。<br/>
+ * 命名空间和名字的都只能使用24个字母（不限制大小写）和数字和下划线。即正则表达式[a-zA-Z0-9_]+
  */
 public final class ResourceID {
+
+    private static final Pattern CHECK_PATTERN = Pattern.compile("[a-zA-Z0-9_]+");
 
     private final ArrayList<String> namespace = new ArrayList<>(2);
 
@@ -37,7 +40,7 @@ public final class ResourceID {
                     "too less arguments(at least two,one is root-namespace,another is name)");
         }
         Arrays.stream(namespace).forEach((str) -> {
-            if (!str.matches("[a-zA-Z\\d-_ ]+")) {
+            if (!CHECK_PATTERN.matcher(str).matches()) {
                 throw new IllegalArgumentException("Illegal Resource Id");
             } else {
                 this.namespace.add(str);
@@ -94,5 +97,17 @@ public final class ResourceID {
         });
         builder.append(this.name);
         return builder.toString();
+    }
+
+    /***
+     * 从字符串解析一个{@link ResourceID}
+     * @param str 字符串
+     * @return 解析过后的ResourceID
+     */
+    @NotNull
+    public static ResourceID parse(@NotNull String str) {
+        var split = Objects.requireNonNull(str).split(":");
+
+        return new ResourceID(split);
     }
 }

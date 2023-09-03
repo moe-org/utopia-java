@@ -46,15 +46,15 @@ public final class AreaImpl implements Area {
 
     /**
      * 构造一个区域
-     * @param origin 区域坐标。只能是{@link WorldInfo#BLOCK_FLOOR_X_SIZE}和{@link WorldInfo#BLOCK_FLOOR_Y_SIZE}的倍数
+     * @param origin 区域坐标。只能是{@link WorldInfo#X_BLOCKS_PER_AREA}和{@link WorldInfo#Y_BLOCKS_PER_AREA}的倍数
      */
     public AreaImpl(@NotNull FlatPosition origin) {
         Objects.requireNonNull(origin);
 
-        if (origin.x % WorldInfo.BLOCK_FLOOR_X_SIZE != 0) {
+        if (origin.x % WorldInfo.X_BLOCKS_PER_AREA != 0) {
             throw new IllegalArgumentException("origin.x不是WorldInfo.BLOCK_FLOOR_X_SIZE的倍数");
         }
-        if (origin.y % WorldInfo.BLOCK_FLOOR_Y_SIZE != 0) {
+        if (origin.y % WorldInfo.Y_BLOCKS_PER_AREA != 0) {
             throw new IllegalArgumentException("origin.y不是WorldInfo.BLOCK_FLOOR_Y_SIZE的倍数");
         }
 
@@ -66,9 +66,9 @@ public final class AreaImpl implements Area {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 
-        if (position.x >= (origin.x + WorldInfo.BLOCK_FLOOR_X_SIZE) || position.x < origin.x) return null;
+        if (position.x >= (origin.x + WorldInfo.X_BLOCKS_PER_AREA) || position.x < origin.x) return null;
 
-        if (position.y >= (origin.y + WorldInfo.BLOCK_FLOOR_Y_SIZE) || position.y < origin.y) return null;
+        if (position.y >= (origin.y + WorldInfo.Y_BLOCKS_PER_AREA) || position.y < origin.y) return null;
 
         return new Position(
                 origin.x >= 0 ? Math.abs(position.x) - Math.abs(origin.x) : Math.abs(origin.x) - Math.abs(position.x),

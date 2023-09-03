@@ -30,12 +30,12 @@ public final class BlockFloorImpl implements BlockFloor {
      */
     public BlockFloorImpl() {
         // 初始化区块
-        floor = new BlockImpl[WorldInfo.BLOCK_FLOOR_X_SIZE][];
+        floor = new BlockImpl[WorldInfo.X_BLOCKS_PER_AREA][];
 
-        for (int x = 0; x != WorldInfo.BLOCK_FLOOR_X_SIZE; x++) {
-            floor[x] = new BlockImpl[WorldInfo.BLOCK_FLOOR_Y_SIZE];
+        for (int x = 0; x != WorldInfo.X_BLOCKS_PER_AREA; x++) {
+            floor[x] = new BlockImpl[WorldInfo.Y_BLOCKS_PER_AREA];
 
-            for (int y = 0; y != WorldInfo.BLOCK_FLOOR_Y_SIZE; y++) floor[x][y] = new BlockImpl();
+            for (int y = 0; y != WorldInfo.Y_BLOCKS_PER_AREA; y++) floor[x][y] = new BlockImpl();
         }
     }
 
@@ -53,9 +53,9 @@ public final class BlockFloorImpl implements BlockFloor {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 
-        if (position.x < 0 || position.x >= WorldInfo.BLOCK_FLOOR_X_SIZE) return Optional.empty();
+        if (position.x < 0 || position.x >= WorldInfo.X_BLOCKS_PER_AREA) return Optional.empty();
 
-        if (position.y < 0 || position.y >= WorldInfo.BLOCK_FLOOR_Y_SIZE) return Optional.empty();
+        if (position.y < 0 || position.y >= WorldInfo.Y_BLOCKS_PER_AREA) return Optional.empty();
 
         return Optional.of(floor[position.x][position.y]);
     }

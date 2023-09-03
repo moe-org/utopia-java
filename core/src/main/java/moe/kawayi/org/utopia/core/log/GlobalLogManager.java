@@ -16,12 +16,12 @@ import moe.kawayi.org.utopia.core.util.NotNull;
 /**
  * 整合日志管理器
  */
-public class LogManagers extends System.LoggerFinder {
+public class GlobalLogManager extends System.LoggerFinder {
 
     /**
      * 默认构造函数
      */
-    public LogManagers() {}
+    public GlobalLogManager() {}
 
     private static final AtomicReference<LogManager> GLOBAL_LOG_MANAGER = new AtomicReference<>(
             // 配置日志
@@ -31,6 +31,8 @@ public class LogManagers extends System.LoggerFinder {
      * 日志器列表
      */
     private static final LinkedList<WrapLogger> ALL_LOGGERS = new LinkedList<>();
+
+    public static final Logger GLOBAL_LOGGER = GlobalLogManager.getLogger("GLOBAL");
 
     /**
      * 获取全局日志管理器
@@ -42,7 +44,8 @@ public class LogManagers extends System.LoggerFinder {
     }
 
     /**
-     * 设置全局日志管理器
+     * 设置全局日志管理器.
+     * 在设置后需要调用{@link GlobalLogManager#updateLogger()}对已经获取的Logger进行更新,如果需要的话.
      * @param logManager 日志管理器
      */
     public static void setLogManager(@NotNull LogManager logManager) {
@@ -50,11 +53,11 @@ public class LogManagers extends System.LoggerFinder {
     }
 
     /**
-     * 通过LogManager更新所有通过{@link LogManagers#getLogger(String)},
-     * {@link LogManagers#getLogger(Class)},
-     * {@link LogManagers#getLogger(String,Module)}获取的日志器。
+     * 通过LogManager更新所有通过{@link GlobalLogManager#getLogger(String)},
+     * {@link GlobalLogManager#getLogger(Class)},
+     * {@link GlobalLogManager#getLogger(String,Module)}获取的日志器。
      * <br/>
-     * 一般用于{@link LogManagers#setLogManager(LogManager)}后更新之前获取的日志器。
+     * 一般用于{@link GlobalLogManager#setLogManager(LogManager)}后更新之前获取的日志器。
      */
     public static void updateLogger() {
         // get all loggers

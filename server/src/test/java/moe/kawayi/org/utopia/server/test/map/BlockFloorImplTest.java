@@ -14,8 +14,8 @@ import moe.kawayi.org.utopia.server.map.BlockFloorImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static moe.kawayi.org.utopia.server.map.WorldInfo.BLOCK_FLOOR_X_SIZE;
-import static moe.kawayi.org.utopia.server.map.WorldInfo.BLOCK_FLOOR_Y_SIZE;
+import static moe.kawayi.org.utopia.server.map.WorldInfo.X_BLOCKS_PER_AREA;
+import static moe.kawayi.org.utopia.server.map.WorldInfo.Y_BLOCKS_PER_AREA;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockFloorImplTest {
@@ -26,8 +26,8 @@ public class BlockFloorImplTest {
     public void accessTest() {
         ArrayList<Object> objs = new ArrayList<>();
 
-        for (int x = 0; x != BLOCK_FLOOR_X_SIZE; x++)
-            for (int y = 0; y != BLOCK_FLOOR_X_SIZE; y++) {
+        for (int x = 0; x != X_BLOCKS_PER_AREA; x++)
+            for (int y = 0; y != X_BLOCKS_PER_AREA; y++) {
                 var result = floor.getBlock(new FlatPosition(x, y));
 
                 // the block must be
@@ -52,7 +52,7 @@ public class BlockFloorImplTest {
 
         assertFalse(floor.getBlock(new FlatPosition(-1, -1)).isPresent());
 
-        assertFalse(floor.getBlock(new FlatPosition(BLOCK_FLOOR_X_SIZE, BLOCK_FLOOR_Y_SIZE))
+        assertFalse(floor.getBlock(new FlatPosition(X_BLOCKS_PER_AREA, Y_BLOCKS_PER_AREA))
                 .isPresent());
     }
 

@@ -43,7 +43,7 @@ public class LogUtil {
     /**
      * 日志上下文名称
      */
-    public static final String CONTEXT_NAME = "utopia-system-log-context";
+    public static final String CONTEXT_NAME = "utopia-log-context";
 
     /**
      * 读取日志配置xml配置路径。基于utopia-root
@@ -84,14 +84,15 @@ public class LogUtil {
         // 配置日志配置文件
         try {
             if (!Files.exists(ResourceManager.getPath(CONFIG_FILE_PATH))) {
-                var is = Version.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH);
+                try (var is = Version.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH)) {
 
-                if (is == null)
-                    throw new IOException("couldn't open built-in file in jar:" + BUILT_IN_CONFIG_FILE_PATH);
+                    if (is == null)
+                        throw new IOException("couldn't open built-in file in jar:" + BUILT_IN_CONFIG_FILE_PATH);
 
-                var datas = is.readAllBytes();
+                    var data = is.readAllBytes();
 
-                Files.write(ResourceManager.getPath(CONFIG_FILE_PATH), datas, StandardOpenOption.CREATE);
+                    Files.write(ResourceManager.getPath(CONFIG_FILE_PATH), data, StandardOpenOption.CREATE);
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();

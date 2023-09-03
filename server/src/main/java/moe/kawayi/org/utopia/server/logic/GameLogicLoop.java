@@ -8,9 +8,8 @@ package moe.kawayi.org.utopia.server.logic;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
-import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.server.map.World;
@@ -28,7 +27,7 @@ public final class GameLogicLoop {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManagers.getLogger(GameLogicLoop.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(GameLogicLoop.class);
 
     /**
      * 是否运行
@@ -44,7 +43,7 @@ public final class GameLogicLoop {
 
         try {
             // update
-            World world = new WorldImpl(0, new FlatPosition(2, 2));
+            World world = new WorldImpl(0, 4);
 
             int xMax = world.getMaxXSize();
             int xMin = world.getMinXSize();

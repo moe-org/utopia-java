@@ -6,7 +6,7 @@
 
 package moe.kawayi.org.utopia.server.main;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.EnvironmentChecker;
 import moe.kawayi.org.utopia.core.util.NotNull;
@@ -27,7 +27,7 @@ public final class Main {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManagers.getLogger(Main.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(Main.class);
 
     /**
      * utopia server 入口函数

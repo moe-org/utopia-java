@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 
 /**
@@ -25,7 +25,7 @@ public class EnvironmentChecker {
      */
     private EnvironmentChecker() {}
 
-    private static final Logger LOGGER = LogManagers.getLogger(EnvironmentChecker.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(EnvironmentChecker.class);
 
     /**
      * 输出jvm信息

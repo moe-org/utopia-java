@@ -8,7 +8,6 @@ package moe.kawayi.org.utopia.server.test.map;
 
 import java.util.ArrayList;
 
-import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.server.map.WorldImpl;
 
@@ -24,7 +23,7 @@ public class WorldImplTest {
     private final WorldImpl world;
 
     public WorldImplTest() {
-        world = new WorldImpl(0, new FlatPosition(4, 4));
+        world = new WorldImpl(0, 4);
     }
 
     @Test
@@ -46,7 +45,7 @@ public class WorldImplTest {
                 assertTrue(result.isPresent());
 
                 // the block must be unique
-                assertEquals(objs.indexOf(result.get()), -1);
+                assertFalse(objs.contains(result.get()));
 
                 // add to list
                 objs.add(result.get());
@@ -66,17 +65,10 @@ public class WorldImplTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"-1,0", "0,-1", "0,0", "-1,-1"})
-    public void wrongConstructionTest(int x, int y) {
+    @CsvSource({"-1", "0"})
+    public void wrongConstructionTest(int v) {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new WorldImpl(0, new FlatPosition(x, y));
-        });
-    }
-
-    @Test
-    public void nullPointerTest() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new WorldImpl(0, null);
+            new WorldImpl(0, v);
         });
     }
 }

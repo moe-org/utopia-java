@@ -25,8 +25,8 @@ public interface BlockFloor {
      *                 <p>
      *                 位置范围: [0 ..=([X|Y]_SIZE-1)]；
      * @return 如果在范围内，返回获取到的方块，否则返回Empty
-     * @see WorldInfo#BLOCK_FLOOR_X_SIZE
-     * @see WorldInfo#BLOCK_FLOOR_Y_SIZE
+     * @see WorldInfo#X_BLOCKS_PER_AREA
+     * @see WorldInfo#Y_BLOCKS_PER_AREA
      */
     @NotNull
     Optional<Block> getBlock(@NotNull FlatPosition position);

@@ -8,7 +8,7 @@ package moe.kawayi.org.utopia.server.net;
 
 import java.util.List;
 
-import moe.kawayi.org.utopia.core.log.LogManagers;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.net.packet.PingPacket;
@@ -35,7 +35,7 @@ public final class PacketClassifier extends ByteToMessageDecoder {
      */
     public PacketClassifier() {}
 
-    private static final Logger LOGGER = LogManagers.getLogger(PacketClassifier.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(PacketClassifier.class);
 
     @NotNull
     private final FastThreadLocal<Parser> converter = new FastThreadLocal<>() {

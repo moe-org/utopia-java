@@ -9,8 +9,8 @@ package moe.kawayi.org.utopia.core.util;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
+import moe.kawayi.org.utopia.core.log.Logger;
 
 /**
  * 获取版本号
@@ -25,7 +25,7 @@ public final class Version {
 
     private static final AtomicReference<String> VERSION = new AtomicReference<>(null);
 
-    private static final Logger LOGGER = LogManager.getLogger(Version.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(Version.class);
 
     /**
      * 读取版本号的properties文件路径（基于此类所在的jar）

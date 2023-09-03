@@ -14,6 +14,9 @@ import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.map.Position;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import static moe.kawayi.org.utopia.server.map.WorldInfo.X_BLOCKS_PER_AREA;
+import static moe.kawayi.org.utopia.server.map.WorldInfo.Y_BLOCKS_PER_AREA;
+
 /**
  * 世界类
  */
@@ -28,25 +31,7 @@ public final class WorldImpl implements World {
      * x轴最大大小
      * 单位Area
      */
-    private final int maxXAreaCount;
-
-    /**
-     * x轴最小大小
-     * 单位Area
-     */
-    private final int minXAreaCount;
-
-    /**
-     * Y轴最大大小
-     * 单位Area
-     */
-    private final int maxYAreaCount;
-
-    /**
-     * Y轴最小大小
-     * 单位Area
-     */
-    private final int minYAreaCount;
+    private final int areaCountForEveryXQuadrant;
 
     /**
      * area数组 [x][y]
@@ -61,25 +46,22 @@ public final class WorldImpl implements World {
      * @throws IllegalArgumentException 如果参数quadrantSize的任意值(x或y)为负数，则抛出。
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public WorldImpl(long worldId, @NotNull FlatPosition quadrantSize) throws IllegalArgumentException {
+    public WorldImpl(long worldId, @NotNull int quadrantSize) throws IllegalArgumentException {
         // null check
         Objects.requireNonNull(quadrantSize, "quadrantSize must not be null");
 
-        if (quadrantSize.x <= 0 || quadrantSize.y <= 0) {
-            throw new IllegalArgumentException("参数quadrantSize的x , y 值为负数.");
+        if (quadrantSize <= 0) {
+            throw new IllegalArgumentException("argument `quadrantSize` is negative.");
         }
 
         this.worldId = worldId;
 
         // 设置世界范围
-        maxXAreaCount = quadrantSize.x;
-        minXAreaCount = -quadrantSize.x;
-        maxYAreaCount = quadrantSize.y;
-        minYAreaCount = -quadrantSize.y;
+        this.areaCountForEveryXQuadrant = quadrantSize;
 
         // 设置世界索引范围
-        int xAreaLength = Math.abs(maxXAreaCount) + Math.abs(minXAreaCount);
-        int yAreaLength = Math.abs(maxYAreaCount) + Math.abs(minYAreaCount);
+        int xAreaLength = quadrantSize * 2;
+        int yAreaLength = quadrantSize * 2;
 
         // 初始化世界索引
         areas = (AtomicReference<Area>[][]) new AtomicReference[xAreaLength][];
@@ -92,10 +74,10 @@ public final class WorldImpl implements World {
 
             for (int yPtr = 0; yPtr != areas.length; yPtr++) {
                 areas[xPtr][yPtr] = new AtomicReference<>(new AreaImpl(new FlatPosition(xIndex, yIndex)));
-                yIndex += WorldInfo.BLOCK_FLOOR_Y_SIZE;
+                yIndex += Y_BLOCKS_PER_AREA;
             }
             yIndex = getMinYSize();
-            xIndex += WorldInfo.BLOCK_FLOOR_X_SIZE;
+            xIndex += X_BLOCKS_PER_AREA;
         }
     }
 
@@ -114,7 +96,7 @@ public final class WorldImpl implements World {
      */
     @Override
     public int getMaxXSize() {
-        return maxXAreaCount * WorldInfo.BLOCK_FLOOR_X_SIZE - 1;
+        return this.areaCountForEveryXQuadrant * X_BLOCKS_PER_AREA - 1;
     }
 
     /**
@@ -122,7 +104,7 @@ public final class WorldImpl implements World {
      */
     @Override
     public int getMinXSize() {
-        return minXAreaCount * WorldInfo.BLOCK_FLOOR_X_SIZE;
+        return this.areaCountForEveryXQuadrant * X_BLOCKS_PER_AREA;
     }
 
     /**
@@ -130,7 +112,7 @@ public final class WorldImpl implements World {
      */
     @Override
     public int getMaxYSize() {
-        return maxYAreaCount * WorldInfo.BLOCK_FLOOR_Y_SIZE - 1;
+        return this.areaCountForEveryXQuadrant * Y_BLOCKS_PER_AREA - 1;
     }
 
     /**
@@ -138,7 +120,33 @@ public final class WorldImpl implements World {
      */
     @Override
     public int getMinYSize() {
-        return minYAreaCount * WorldInfo.BLOCK_FLOOR_Y_SIZE;
+        return this.areaCountForEveryXQuadrant * Y_BLOCKS_PER_AREA;
+    }
+
+    @NotNull
+    private static int[] getAreaIndexByPosition(int coordinate, int unitSize) {
+        int areaIndex;
+        int posInArea;
+
+        if (coordinate >= 0) {
+            posInArea = coordinate % unitSize;
+            areaIndex = Math.floorDiv(coordinate, unitSize);
+        } else {
+            coordinate = Math.abs(coordinate);
+            areaIndex = (int) -Math.ceilDiv(coordinate, unitSize);
+            posInArea = (coordinate % unitSize) == 0 ? 0 : unitSize - (coordinate % unitSize);
+        }
+
+        return new int[] {areaIndex, posInArea};
+    }
+
+    public boolean isIn(@NotNull Position position) {
+        Objects.requireNonNull(position);
+
+        return position.x <= this.getMaxXSize()
+                && position.x >= this.getMinXSize()
+                && position.y <= this.getMaxYSize()
+                && position.y >= this.getMinYSize();
     }
 
     /**
@@ -153,19 +161,16 @@ public final class WorldImpl implements World {
         // null check
         Objects.requireNonNull(position, "position must not be null");
 
+        if (!this.isIn(position)) {
+            return Optional.empty();
+        }
+
         // 检查范围
-        if (position.x < getMinXSize()
-                || position.x > getMaxXSize()
-                || position.y < getMinYSize()
-                || position.y > getMaxYSize()) return Optional.empty();
+        var x = getAreaIndexByPosition(position.x, X_BLOCKS_PER_AREA);
+        var y = getAreaIndexByPosition(position.y, Y_BLOCKS_PER_AREA);
 
-        // 获取area坐标
-        var area = areas[Math.floorDiv(position.x + Math.abs(getMinXSize()), WorldInfo.BLOCK_FLOOR_X_SIZE)][
-                Math.floorDiv((position.y + Math.abs(getMinYSize())), WorldInfo.BLOCK_FLOOR_Y_SIZE)]
-                .get();
+        var area = this.areas[this.areaCountForEveryXQuadrant + x[0]][this.areaCountForEveryXQuadrant + y[0]];
 
-        if (area == null) return Optional.empty();
-
-        return area.getBlock(position);
+        return area.get().getBlock(new Position(x[1], y[1], position.z));
     }
 }

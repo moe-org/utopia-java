@@ -27,8 +27,8 @@ public interface Area {
      *
      * @param position 要获取的地图块位置
      * @return 获取到的地图块。如果地图块超出范围，则返回空
-     * @see WorldInfo#BLOCK_FLOOR_X_SIZE
-     * @see WorldInfo#BLOCK_FLOOR_Y_SIZE
+     * @see WorldInfo#X_BLOCKS_PER_AREA
+     * @see WorldInfo#Y_BLOCKS_PER_AREA
      */
     @NotNull
     Optional<Block> getBlock(@NotNull Position position);

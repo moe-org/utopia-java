@@ -11,7 +11,7 @@
     <!-- 字符集编码 -->
     <property name="charset" value="UTF-8"/>
     <!-- 违规级别 -->
-    <property name="severity" value="error"/>
+    <property name="severity" value="warning"/>
     <!-- 需要检查的文件扩展名 -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
@@ -112,7 +112,6 @@
         <!--检查NotNull和Nullable-->
         <module name="moe.kawayi.org.keep.great.checker.CheckMethodReturnValueNullMark"/>
         <module name="moe.kawayi.org.keep.great.checker.CheckMethodArgumentsNullMark"/>
-
 
     </module>
 

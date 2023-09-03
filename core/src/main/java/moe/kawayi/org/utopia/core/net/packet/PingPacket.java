@@ -8,14 +8,13 @@ package moe.kawayi.org.utopia.core.net.packet;
 
 import java.io.IOException;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Version;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * {@link PackageTypeEnum#PING}的包内容
@@ -30,7 +29,7 @@ public final class PingPacket implements UbfPacket {
     /**
      * 日志器
      */
-    private static final Logger LOGGER = LogManager.getLogger(PingPacket.class);
+    private static final Logger LOGGER = GlobalLogManager.getLogger(PingPacket.class);
 
     /**
      * 获取version的UtopiaBinaryFormat键值

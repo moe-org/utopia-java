@@ -28,10 +28,14 @@ import com.typesafe.config.ConfigUtil;
  */
 public class HoconConfig implements Config {
 
+    /**
+     * config object
+     */
     private final com.typesafe.config.Config obj;
 
     /**
      * 导航路径
+     * @param path 导航路径
      */
     public record NavigationPath(@NotNull String path) implements Config.NavigationPath {}
 

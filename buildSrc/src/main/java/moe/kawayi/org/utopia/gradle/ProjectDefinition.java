@@ -27,14 +27,18 @@ public class ProjectDefinition {
     public static final String SNAPSHOT_BUILD_KEY = "SnapshotBuild";
 
     //===========================================
+    public static final int JAVA_VERSION = 20;
+    public static final String GUICE_VERSION = "7.0.0";
+    public static final String JANSI_VERSION = "2.4.0";
     public static final String LWJGL_VERSION = "3.3.2";
+    public static final String LIBGDX_VERSION = "1.12.0";
     public static final String LOG4J2_VERSION = "2.20.0";
     public static final String NETTY_VERSION = "4.1.94.Final";
     public static final String JUNIT_VERSION = "5.9.3";
     public static final String JACKSON_VERSION = "2.15.2";
     public static final String HOCON_VERSION = "1.4.2";
     public static final String JACOCO_VERSION = "0.8.10";
-    public static final String CHECKSTYLE_VERSION = "10.12.";
+    public static final String CHECKSTYLE_VERSION = "10.12.1";
 
     //===========================================
     private static final String RELEASE_DIR_NAME = "release";

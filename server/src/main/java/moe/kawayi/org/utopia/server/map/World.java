@@ -55,4 +55,11 @@ public interface World {
      * @return 返回Y轴最小值
      */
     int getMinYSize();
+
+    /**
+     * 检查坐标是否在地图的范围内
+     * @param position 坐标
+     * @return 如果在范围内,返回true,否则返回false.
+     */
+    boolean isIn(@NotNull Position position);
 }

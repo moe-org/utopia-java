@@ -6,37 +6,42 @@
 
 package moe.kawayi.org.utopia.core.test.event;
 
-import moe.kawayi.org.utopia.core.event.EventBus;
-import moe.kawayi.org.utopia.core.event.EventImpl;
+import java.util.function.Consumer;
+
+import moe.kawayi.org.utopia.core.event.ComplexEvent;
+import moe.kawayi.org.utopia.core.event.ComplexEventImpl;
+import moe.kawayi.org.utopia.core.event.EventPublisherImpl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class EventBusTest {
+public class EventPublisherImplTest {
 
     private boolean called = false;
 
-    private final EventBus<EventImpl<Boolean>> eventBus = new EventBus<>();
+    private final EventPublisherImpl<ComplexEvent<Boolean>> eventPublisherImpl = new EventPublisherImpl<>();
 
     @Test
     public void eventBusTest() {
         // test
-        var id = eventBus.register(event -> {
-            called = (boolean) event.getParameter().orElseThrow();
-        });
+        Consumer<ComplexEvent<Boolean>> event = (ComplexEvent<Boolean> e) -> {
+            called = e.getParameter().orElseThrow();
+        };
 
-        eventBus.fireEvent(new EventImpl<>(true, true));
+        eventPublisherImpl.register(event);
 
-        eventBus.unregister(id);
+        eventPublisherImpl.fire(new ComplexEventImpl<>(true, null, true));
 
-        eventBus.fireEvent(new EventImpl<>(false, true));
+        eventPublisherImpl.unregister(event);
+
+        eventPublisherImpl.fire(new ComplexEventImpl<>(false, null, true));
 
         Assertions.assertTrue(called);
     }
 
     @Test
     public void nullTest() {
-        var bus = new EventBus<EventImpl<Integer>>();
+        var bus = new EventPublisherImpl<ComplexEvent<Integer>>();
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             bus.register(null);
@@ -45,7 +50,7 @@ public class EventBusTest {
             bus.unregister(null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            bus.fireEvent(null);
+            bus.fire(null);
         });
     }
 }

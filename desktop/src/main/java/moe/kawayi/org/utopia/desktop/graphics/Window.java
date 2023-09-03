@@ -11,8 +11,9 @@ import java.nio.IntBuffer;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.event.EventBus;
-import moe.kawayi.org.utopia.core.event.EventImpl;
+import moe.kawayi.org.utopia.core.event.ComplexEvent;
+import moe.kawayi.org.utopia.core.event.ComplexEventImpl;
+import moe.kawayi.org.utopia.core.event.EventPublisherImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Nullable;
 
@@ -36,7 +37,7 @@ public class Window {
 
     private final long handle;
 
-    private final EventBus<EventImpl<int[]>> resizeEvent = new EventBus<>();
+    private final EventPublisherImpl<ComplexEvent<int[]>> resizeEvent = new EventPublisherImpl<>();
 
     /**
      * 使用handle初始化此类。窗口通常由builder创建。
@@ -46,7 +47,7 @@ public class Window {
         glfwSetFramebufferSizeCallback(this.handle, (window, width, height) -> {
             var size = new int[] {width, height};
 
-            resizeEvent.fireEvent(new EventImpl<>(size, false));
+            resizeEvent.fire(new ComplexEventImpl<>(size, null, false));
         });
     }
 
@@ -128,7 +129,7 @@ public class Window {
      * @return 事件。事件参数见{@link Window#getSize()}
      */
     @NotNull
-    public EventBus<EventImpl<int[]>> getResizeEvent() {
+    public EventPublisherImpl<ComplexEvent<int[]>> getResizeEvent() {
         return this.resizeEvent;
     }
 
@@ -137,7 +138,7 @@ public class Window {
      */
     public void enableAutoViewport() {
         getResizeEvent().register((register) -> {
-            var param = (int[]) register.getParameter().orElseThrow();
+            var param = register.getParameter().orElseThrow();
 
             GL33.glViewport(0, 0, param[0], param[1]);
         });

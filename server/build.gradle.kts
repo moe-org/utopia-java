@@ -27,12 +27,24 @@ dependencies {
 }
 
 // 打包
-ConfigJar.configJarForServer(tasks.named<org.gradle.api.tasks.bundling.Jar>("shadowJar").get())
+tasks.register<Jar>("releaseJar") {
+    archiveClassifier.set("release")
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+ConfigJar.configJarForServer(tasks.named<org.gradle.api.tasks.bundling.Jar>("releaseJar").get())
 
 // 发布
 tasks.register("release") {
     this.description = "package and copy assets"
-    dependsOn(tasks.named(":server:shadowJar"))
+    dependsOn(tasks.named("releaseJar"))
     dependsOn(rootProject.tasks.named("allJavaSourceJar"))
     dependsOn(rootProject.tasks.named("allJavadocJar"))
 }

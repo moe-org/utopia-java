@@ -19,12 +19,12 @@ public final class WorldInfo {
     /**
      * 地图层X轴大小
      */
-    public static final int BLOCK_FLOOR_X_SIZE = 32;
+    public static final int X_BLOCKS_PER_AREA = 32;
 
     /**
      * 地图层Y轴大小
      */
-    public static final int BLOCK_FLOOR_Y_SIZE = 32;
+    public static final int Y_BLOCKS_PER_AREA = 32;
 
     /**
      * 地面轴定义

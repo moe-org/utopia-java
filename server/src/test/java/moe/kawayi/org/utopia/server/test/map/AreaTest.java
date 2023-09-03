@@ -23,8 +23,8 @@ public class AreaTest {
     public void areaAccessTest() {
         ArrayList<Object> objs = new ArrayList<>();
 
-        for (int x = 0; x != WorldInfo.BLOCK_FLOOR_X_SIZE; x++)
-            for (int y = 0; y != WorldInfo.BLOCK_FLOOR_Y_SIZE; y++) {
+        for (int x = 0; x != WorldInfo.X_BLOCKS_PER_AREA; x++)
+            for (int y = 0; y != WorldInfo.Y_BLOCKS_PER_AREA; y++) {
                 var block = area.getBlock(new Position(x, y, WorldInfo.GROUND_Z));
 
                 // 确保存在
@@ -40,7 +40,7 @@ public class AreaTest {
     @Test
     public void areaAccessWrongTest() {
         var result1 = area.getBlock(
-                new Position(WorldInfo.BLOCK_FLOOR_X_SIZE, WorldInfo.BLOCK_FLOOR_Y_SIZE, WorldInfo.GROUND_Z));
+                new Position(WorldInfo.X_BLOCKS_PER_AREA, WorldInfo.Y_BLOCKS_PER_AREA, WorldInfo.GROUND_Z));
 
         var result2 = area.getBlock(new Position(-1, -1, WorldInfo.GROUND_Z));
 

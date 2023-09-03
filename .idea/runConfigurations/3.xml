@@ -10,6 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
+          <option value="spotlessApply" />
+          <option value="build" />
           <option value="release" />
         </list>
       </option>
@@ -18,7 +20,7 @@
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
     <DebugAllEnabled>false</DebugAllEnabled>
-    <ForceTestExec>false</ForceTestExec>
+    <RunAsTest>false</RunAsTest>
     <method v="2" />
   </configuration>
 </component>
