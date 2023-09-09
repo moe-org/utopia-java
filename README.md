@@ -61,12 +61,12 @@
 <!---ubadge-auto-list-begin-->
 | Checking | Status |
 | :-------:|:------:|
-| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Check | ![Check](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Check-Commit-Message | ![Check-Commit-Message](https://img.shields.io/badge/build-failed-red?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Build-And-Test | ![Build-And-Test](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Record-Version | ![Record-Version](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white) |
-| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white) |
 | Check-Code-Coverage | ![Check-Code-Coverage](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white) |
+| Generate-Javadoc | ![Generate-Javadoc](https://img.shields.io/badge/build-skipped-lightgrey?style=for-the-badge&logo=githubactions&logoColor=white) |
 <!---ubadge-auto-list-end-->
 
 ---------
