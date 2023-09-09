@@ -47,7 +47,7 @@ public class DesktopApplication extends ApplicationAdapter {
         this.batch = new SpriteBatch();
 
         try {
-            engine.loadFontFromFile(Path.of("C:\\Users\\mingm\\Downloads\\unifont-15.0.06.ttf"), 0);
+            engine.loadFontFromFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoEmoji-Regular.ttf"), 0);
         } catch (HarfbuzzException | IOException | FreetypeException e) {
             throw new RuntimeException(e);
         }
@@ -55,18 +55,16 @@ public class DesktopApplication extends ApplicationAdapter {
         var option = new Option();
         option.setLanguage("zh-CN");
         option.setScript("Hans");
-        option.setRTL(true);
-        option.setFontHeightPixel(64);
-        option.setFontWidthPixel(64);
+        option.setRTL(false);
+        option.setFontHeightPixel(32);
+        option.setFontWidthPixel(32);
 
         Pixmap draw;
         try {
-            draw = engine.drawLine("既来之则安之", option);
+            draw = engine.drawLine("\uD83C\uDFF3\uFE0F\u200D⚧\uFE0F", option);
         } catch (HarfbuzzException | FreetypeException e) {
             throw new RuntimeException(e);
         }
-
-        GlobalLogManager.GLOBAL_LOGGER.debug("pixmap size:{}x{}", draw.getWidth(), draw.getHeight());
 
         this.texture = new com.badlogic.gdx.graphics.Texture(draw);
         draw.dispose();

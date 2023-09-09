@@ -10,8 +10,10 @@ import java.lang.ref.Cleaner;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.ColorPoint;
@@ -90,7 +92,7 @@ public class RendererImpl implements Renderer {
     /**
      * 256位抗锯齿图
      */
-    private void writeGray(FT_Bitmap bitmap, @NotNull Consumer<ColorPoint> writer) {
+    private void writeGray(FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writer) {
         final int y = bitmap.rows();
         final int x = bitmap.width();
         final var buf = bitmap.buffer(y * Math.abs(bitmap.pitch()));
@@ -105,7 +107,7 @@ public class RendererImpl implements Renderer {
             for (int xIndex = 0; xIndex < x; xIndex++) {
                 byte value = buf.get(pointer + xIndex);
 
-                writer.accept(new ColorPoint((byte) 0, (byte) 0, (byte) 0, value));
+                writer.accept(new ColorPoint((byte) 0, (byte) 0, (byte) 0, value), new FlatPosition(xIndex, yIndex));
             }
             pointer += bitmap.pitch();
         }
@@ -114,7 +116,7 @@ public class RendererImpl implements Renderer {
     /**
      *
      */
-    private void writeColor(FT_Bitmap bitmap, @NotNull Consumer<ColorPoint> writter) {
+    private void writeColor(FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writter) {
         final int y = bitmap.rows();
         final int x = bitmap.width();
         final var buf = bitmap.buffer(x * Math.abs(bitmap.pitch()));
@@ -125,30 +127,37 @@ public class RendererImpl implements Renderer {
 
         int pointer = 0;
 
-        for (int yIndex = y; yIndex != 0; yIndex--) {
+        for (int yIndex = 0; yIndex < y; yIndex++) {
             for (int xIndex = 0; xIndex < x; xIndex++) {
                 byte r = buf.get(pointer + xIndex * 4);
                 byte g = buf.get(pointer + xIndex * 4 + 1);
                 byte b = buf.get(pointer + xIndex * 4 + 2);
                 byte a = buf.get(pointer + xIndex * 4 + 3);
 
-                writter.accept(new ColorPoint(r, g, b, a));
+                writter.accept(new ColorPoint(r, g, b, a), new FlatPosition(xIndex, yIndex));
             }
             pointer += bitmap.pitch();
         }
     }
 
     @Override
-    public void render(int graphId, @NotNull Consumer<Rect> size, @NotNull Consumer<ColorPoint> writer)
+    @NotNull
+    public CharacterInfo render(
+            int graphId, @NotNull Consumer<Rect> size, @NotNull BiConsumer<ColorPoint, FlatPosition> writer)
             throws FreetypeException {
 
         if (!this.initialized.get()) {
             this.initialize();
         }
 
+        final var info = new CharacterInfo();
+
         loadAndRender(graphId);
 
         var bitmap = Objects.requireNonNull(this.face.glyph()).bitmap();
+
+        info.bitmapTop = Objects.requireNonNull(this.face.glyph()).bitmap_top();
+        info.bitmapLeft = Objects.requireNonNull(this.face.glyph()).bitmap_left();
 
         size.accept(new Rect(bitmap.width(), bitmap.rows()));
 
@@ -159,5 +168,7 @@ public class RendererImpl implements Renderer {
         } else {
             throw new IllegalStateException("no support pixel mode");
         }
+
+        return info;
     }
 }

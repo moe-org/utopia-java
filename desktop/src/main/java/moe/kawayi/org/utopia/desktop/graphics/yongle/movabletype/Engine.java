@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import moe.kawayi.org.utopia.core.log.GlobalLogManager;
@@ -34,7 +33,7 @@ public class Engine {
 
     private final Renderer renderer = new RendererImpl();
 
-    private final HashMap<Integer, Pixmap> cache = new HashMap<Integer, Pixmap>();
+    private final HashMap<Integer, CharacterPixmap> cache = new HashMap<>();
 
     public Engine() throws FreetypeException, HarfbuzzException {}
 
@@ -57,10 +56,12 @@ public class Engine {
         GlobalLogManager.GLOBAL_LOGGER.debug("require {} characters", string.codePointCount(0, string.length()));
         GlobalLogManager.GLOBAL_LOGGER.debug("layout {} glyphs", layouts.length);
 
-        var glyphs = new ArrayList<Pixmap>();
+        var glyphs = new ArrayList<CharacterPixmap>();
 
         int xMax = 0;
-        int yMax = 0;
+        int yUpMax = 0;
+        int yDownMax = 0;
+        int maxAscent = 0;
         int xPen = 0;
         int yPen = 0;
 
@@ -70,30 +71,23 @@ public class Engine {
             var got = this.cache.get(id);
             if (got == null) {
                 final AtomicReference<Pixmap> rendered = new AtomicReference<>(null);
-                AtomicInteger x = new AtomicInteger(0);
-                AtomicInteger y = new AtomicInteger(0);
 
-                this.renderer.render(
+                var info = this.renderer.render(
                         id,
-                        (r) -> {
-                            rendered.set(new Pixmap(r.getWidth(), r.getHeight(), Pixmap.Format.RGBA8888));
-                        },
-                        (p) -> {
-                            rendered.get().drawPixel(x.get(), y.get(), p.toRGBA8888());
-                            x.getAndIncrement();
+                        (r) -> rendered.set(new Pixmap(r.getWidth(), r.getHeight(), Pixmap.Format.RGBA8888)),
+                        (p, position) -> rendered.get().drawPixel(position.x, position.y, p.toRGBA8888()));
 
-                            if (x.get() > rendered.get().getWidth()) {
-                                y.incrementAndGet();
-                                x.set(0);
-                            }
-                        });
-
-                got = rendered.get();
+                got = new CharacterPixmap(rendered.get(), info);
                 this.cache.put(id, got);
             }
 
-            xMax = Math.max(got.getWidth() + layout.xOffset + xPen, xMax);
-            yMax = Math.max(got.getHeight() + layout.yOffset + yPen, yMax);
+            final int xOffset = got.info.bitmapLeft;
+            final int yDown = got.map.getHeight() - got.info.bitmapTop;
+
+            xMax = Math.max(got.map.getWidth() + layout.xOffset + xPen + xOffset, xMax);
+            yUpMax = Math.max(got.map.getHeight() + layout.yOffset + yPen, yUpMax);
+            yDownMax = Math.max(Math.abs(yDown), yDownMax);
+            maxAscent = Math.max(got.info.bitmapTop, maxAscent);
 
             xPen += layout.xAdvance;
             yPen += layout.yAdvance;
@@ -102,13 +96,19 @@ public class Engine {
 
         xPen = 0;
         yPen = 0;
-        var output = new Pixmap(xMax, yMax, Pixmap.Format.RGBA8888);
+        var output = new Pixmap(xMax, yUpMax + yDownMax, Pixmap.Format.RGBA8888);
 
         int index = 0;
         while (index != layouts.length) {
             var glyph = glyphs.get(index);
             var layout = layouts[index];
-            output.drawPixmap(glyph, xPen + layout.xOffset, yPen + layout.yOffset);
+
+            final var xPos = xPen + layout.xOffset + glyph.info.bitmapLeft;
+            final var yPos = yPen + layout.yOffset + maxAscent - glyph.info.bitmapTop;
+
+            GlobalLogManager.GLOBAL_LOGGER.debug("draw at :{}x{}", xPos, yPos);
+
+            output.drawPixmap(glyph.map, xPos, yPos);
 
             xPen += layout.xAdvance;
             yPen += layout.yAdvance;

@@ -6,8 +6,10 @@
 
 package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.ColorPoint;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.Rect;
@@ -35,6 +37,8 @@ public interface Renderer {
     @NotNull
     FontFace getFontFace() throws NullPointerException;
 
-    void render(int graphId, @NotNull Consumer<Rect> size, @NotNull Consumer<ColorPoint> writer)
+    @NotNull
+    CharacterInfo render(
+            int graphId, @NotNull Consumer<Rect> size, @NotNull BiConsumer<ColorPoint, FlatPosition> writer)
             throws FreetypeException;
 }

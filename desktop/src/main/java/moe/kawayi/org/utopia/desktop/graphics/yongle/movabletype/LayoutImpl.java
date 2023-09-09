@@ -25,7 +25,7 @@ public class LayoutImpl implements LayoutEngine {
 
         // set up
         HarfBuzz.hb_buffer_reset(buffer);
-        HarfBuzz.hb_buffer_add_utf8(buffer, text + "\0", 0, -1);
+        HarfBuzz.hb_buffer_add_utf8(buffer, text, 0, -1);
 
         var script = HarfBuzz.hb_script_from_string(option.getScript());
         var language = HarfBuzz.hb_language_from_string(option.getLanguage());
