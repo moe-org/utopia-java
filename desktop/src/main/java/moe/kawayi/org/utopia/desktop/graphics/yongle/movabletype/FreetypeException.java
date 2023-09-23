@@ -22,6 +22,6 @@ public class FreetypeException extends Exception {
         }
 
         var str = FreeType.FT_Error_String(error);
-        throw new FreetypeException("Freetype error(code " + error + "):" + str);
+        throw new FreetypeException("Freetype error(code 0x" + Integer.toString(error, 16) + "):" + str);
     }
 }

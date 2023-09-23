@@ -31,9 +31,15 @@ public class GenerateVersion extends DefaultTask {
         project.getProjectDir().toPath().resolve("src/main/resources/" +
                 ProjectDefinition.VERSION_PROPERTY_FILE);
 
+        StringBuilder builder = new StringBuilder();
+        builder.append(ProjectDefinition.VERSION_MAJOR_KEY + "=").append(ProjectDefinition.majorVersion).append("\n");
+        builder.append(ProjectDefinition.VERSION_MINOR_KEY + "=").append(ProjectDefinition.minorVersion).append("\n");
+        builder.append(ProjectDefinition.VERSION_PATCH_KEY + "=").append(ProjectDefinition.patchVersion).append("\n");
+        builder.append(ProjectDefinition.VERSION_EXTRA_KEY + "=").append(ProjectDefinition.extraVersion).append("\n");
+
         Files.writeString(
                 path,
-                ProjectDefinition.VERSION_PROPERTY_KEY + "=" + ProjectDefinition.getVersion(),
+                builder.toString(),
                 StandardOpenOption.TRUNCATE_EXISTING,
                 StandardOpenOption.WRITE,
                 StandardOpenOption.CREATE

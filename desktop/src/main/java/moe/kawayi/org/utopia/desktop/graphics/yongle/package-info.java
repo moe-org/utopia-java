@@ -5,6 +5,6 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
- * yongle是一个完整的渲染引擎.目前主要使用OpenGL.
+ * yongle是一个渲染引擎.
  */
 package moe.kawayi.org.utopia.desktop.graphics.yongle;

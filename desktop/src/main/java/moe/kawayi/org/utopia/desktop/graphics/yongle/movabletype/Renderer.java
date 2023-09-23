@@ -17,7 +17,7 @@ import moe.kawayi.org.utopia.desktop.graphics.yongle.Rect;
 /**
  * 渲染器. 和{@link Library}相关联
  */
-public interface Renderer {
+public interface Renderer extends AutoCloseable {
 
     void setOption(@NotNull Option option);
 

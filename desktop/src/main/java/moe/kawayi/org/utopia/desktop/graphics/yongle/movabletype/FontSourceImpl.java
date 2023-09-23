@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.system.MemoryUtil;
@@ -35,9 +34,6 @@ public class FontSourceImpl implements FontSource {
         if (harfbuzzBlob == 0) {
             throw new HarfbuzzException("hb_blob_create return null");
         }
-
-        var address = this.harfbuzzBlob;
-        CleanerManager.getCleaner().register(this.harfbuzzBlob, () -> HarfBuzz.hb_blob_destroy(address));
     }
 
     public static FontSource fromFile(@NotNull Path path) throws IOException, HarfbuzzException {
@@ -62,6 +58,12 @@ public class FontSourceImpl implements FontSource {
 
     @Override
     public ByteBuffer getBuffer() {
-        return this.buffer;
+        return this.buffer.asReadOnlyBuffer();
+    }
+
+    @Override
+    public void close() throws Exception {
+        HarfBuzz.hb_blob_destroy(this.harfbuzzBlob);
+        MemoryUtil.memFree(this.buffer);
     }
 }

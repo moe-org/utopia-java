@@ -12,7 +12,7 @@ import java.nio.file.StandardOpenOption;
 
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Version;
+import moe.kawayi.org.utopia.core.util.VersionGetter;
 
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -84,7 +84,7 @@ public class LogUtil {
         // 配置日志配置文件
         try {
             if (!Files.exists(ResourceManager.getPath(CONFIG_FILE_PATH))) {
-                try (var is = Version.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH)) {
+                try (var is = VersionGetter.class.getResourceAsStream(BUILT_IN_CONFIG_FILE_PATH)) {
 
                     if (is == null)
                         throw new IOException("couldn't open built-in file in jar:" + BUILT_IN_CONFIG_FILE_PATH);

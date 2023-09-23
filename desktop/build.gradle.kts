@@ -42,6 +42,7 @@ val lwjglNatives = Pair(
 dependencies {
     // 依赖core
     api(project(":core"))
+    api(project(":server"))
 
     // LWJGL
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
@@ -152,7 +153,7 @@ tasks.register<Jar>("releaseJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-ConfigJar.configJarForDesktop(tasks.named<org.gradle.api.tasks.bundling.Jar>("releaseJar").get())
+ConfigJar.configJarForDesktop(tasks.named<Jar>("releaseJar").get())
 
 // 发布
 tasks.register<ReleaseTask>("release") {
@@ -176,3 +177,13 @@ tasks.register<ReleaseTask>("release") {
             ProjectDefinition.getAssetsDir());
 }
 
+tasks.register<Exec>("run"){
+    this.dependsOn(tasks.named("releaseJar"))
+
+    this.workingDir = ProjectDefinition.getDesktopReleaseDir()
+    this.executable = "java"
+    this.args = listOf<String>();
+    this.args("-Xmx2G","-Dfile.encoding=UTF-8","-jar","${ProjectDefinition.getDesktopReleaseDir()}/desktop-${project.version}-release.jar")
+
+    println("run:${this.executable} ${this.args.toString()}")
+}

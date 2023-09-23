@@ -8,17 +8,19 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.util.freetype.FT_Face;
 import org.lwjgl.util.freetype.FreeType;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 public class FontFaceImpl implements FontFace {
 
-    private final PointerBuffer freetypeFace;
+    private final FT_Face freetypeFace;
+
+    private final PointerBuffer freetypeFaceBuffeer;
 
     private final long harfbuzzFace;
 
@@ -27,15 +29,11 @@ public class FontFaceImpl implements FontFace {
     private final Library library;
 
     private FontFaceImpl(@NotNull PointerBuffer freetypeFace, long harfbuzzFace, long harfbuzzFont, Library library) {
-        this.freetypeFace = Objects.requireNonNull(freetypeFace);
+        this.freetypeFaceBuffeer = Objects.requireNonNull(freetypeFace);
+        this.library = Objects.requireNonNull(library);
+        this.freetypeFace = FT_Face.create(freetypeFace.address());
         this.harfbuzzFace = harfbuzzFace;
         this.harfbuzzFont = harfbuzzFont;
-        this.library = Objects.requireNonNull(library);
-
-        var address = this.freetypeFace.address();
-        CleanerManager.getCleaner().register(this.freetypeFace, () -> FreeType.nFT_Done_Face(address));
-        CleanerManager.getCleaner().register(this.harfbuzzFace, () -> HarfBuzz.hb_font_destroy(harfbuzzFont));
-        CleanerManager.getCleaner().register(this.harfbuzzFace, () -> HarfBuzz.hb_face_destroy(harfbuzzFace));
     }
 
     public static FontFace create(@NotNull Library library, @NotNull FontSource source, int faceIndex)
@@ -46,7 +44,7 @@ public class FontFaceImpl implements FontFace {
         // freetype
         var face = MemoryUtil.memAllocPointer(1);
 
-        var fe = FreeType.FT_New_Memory_Face(library.getFreetype().get(), source.getBuffer(), faceIndex, face);
+        var fe = FreeType.FT_New_Memory_Face(library.getFreetype(), source.getBuffer(), faceIndex, face);
         FreetypeException.checkError(fe);
 
         // harfbuzz
@@ -66,7 +64,7 @@ public class FontFaceImpl implements FontFace {
     }
 
     @Override
-    public PointerBuffer getFreetypeFace() {
+    public FT_Face getFreetypeFace() {
         return this.freetypeFace;
     }
 
@@ -78,5 +76,12 @@ public class FontFaceImpl implements FontFace {
     @Override
     public Library getLibrary() {
         return this.library;
+    }
+
+    @Override
+    public void close() {
+        FreeType.nFT_Done_Face(this.freetypeFace.address());
+        HarfBuzz.hb_font_destroy(this.harfbuzzFont);
+        HarfBuzz.hb_face_destroy(this.harfbuzzFace);
     }
 }

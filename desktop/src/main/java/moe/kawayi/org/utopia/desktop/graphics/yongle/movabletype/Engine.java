@@ -7,13 +7,13 @@
 package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -21,9 +21,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 /**
  * 一个字体引擎.使用Harfbuzz和Freetype
  */
-public class Engine {
+public class Engine implements AutoCloseable {
 
-    private final Library library = DefaultLibrary.create();
+    private final Library library;
 
     private FontSource source;
 
@@ -33,17 +33,46 @@ public class Engine {
 
     private final Renderer renderer = new RendererImpl();
 
-    private final HashMap<Integer, CharacterPixmap> cache = new HashMap<>();
+    private final HashMap<Integer, WeakReference<CharacterPixmap>> cache = new HashMap<>();
 
-    public Engine() throws FreetypeException, HarfbuzzException {}
+    public Engine(FontSource source, FontFace face) throws FreetypeException, HarfbuzzException {
+        this.source = source;
+        this.face = face;
+        this.library = face.getLibrary();
+        this.renderer.setFontFace(face);
+    }
 
-    public void loadFontFromFile(@NotNull Path file, int faceId)
+    public static Engine createFromFontFile(@NotNull Path file, int faceId)
             throws HarfbuzzException, IOException, FreetypeException {
+        var library = DefaultLibrary.create();
 
-        this.source = FontSourceImpl.fromFile(file);
+        var source = FontSourceImpl.fromFile(file);
 
-        this.face = FontFaceImpl.create(this.library, this.source, faceId);
-        this.renderer.setFontFace(this.face);
+        var face = FontFaceImpl.create(library, source, faceId);
+
+        return new Engine(source, face);
+    }
+
+    private CharacterPixmap getCache(int id) throws FreetypeException {
+        var got = this.cache.get(id);
+        CharacterPixmap map = null;
+        if (got != null) {
+            map = got.get();
+        }
+
+        if (got == null || map == null) {
+            final AtomicReference<Pixmap> rendered = new AtomicReference<>(null);
+
+            var info = this.renderer.render(
+                    id,
+                    (r) -> rendered.set(new Pixmap(r.getWidth(), r.getHeight(), Pixmap.Format.RGBA8888)),
+                    (p, position) -> rendered.get().drawPixel(position.x, position.y, p.toRGBA8888()));
+
+            map = new CharacterPixmap(rendered.get(), info);
+            got = new WeakReference<>(map);
+            this.cache.put(id, got);
+        }
+        return map;
     }
 
     public Pixmap drawLine(@NotNull String string, @NotNull Option option) throws HarfbuzzException, FreetypeException {
@@ -52,9 +81,6 @@ public class Engine {
 
         this.renderer.setOption(option);
         var layouts = this.layouts.layout(this.face, string, option);
-
-        GlobalLogManager.GLOBAL_LOGGER.debug("require {} characters", string.codePointCount(0, string.length()));
-        GlobalLogManager.GLOBAL_LOGGER.debug("layout {} glyphs", layouts.length);
 
         var glyphs = new ArrayList<CharacterPixmap>();
 
@@ -68,18 +94,7 @@ public class Engine {
         for (var layout : layouts) {
             var id = layout.getGlyphID();
 
-            var got = this.cache.get(id);
-            if (got == null) {
-                final AtomicReference<Pixmap> rendered = new AtomicReference<>(null);
-
-                var info = this.renderer.render(
-                        id,
-                        (r) -> rendered.set(new Pixmap(r.getWidth(), r.getHeight(), Pixmap.Format.RGBA8888)),
-                        (p, position) -> rendered.get().drawPixel(position.x, position.y, p.toRGBA8888()));
-
-                got = new CharacterPixmap(rendered.get(), info);
-                this.cache.put(id, got);
-            }
+            var got = this.getCache(id);
 
             final int xOffset = got.info.bitmapLeft;
             final int yDown = got.map.getHeight() - got.info.bitmapTop;
@@ -106,8 +121,6 @@ public class Engine {
             final var xPos = xPen + layout.xOffset + glyph.info.bitmapLeft;
             final var yPos = yPen + layout.yOffset + maxAscent - glyph.info.bitmapTop;
 
-            GlobalLogManager.GLOBAL_LOGGER.debug("draw at :{}x{}", xPos, yPos);
-
             output.drawPixmap(glyph.map, xPos, yPos);
 
             xPen += layout.xAdvance;
@@ -116,5 +129,43 @@ public class Engine {
         }
 
         return output;
+    }
+
+    public Pixmap drawMultipleLine(@NotNull String string, @NotNull Option option)
+            throws HarfbuzzException, FreetypeException {
+        var lines = string.lines().toList();
+        ArrayList<Pixmap> linesImage = new ArrayList<>();
+
+        for (var line : lines) {
+            var got = this.drawLine(line, option);
+            linesImage.add(got);
+        }
+
+        int xMax = 0;
+        int yMax = 0;
+        for (var image : linesImage) {
+            xMax = Math.max(image.getWidth(), xMax);
+            yMax = Math.max(yMax, yMax + image.getHeight());
+        }
+
+        Pixmap output = new Pixmap(xMax, yMax, Pixmap.Format.RGBA8888);
+
+        int yPen = 0;
+        for (var image : linesImage) {
+            output.drawPixmap(image, 0, yPen);
+            yPen += image.getHeight();
+        }
+
+        return output;
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.cache.clear();
+        this.renderer.close();
+        this.layouts.close();
+        this.face.close();
+        this.source.close();
+        this.library.close();
     }
 }

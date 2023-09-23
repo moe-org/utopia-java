@@ -20,7 +20,13 @@ public class ProjectDefinition {
 
     public static final String VERSION_PROPERTY_FILE = "utopia-version.properties";
 
-    public static final String VERSION_PROPERTY_KEY = "UtopiaVersion";
+    public static final String VERSION_MAJOR_KEY = "UtopiaVersionMajor";
+
+    public static final String VERSION_MINOR_KEY = "UtopiaVersionMinor";
+
+    public static final String VERSION_PATCH_KEY = "UtopiaVersionPatch";
+
+    public static final String VERSION_EXTRA_KEY = "UtopiaVersionExtra";
 
     //===========================================
 
@@ -92,15 +98,37 @@ public class ProjectDefinition {
     private static String generateVersion() throws IOException{
         var ver = Files.readString(getVersionFile().toPath());
 
+        var subs = ver.split("\\.");
+
+        if(subs.length != 3){
+            throw new NumberFormatException("The version number is wrong.");
+        }
+
+        majorVersion = Integer.parseInt(subs[0]);
+        minorVersion = Integer.parseInt(subs[1]);
+        patchVersion = Integer.parseInt(subs[2]);
+
         if(rootProject.getProperties().containsKey(SNAPSHOT_BUILD_KEY)){
             ver = ver + "-" + rootProject.getProperties().get(SNAPSHOT_BUILD_KEY).toString()
                     + "-SNAPSHOT";
+            extraVersion = "SNAPSHOT";
+        }
+        else{
+            extraVersion = "";
         }
 
         return ver;
     }
 
     private static String version = null;
+
+    public static int majorVersion;
+
+    public static int minorVersion;
+
+    public static int patchVersion;
+
+    public static String extraVersion;
 
     public static String getVersion() {
         return version;

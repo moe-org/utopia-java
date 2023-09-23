@@ -11,7 +11,7 @@ import moe.kawayi.org.utopia.core.util.NotNull;
 /**
  * 排版引擎.
  */
-public interface LayoutEngine {
+public interface LayoutEngine extends AutoCloseable {
 
     @NotNull
     LayoutInfo[] layout(@NotNull FontFace face, @NotNull String string, @NotNull Option option)

@@ -9,8 +9,6 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
-
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 public class LayoutImpl implements LayoutEngine {
@@ -57,8 +55,6 @@ public class LayoutImpl implements LayoutEngine {
                 final var size = infos.sizeof();
 
                 while (infos.position() != infos.capacity()) {
-                    GlobalLogManager.GLOBAL_LOGGER.debug(
-                            "sizeof {},capacity {},position {}", size, infos.capacity(), infos.position());
                     var info = infos.get();
                     var pos = poses.get();
 
@@ -70,14 +66,6 @@ public class LayoutImpl implements LayoutEngine {
                     layout.setxOffset(pos.x_offset());
                     layout.setyOffset(pos.y_offset());
 
-                    GlobalLogManager.GLOBAL_LOGGER.debug(
-                            "glypd id:{},x advance {},y advance {},x offset{},y offset {}",
-                            layout.getGlyphID(),
-                            layout.getxAdvance(),
-                            layout.getyAdvance(),
-                            layout.getxOffset(),
-                            layout.getyOffset());
-
                     outputs.add(layout);
                 }
             }
@@ -87,4 +75,7 @@ public class LayoutImpl implements LayoutEngine {
         outputs.toArray(infos);
         return infos;
     }
+
+    @Override
+    public void close() {}
 }

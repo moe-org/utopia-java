@@ -39,7 +39,7 @@ tasks.register<Jar>("releaseJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-ConfigJar.configJarForServer(tasks.named<org.gradle.api.tasks.bundling.Jar>("releaseJar").get())
+ConfigJar.configJarForServer(tasks.named<Jar>("releaseJar").get())
 
 // 发布
 tasks.register("release") {

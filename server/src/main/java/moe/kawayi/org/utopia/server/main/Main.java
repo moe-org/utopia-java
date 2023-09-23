@@ -10,7 +10,7 @@ import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.EnvironmentChecker;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Version;
+import moe.kawayi.org.utopia.core.util.VersionGetter;
 import moe.kawayi.org.utopia.server.logic.GameLogicLoop;
 import moe.kawayi.org.utopia.server.net.NetMain;
 
@@ -49,7 +49,7 @@ public final class Main {
 
         LOGGER.info("Server start");
 
-        LOGGER.info("utopia-version:{}", Version.getUtopiaVersion());
+        LOGGER.info("utopia-version:{}", VersionGetter.getUtopiaVersion());
 
         // 添加hook
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

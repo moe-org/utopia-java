@@ -15,7 +15,7 @@ import org.lwjgl.util.harfbuzz.hb_destroy_func_tI;
 /**
  * 代表一个字体的"源". 这可以独立于{@link Library}
  */
-public interface FontSource {
+public interface FontSource extends AutoCloseable {
 
     /**
      * {@link org.lwjgl.util.harfbuzz.HarfBuzz#hb_blob_create(ByteBuffer, int, long, hb_destroy_func_tI)}

@@ -6,9 +6,13 @@
 
 package moe.kawayi.org.utopia.desktop.main;
 
+import java.io.IOException;
+
 import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.NotNull;
+import moe.kawayi.org.utopia.core.util.VersionGetter;
+import moe.kawayi.org.utopia.desktop.util.Checker;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
@@ -30,7 +34,7 @@ public class DesktopLauncher {
      *
      * @param args 命令行参数
      */
-    public static void main(@NotNull String[] args) {
+    public static void main(@NotNull String[] args) throws IOException {
 
         // 解析参数
         int ptr = 0;
@@ -41,6 +45,9 @@ public class DesktopLauncher {
         }
 
         LOGGER.info("start");
+
+        LOGGER.debug("Utopia version:{}", VersionGetter.getUtopiaVersion().toString());
+        LOGGER.debug("Freetype version:{}", Checker.getFreetypeVersion().orElseThrow());
 
         try {
             Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();

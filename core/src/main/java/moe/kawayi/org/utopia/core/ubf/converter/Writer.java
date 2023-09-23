@@ -32,7 +32,7 @@ public final class Writer {
     private void call() {
         callStack++;
 
-        if (callStack >= UtopiaBinaryFormat.MAX_STACK) {
+        if (callStack > UtopiaBinaryFormat.MAX_STACK) {
             throw new IllegalStateException("stack limit exceeded");
         }
     }

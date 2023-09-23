@@ -14,7 +14,7 @@ import moe.kawayi.org.utopia.core.net.PackageTypeEnum;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObject;
 import moe.kawayi.org.utopia.core.ubf.UtopiaBinaryFormatObjectImpl;
 import moe.kawayi.org.utopia.core.util.NotNull;
-import moe.kawayi.org.utopia.core.util.Version;
+import moe.kawayi.org.utopia.core.util.VersionGetter;
 
 /**
  * {@link PackageTypeEnum#PING}的包内容
@@ -42,7 +42,7 @@ public final class PingPacket implements UbfPacket {
         UtopiaBinaryFormatObject obj = new UtopiaBinaryFormatObjectImpl();
 
         try {
-            obj.put(UBF_VERSION_KEY, Version.getUtopiaVersion());
+            obj.put(UBF_VERSION_KEY, VersionGetter.getUtopiaVersion().toString());
         } catch (@NotNull IOException err) {
             LOGGER.error("get utopia version failed down", err);
         }

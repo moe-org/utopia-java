@@ -17,8 +17,11 @@ import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.HarfbuzzExcepti
 import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.Option;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
@@ -36,7 +39,10 @@ public class DesktopApplication extends ApplicationAdapter {
      */
     public final Logger logger = GlobalLogManager.getLogger(this.getClass());
 
-    private final Engine engine = new Engine();
+    private Engine engine;
+
+    private Stage stage;
+    private Table table;
 
     com.badlogic.gdx.graphics.Texture texture;
 
@@ -44,30 +50,42 @@ public class DesktopApplication extends ApplicationAdapter {
 
     @Override
     public void create() {
+        this.stage = new Stage();
+        Gdx.input.setInputProcessor(this.stage);
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(true); // This is optional, but enables debug lines for tables.
         this.batch = new SpriteBatch();
 
         try {
-            engine.loadFontFromFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoEmoji-Regular.ttf"), 0);
+            engine = Engine.createFromFontFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoSans-Regular.ttf"), 0);
         } catch (HarfbuzzException | IOException | FreetypeException e) {
             throw new RuntimeException(e);
         }
 
         var option = new Option();
-        option.setLanguage("zh-CN");
-        option.setScript("Hans");
+        option.setLanguage("en-US");
+        option.setScript("Latn");
         option.setRTL(false);
-        option.setFontHeightPixel(32);
-        option.setFontWidthPixel(32);
+        option.setFontHeightPixel(16);
+        option.setFontWidthPixel(16);
 
         Pixmap draw;
         try {
-            draw = engine.drawLine("\uD83C\uDFF3\uFE0F\u200D⚧\uFE0F", option);
+            // draw = engine.drawMultipleLine("Hello World From Harfbuzz:<= <-- \n<== <=> ==> --> >=", option);
+            draw = engine.drawLine("Hello World From Harfbuzz:<= <-- \n<== <=> ==> --> >=", option);
         } catch (HarfbuzzException | FreetypeException e) {
             throw new RuntimeException(e);
         }
 
         this.texture = new com.badlogic.gdx.graphics.Texture(draw);
         draw.dispose();
+    }
+
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -80,6 +98,7 @@ public class DesktopApplication extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        this.stage.dispose();
         this.batch.dispose();
         this.texture.dispose();
     }

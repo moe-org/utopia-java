@@ -8,16 +8,16 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 
-import org.lwjgl.PointerBuffer;
+import org.lwjgl.util.freetype.FT_Face;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 /**
  * 代表一个字体Face. 这应该从属于一个{@link Library}
  */
-public interface FontFace {
+public interface FontFace extends AutoCloseable {
 
     @NotNull
-    PointerBuffer getFreetypeFace();
+    FT_Face getFreetypeFace();
 
     /**
      * 获取harfbuzz-font

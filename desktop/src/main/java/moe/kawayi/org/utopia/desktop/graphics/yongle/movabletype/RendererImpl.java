@@ -6,38 +6,26 @@
 
 package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
-import java.lang.ref.Cleaner;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import moe.kawayi.org.utopia.core.map.FlatPosition;
-import moe.kawayi.org.utopia.core.util.CleanerManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.ColorPoint;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.Rect;
 
 import org.lwjgl.util.freetype.FT_Bitmap;
-import org.lwjgl.util.freetype.FT_Face;
 import org.lwjgl.util.freetype.FreeType;
 
 public class RendererImpl implements Renderer {
-
-    private final AtomicReference<Cleaner.Cleanable> cleanable = new AtomicReference<>();
-
-    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     private Option option = null;
 
     private FontFace fontFace = null;
 
-    private FT_Face face = null;
-
     @Override
     public void setOption(Option option) {
-        this.initialized.set(false);
         this.option = Objects.requireNonNull(option);
     }
 
@@ -48,7 +36,6 @@ public class RendererImpl implements Renderer {
 
     @Override
     public void setFontFace(FontFace face) {
-        this.initialized.set(false);
         this.fontFace = Objects.requireNonNull(face);
     }
 
@@ -57,34 +44,19 @@ public class RendererImpl implements Renderer {
         return Objects.requireNonNull(this.fontFace);
     }
 
-    public void initialize() throws FreetypeException {
-        this.face = FT_Face.create(this.getFontFace().getFreetypeFace().get());
-
-        var address = this.face.address();
-        var clean = this.cleanable.getAndSet(
-                CleanerManager.getCleaner().register(this.face, () -> FreeType.nFT_Done_Face(address)));
-
-        if (clean != null) {
-            clean.clean();
-        }
-
-        var fe = FreeType.FT_Set_Pixel_Sizes(this.face, option.getFontWidthPixel(), option.getFontHeightPixel());
-
-        FreetypeException.checkError(fe);
-        this.initialized.set(true);
-    }
-
     private void loadAndRender(int graphId) throws FreetypeException {
-        var fe = FreeType.FT_Set_Pixel_Sizes(
-                this.face, this.option.getFontWidthPixel(), this.option.getFontHeightPixel());
+        int fe;
+        fe = FreeType.FT_Set_Pixel_Sizes(
+                this.fontFace.getFreetypeFace(), this.option.getFontWidthPixel(), this.option.getFontHeightPixel());
 
         FreetypeException.checkError(fe);
 
-        fe = FreeType.FT_Load_Glyph(this.face, graphId, FreeType.FT_LOAD_COLOR);
+        fe = FreeType.FT_Load_Glyph(this.fontFace.getFreetypeFace(), graphId, FreeType.FT_LOAD_COLOR);
 
         FreetypeException.checkError(fe);
 
-        fe = FreeType.FT_Render_Glyph(Objects.requireNonNull(this.face.glyph()), FreeType.FT_RENDER_MODE_NORMAL);
+        fe = FreeType.FT_Render_Glyph(
+                Objects.requireNonNull(this.fontFace.getFreetypeFace().glyph()), FreeType.FT_RENDER_MODE_NORMAL);
 
         FreetypeException.checkError(fe);
     }
@@ -146,18 +118,17 @@ public class RendererImpl implements Renderer {
             int graphId, @NotNull Consumer<Rect> size, @NotNull BiConsumer<ColorPoint, FlatPosition> writer)
             throws FreetypeException {
 
-        if (!this.initialized.get()) {
-            this.initialize();
-        }
-
         final var info = new CharacterInfo();
 
         loadAndRender(graphId);
 
-        var bitmap = Objects.requireNonNull(this.face.glyph()).bitmap();
+        var bitmap =
+                Objects.requireNonNull(this.fontFace.getFreetypeFace().glyph()).bitmap();
 
-        info.bitmapTop = Objects.requireNonNull(this.face.glyph()).bitmap_top();
-        info.bitmapLeft = Objects.requireNonNull(this.face.glyph()).bitmap_left();
+        info.bitmapTop =
+                Objects.requireNonNull(this.fontFace.getFreetypeFace().glyph()).bitmap_top();
+        info.bitmapLeft =
+                Objects.requireNonNull(this.fontFace.getFreetypeFace().glyph()).bitmap_left();
 
         size.accept(new Rect(bitmap.width(), bitmap.rows()));
 
@@ -171,4 +142,7 @@ public class RendererImpl implements Renderer {
 
         return info;
     }
+
+    @Override
+    public void close() {}
 }

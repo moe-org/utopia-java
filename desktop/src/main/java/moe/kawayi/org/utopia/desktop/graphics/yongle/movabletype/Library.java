@@ -12,7 +12,7 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.util.freetype.FreeType;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
-public interface Library {
+public interface Library extends AutoCloseable {
 
     /**
      * 获取freetype库. <br/>
@@ -20,12 +20,12 @@ public interface Library {
      * @return 有效的非空指针.
      */
     @NotNull
-    public PointerBuffer getFreetype();
+    long getFreetype();
 
     /**
      * 获取harfbuzz-buffer. <br/>
      * 一般通过{@link HarfBuzz#hb_buffer_create()}获取
      * @return 必须为非空有效的指针
      */
-    public long getHarfbuzzBuffer();
+    long getHarfbuzzBuffer();
 }

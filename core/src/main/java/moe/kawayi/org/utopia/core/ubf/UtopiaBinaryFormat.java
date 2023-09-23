@@ -22,6 +22,7 @@ public final class UtopiaBinaryFormat {
      * 最大object/array层数;
      * <p>
      * 每遇见array/object就+1。离开array/object就-1。
+     * 在写入/读取的时候初始层数为1.
      */
     public static final int MAX_STACK = 128;
 }
