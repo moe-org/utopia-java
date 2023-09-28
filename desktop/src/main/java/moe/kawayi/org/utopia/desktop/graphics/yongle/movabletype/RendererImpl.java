@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.map.FlatPosition;
 import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.ColorPoint;
@@ -144,5 +145,7 @@ public class RendererImpl implements Renderer {
     }
 
     @Override
-    public void close() {}
+    public void close() {
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy renderer");
+    }
 }

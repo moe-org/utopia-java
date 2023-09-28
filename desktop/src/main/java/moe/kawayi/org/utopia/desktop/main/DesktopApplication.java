@@ -6,11 +6,9 @@
 
 package moe.kawayi.org.utopia.desktop.main;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
+import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.Engine;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.FreetypeException;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.HarfbuzzException;
@@ -59,24 +57,17 @@ public class DesktopApplication extends ApplicationAdapter {
         table.setDebug(true); // This is optional, but enables debug lines for tables.
         this.batch = new SpriteBatch();
 
-        try {
-            engine = Engine.createFromFontFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoSans-Regular.ttf"), 0);
-        } catch (HarfbuzzException | IOException | FreetypeException e) {
-            throw new RuntimeException(e);
-        }
-
         var option = new Option();
         option.setLanguage("en-US");
         option.setScript("Latn");
         option.setRTL(false);
-        option.setFontHeightPixel(16);
-        option.setFontWidthPixel(16);
+        option.setFontHeightPixel(28);
+        option.setFontWidthPixel(26);
 
         Pixmap draw;
-        try {
-            // draw = engine.drawMultipleLine("Hello World From Harfbuzz:<= <-- \n<== <=> ==> --> >=", option);
-            draw = engine.drawLine("Hello World From Harfbuzz:<= <-- \n<== <=> ==> --> >=", option);
-        } catch (HarfbuzzException | FreetypeException e) {
+        try (var engine = Engine.createFromFontFile(ResourceManager.getPath("fonts/unifont.ttf"), 0)) {
+            draw = engine.drawLine("Hello World From Harfbuzz!!!", option);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

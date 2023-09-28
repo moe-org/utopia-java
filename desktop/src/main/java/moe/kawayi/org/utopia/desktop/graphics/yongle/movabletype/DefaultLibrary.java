@@ -6,6 +6,7 @@
 
 package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.PointerBuffer;
@@ -13,15 +14,11 @@ import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.freetype.FreeType;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class DefaultLibrary implements Library {
 
     private final PointerBuffer freetype;
 
     private final long harfbuzz;
-
-    private final AtomicBoolean cleaned = new AtomicBoolean(false);
 
     private DefaultLibrary(@NotNull PointerBuffer freetype, @NotNull long harfbuzz) {
         this.freetype = freetype;
@@ -47,7 +44,7 @@ public class DefaultLibrary implements Library {
 
     @NotNull
     public long getFreetype() {
-        return this.freetype.address();
+        return this.freetype.duplicate().get();
     }
 
     public long getHarfbuzzBuffer() {
@@ -56,9 +53,9 @@ public class DefaultLibrary implements Library {
 
     @Override
     public void close() {
-        if(!cleaned.getAndSet(true)) {
-            FreeType.FT_Done_Library(this.freetype.address());
-            HarfBuzz.hb_buffer_destroy(this.harfbuzz);
-        }
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy library");
+        FreeType.FT_Done_FreeType(this.getFreetype());
+        HarfBuzz.hb_buffer_destroy(this.getHarfbuzzBuffer());
+        MemoryUtil.memFree(this.freetype);
     }
 }

@@ -36,7 +36,7 @@ public class ProjectDefinition {
     public static final int JAVA_VERSION = 20;
     public static final String GUICE_VERSION = "7.0.0";
     public static final String JANSI_VERSION = "2.4.0";
-    public static final String LWJGL_VERSION = "3.3.2";
+    public static final String LWJGL_VERSION = "3.3.3";
     public static final String LIBGDX_VERSION = "1.12.0";
     public static final String LOG4J2_VERSION = "2.20.0";
     public static final String NETTY_VERSION = "4.1.94.Final";

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -25,9 +26,9 @@ public class Engine implements AutoCloseable {
 
     private final Library library;
 
-    private FontSource source;
+    private final FontSource source;
 
-    private FontFace face;
+    private final FontFace face;
 
     private final LayoutEngine layouts = new LayoutImpl();
 
@@ -161,6 +162,7 @@ public class Engine implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font engine");
         this.cache.clear();
         this.renderer.close();
         this.layouts.close();

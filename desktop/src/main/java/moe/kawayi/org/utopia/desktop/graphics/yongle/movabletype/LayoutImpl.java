@@ -9,6 +9,8 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
+
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 public class LayoutImpl implements LayoutEngine {
@@ -77,5 +79,7 @@ public class LayoutImpl implements LayoutEngine {
     }
 
     @Override
-    public void close() {}
+    public void close() {
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy layout engine");
+    }
 }

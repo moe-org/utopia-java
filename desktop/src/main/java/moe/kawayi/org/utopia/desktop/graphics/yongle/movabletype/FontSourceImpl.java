@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.system.MemoryUtil;
@@ -58,12 +59,13 @@ public class FontSourceImpl implements FontSource {
 
     @Override
     public ByteBuffer getBuffer() {
-        return this.buffer.asReadOnlyBuffer();
+        return this.buffer.duplicate();
     }
 
     @Override
     public void close() throws Exception {
-        HarfBuzz.hb_blob_destroy(this.harfbuzzBlob);
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font source");
+        HarfBuzz.hb_blob_destroy(this.getHarfbuzzBlob());
         MemoryUtil.memFree(this.buffer);
     }
 }

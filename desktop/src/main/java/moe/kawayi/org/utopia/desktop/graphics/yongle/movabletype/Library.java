@@ -6,8 +6,6 @@
 
 package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
-import moe.kawayi.org.utopia.core.util.NotNull;
-
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.util.freetype.FreeType;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
@@ -19,7 +17,6 @@ public interface Library extends AutoCloseable {
      * 一般通过{@link FreeType#FT_Init_FreeType(PointerBuffer)}获取.
      * @return 有效的非空指针.
      */
-    @NotNull
     long getFreetype();
 
     /**

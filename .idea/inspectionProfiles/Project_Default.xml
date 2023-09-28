@@ -2,7 +2,7 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,org.lwjgl.glfw.GLFW,glfwSetKeyCallback|glfwSetFramebufferSizeCallback,org.apache.logging.log4j.core.config.Configurator,initialize,org.lwjgl.util.harfbuzz.HarfBuzz,hb_buffer_get_glyph_infos" />
+      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,org.lwjgl.glfw.GLFW,glfwSetKeyCallback|glfwSetFramebufferSizeCallback,org.apache.logging.log4j.core.config.Configurator,initialize,org.lwjgl.util.harfbuzz.HarfBuzz,hb_buffer_get_glyph_infos,org.lwjgl.util.freetype.FT_Open_Args,create" />
     </inspection_tool>
   </profile>
 </component>

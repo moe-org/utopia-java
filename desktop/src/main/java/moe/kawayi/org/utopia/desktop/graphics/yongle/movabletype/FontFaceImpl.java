@@ -8,6 +8,7 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
 
 import java.util.Objects;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.PointerBuffer;
@@ -20,7 +21,7 @@ public class FontFaceImpl implements FontFace {
 
     private final FT_Face freetypeFace;
 
-    private final PointerBuffer freetypeFaceBuffeer;
+    private final PointerBuffer freetypeFaceBuffer;
 
     private final long harfbuzzFace;
 
@@ -28,10 +29,11 @@ public class FontFaceImpl implements FontFace {
 
     private final Library library;
 
-    private FontFaceImpl(@NotNull PointerBuffer freetypeFace, long harfbuzzFace, long harfbuzzFont, Library library) {
-        this.freetypeFaceBuffeer = Objects.requireNonNull(freetypeFace);
+    private FontFaceImpl(
+            @NotNull PointerBuffer freetypeFace, long harfbuzzFace, long harfbuzzFont, @NotNull Library library) {
+        this.freetypeFaceBuffer = Objects.requireNonNull(freetypeFace);
         this.library = Objects.requireNonNull(library);
-        this.freetypeFace = FT_Face.create(freetypeFace.address());
+        this.freetypeFace = FT_Face.create(this.freetypeFaceBuffer.duplicate().get());
         this.harfbuzzFace = harfbuzzFace;
         this.harfbuzzFont = harfbuzzFont;
     }
@@ -80,8 +82,10 @@ public class FontFaceImpl implements FontFace {
 
     @Override
     public void close() {
-        FreeType.nFT_Done_Face(this.freetypeFace.address());
+        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font face");
+        FreeType.FT_Done_Face(this.freetypeFace);
         HarfBuzz.hb_font_destroy(this.harfbuzzFont);
         HarfBuzz.hb_face_destroy(this.harfbuzzFace);
+        MemoryUtil.memFree(this.freetypeFaceBuffer);
     }
 }
