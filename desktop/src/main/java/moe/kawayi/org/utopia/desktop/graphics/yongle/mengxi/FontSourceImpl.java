@@ -36,12 +36,14 @@ public class FontSourceImpl implements FontSource {
         }
     }
 
+    @NotNull
     public static FontSource fromFile(@NotNull Path path) throws IOException, HarfbuzzException {
         var read = Files.readAllBytes(Objects.requireNonNull(path));
 
         return fromMemory(read);
     }
 
+    @NotNull
     public static FontSource fromMemory(@NotNull byte[] bytes) throws HarfbuzzException {
         var buffer = MemoryUtil.memAlloc(Objects.requireNonNull(bytes).length);
 
@@ -57,6 +59,7 @@ public class FontSourceImpl implements FontSource {
     }
 
     @Override
+    @NotNull
     public ByteBuffer getBuffer() {
         return this.buffer.duplicate();
     }

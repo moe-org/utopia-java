@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="构建" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="run tests" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,8 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="spotlessApply" />
-          <option value="build" />
+          <option value="test" />
         </list>
       </option>
       <option name="vmOptions" />

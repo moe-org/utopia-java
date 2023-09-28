@@ -6,6 +6,8 @@
 
 package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 /**
  * 布局/渲染选项
  */
@@ -43,6 +45,7 @@ public class Option {
         this.fontHeightPixel = fontHeightPixel;
     }
 
+    @NotNull
     public String getLanguage() {
         return language;
     }
@@ -50,10 +53,11 @@ public class Option {
     /**
      * BCP 47
      */
-    public void setLanguage(String language) {
+    public void setLanguage(@NotNull String language) {
         this.language = language;
     }
 
+    @NotNull
     public String getScript() {
         return script;
     }
@@ -61,7 +65,7 @@ public class Option {
     /**
      * ISO 15924
      */
-    public void setScript(String script) {
+    public void setScript(@NotNull String script) {
         this.script = script;
     }
 
@@ -73,7 +77,7 @@ public class Option {
         return isRTL;
     }
 
-    public void setRTL(boolean RTL) {
-        isRTL = RTL;
+    public void setRTL(boolean isRTL) {
+        this.isRTL = isRTL;
     }
 }

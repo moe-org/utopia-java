@@ -9,12 +9,16 @@ package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
+
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 public class LayoutImpl implements LayoutEngine {
 
     @Override
-    public LayoutInfo[] layout(FontFace face, String text, Option option) throws HarfbuzzException {
+    @NotNull
+    public LayoutInfo[] layout(@NotNull FontFace face, @NotNull String text, @NotNull Option option)
+            throws HarfbuzzException {
         Objects.requireNonNull(face);
         Objects.requireNonNull(text);
         Objects.requireNonNull(option);
@@ -77,6 +81,5 @@ public class LayoutImpl implements LayoutEngine {
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

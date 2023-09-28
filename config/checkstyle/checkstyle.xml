@@ -15,13 +15,6 @@
     <!-- 需要检查的文件扩展名 -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
-    <!--最大行长-->
-    <module name="LineLength">
-        <property name="fileExtensions" value="java"/>
-        <property name="max" value="120"/>
-    </module>
-
-
     <!--检查Java文件-->
     <module name="TreeWalker">
 

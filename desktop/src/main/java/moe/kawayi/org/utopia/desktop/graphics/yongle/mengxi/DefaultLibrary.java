@@ -24,6 +24,7 @@ public class DefaultLibrary implements Library {
         this.harfbuzz = harfbuzz;
     }
 
+    @NotNull
     public static DefaultLibrary create() throws FreetypeException, HarfbuzzException {
         // freetype
         var freetype = MemoryUtil.memAllocPointer(1);

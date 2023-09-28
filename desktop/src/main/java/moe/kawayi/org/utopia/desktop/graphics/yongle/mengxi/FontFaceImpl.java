@@ -37,6 +37,7 @@ public class FontFaceImpl implements FontFace {
         this.harfbuzzFont = harfbuzzFont;
     }
 
+    @NotNull
     public static FontFace create(@NotNull Library library, @NotNull FontSource source, int faceIndex)
             throws FreetypeException, HarfbuzzException {
         Objects.requireNonNull(library);
@@ -65,6 +66,7 @@ public class FontFaceImpl implements FontFace {
     }
 
     @Override
+    @NotNull
     public FT_Face getFreetypeFace() {
         return this.freetypeFace;
     }
@@ -75,6 +77,7 @@ public class FontFaceImpl implements FontFace {
     }
 
     @Override
+    @NotNull
     public Library getLibrary() {
         return this.library;
     }

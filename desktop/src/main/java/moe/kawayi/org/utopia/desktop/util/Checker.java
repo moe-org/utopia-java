@@ -8,6 +8,7 @@ package moe.kawayi.org.utopia.desktop.util;
 
 import java.util.Optional;
 
+import moe.kawayi.org.utopia.core.util.NotNull;
 import moe.kawayi.org.utopia.core.util.Version;
 
 import org.lwjgl.util.freetype.FreeType;
@@ -16,6 +17,7 @@ public class Checker {
 
     private Checker() {}
 
+    @NotNull
     public static Optional<Version> getFreetypeVersion() {
         return Optional.of(
                 new Version(FreeType.FREETYPE_MAJOR, FreeType.FREETYPE_MINOR, FreeType.FREETYPE_PATCH, null));

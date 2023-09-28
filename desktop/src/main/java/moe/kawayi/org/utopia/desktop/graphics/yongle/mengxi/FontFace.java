@@ -29,5 +29,6 @@ public interface FontFace extends AutoCloseable {
     /**
      * 获取{@link FontFace}所依赖的{@link Library}
      */
+    @NotNull
     Library getLibrary();
 }

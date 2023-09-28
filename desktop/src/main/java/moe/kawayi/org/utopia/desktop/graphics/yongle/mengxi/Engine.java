@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+import moe.kawayi.org.utopia.core.log.GlobalLogManager;
+import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,6 +24,8 @@ import com.badlogic.gdx.graphics.Pixmap;
  * 一个字体引擎.使用Harfbuzz和Freetype
  */
 public class Engine implements AutoCloseable {
+
+    private static final Logger LOGGER = GlobalLogManager.getLogger(Engine.class);
 
     private final Library library;
 
@@ -42,6 +46,7 @@ public class Engine implements AutoCloseable {
         this.renderer.setFontFace(face);
     }
 
+    @NotNull
     public static Engine createFromFontFile(@NotNull Path file, int faceId)
             throws HarfbuzzException, IOException, FreetypeException {
         var library = DefaultLibrary.create();
@@ -53,6 +58,7 @@ public class Engine implements AutoCloseable {
         return new Engine(source, face);
     }
 
+    @NotNull
     private CharacterPixmap getCache(int id) throws FreetypeException {
         var got = this.cache.get(id);
         CharacterPixmap map = null;
@@ -75,6 +81,7 @@ public class Engine implements AutoCloseable {
         return map;
     }
 
+    @NotNull
     public Pixmap drawLine(@NotNull String string, @NotNull Option option) throws HarfbuzzException, FreetypeException {
         Objects.requireNonNull(string);
         Objects.requireNonNull(option);
@@ -131,6 +138,7 @@ public class Engine implements AutoCloseable {
         return output;
     }
 
+    @NotNull
     public Pixmap drawMultipleLine(@NotNull String string, @NotNull Option option)
             throws HarfbuzzException, FreetypeException {
         var lines = string.lines().toList();
@@ -160,12 +168,16 @@ public class Engine implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
-        this.cache.clear();
-        this.renderer.close();
-        this.layouts.close();
-        this.face.close();
-        this.source.close();
-        this.library.close();
+    public void close() {
+        try {
+            this.cache.clear();
+            this.renderer.close();
+            this.layouts.close();
+            this.face.close();
+            this.source.close();
+            this.library.close();
+        } catch (Exception e) {
+            LOGGER.error("failed to clase the Engine", e);
+        }
     }
 }

@@ -25,21 +25,23 @@ public class RendererImpl implements Renderer {
     private FontFace fontFace = null;
 
     @Override
-    public void setOption(Option option) {
+    public void setOption(@NotNull Option option) {
         this.option = Objects.requireNonNull(option);
     }
 
     @Override
+    @NotNull
     public Option getOption() {
         return Objects.requireNonNull(this.option);
     }
 
     @Override
-    public void setFontFace(FontFace face) {
+    public void setFontFace(@NotNull FontFace face) {
         this.fontFace = Objects.requireNonNull(face);
     }
 
     @Override
+    @NotNull
     public FontFace getFontFace() throws NullPointerException {
         return Objects.requireNonNull(this.fontFace);
     }
@@ -64,7 +66,7 @@ public class RendererImpl implements Renderer {
     /**
      * 256位抗锯齿图
      */
-    private void writeGray(FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writer) {
+    private void writeGray(@NotNull FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writer) {
         final int y = bitmap.rows();
         final int x = bitmap.width();
         final var buf = bitmap.buffer(y * Math.abs(bitmap.pitch()));
@@ -88,7 +90,7 @@ public class RendererImpl implements Renderer {
     /**
      *
      */
-    private void writeColor(FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writter) {
+    private void writeColor(@NotNull FT_Bitmap bitmap, @NotNull BiConsumer<ColorPoint, FlatPosition> writter) {
         final int y = bitmap.rows();
         final int x = bitmap.width();
         final var buf = bitmap.buffer(x * Math.abs(bitmap.pitch()));
@@ -144,6 +146,5 @@ public class RendererImpl implements Renderer {
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 }
