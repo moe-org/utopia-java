@@ -11,7 +11,8 @@
     <!------------------------>
     <br>
     <!------------------------>
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/moe-org/utopia/CI%20And%20CD?style=for-the-badge">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/moe-org/utopia/build-and-test.yaml?style=for-the-badge">
+    <!--  --->
     <!------------------------>
     <br>
     <!------------------------>
@@ -27,7 +28,6 @@
     <!------------------------>
     <br>
     <!------------------------>
-    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/moe-org/utopia?style=for-the-badge">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/moe-org/utopia?style=for-the-badge">
     <!------------------------>
     <br>
