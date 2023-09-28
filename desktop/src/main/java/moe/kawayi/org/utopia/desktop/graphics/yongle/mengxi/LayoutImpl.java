@@ -11,13 +11,15 @@ import java.util.Objects;
 
 import moe.kawayi.org.utopia.core.util.NotNull;
 
+import moe.kawayi.org.utopia.core.util.Nullable;
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
 public class LayoutImpl implements LayoutEngine {
 
     @Override
     @NotNull
-    public LayoutInfo[] layout(@NotNull FontFace face, @NotNull String text, @NotNull Option option)
+    public LayoutInfo[] layout(@NotNull FontFace face, @NotNull String text,
+                               @Nullable String preString, @Nullable String postString, @NotNull Option option)
             throws HarfbuzzException {
         Objects.requireNonNull(face);
         Objects.requireNonNull(text);
@@ -27,7 +29,11 @@ public class LayoutImpl implements LayoutEngine {
 
         // set up
         HarfBuzz.hb_buffer_reset(buffer);
-        HarfBuzz.hb_buffer_add_utf8(buffer, text, 0, -1);
+
+        var finalString = (preString == null ? "" : preString) + text + (postString == null ? "" : postString);
+        var offset = preString == null ? 0 : preString.length();
+
+        HarfBuzz.hb_buffer_add_utf16(buffer, finalString, offset, text.length());
 
         var script = HarfBuzz.hb_script_from_string(option.getScript());
         var language = HarfBuzz.hb_language_from_string(option.getLanguage());

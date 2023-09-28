@@ -8,7 +8,6 @@ package moe.kawayi.org.utopia.desktop.main;
 
 import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
-import moe.kawayi.org.utopia.core.resource.ResourceManager;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.Engine;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.FreetypeException;
 import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.HarfbuzzException;
@@ -21,6 +20,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * LWJGL3程序
@@ -35,7 +37,7 @@ public class DesktopApplication extends ApplicationAdapter {
     /**
      * 日志器
      */
-    public final Logger logger = GlobalLogManager.getLogger(this.getClass());
+    private static final Logger LOGGER = GlobalLogManager.getLogger(DesktopApplication.class);
 
     private Engine engine;
 
@@ -64,11 +66,16 @@ public class DesktopApplication extends ApplicationAdapter {
         option.setFontHeightPixel(28);
         option.setFontWidthPixel(26);
 
-        Pixmap draw;
-        try (var engine = Engine.createFromFontFile(ResourceManager.getPath("fonts/unifont.ttf"), 0)) {
-            draw = engine.drawLine("Hello World From Harfbuzz!!!", option);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Pixmap draw = null;
+
+        try {
+            this.engine = new Engine();
+            this.engine.addFaceFromFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoSans-Regular.ttf"),0);
+            this.engine.addFaceFromFile(Path.of("C:\\Users\\mingm\\Downloads\\NotoSansSC-Regular.ttf"),0);
+
+            draw = this.engine.drawMultipleLine("Is that right,?\n我去,一定是Genshi Impact干的",option);
+        } catch (FreetypeException | HarfbuzzException | IOException e) {
+            LOGGER.error("failed to create font engine",e);
         }
 
         this.texture = new com.badlogic.gdx.graphics.Texture(draw);
@@ -89,6 +96,7 @@ public class DesktopApplication extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        this.engine.close();
         this.stage.dispose();
         this.batch.dispose();
         this.texture.dispose();
