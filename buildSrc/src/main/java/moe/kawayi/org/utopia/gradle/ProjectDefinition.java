@@ -18,6 +18,8 @@ public class ProjectDefinition {
 
     public static final String GROUP_NAME = "moe.kawayi.org";
 
+    public static final String DESKTOP_START_CLASS = "moe.kawayi.org.utopia.desktop.main.DesktopLauncher";
+
     public static final String VERSION_PROPERTY_FILE = "utopia-version.properties";
 
     public static final String VERSION_MAJOR_KEY = "UtopiaVersionMajor";
@@ -45,6 +47,7 @@ public class ProjectDefinition {
     public static final String HOCON_VERSION = "1.4.2";
     public static final String JACOCO_VERSION = "0.8.10";
     public static final String CHECKSTYLE_VERSION = "10.12.1";
+    public static final String TUNINGFORK_VERSION = "4.0.0";
 
     //===========================================
     private static final String RELEASE_DIR_NAME = "release";

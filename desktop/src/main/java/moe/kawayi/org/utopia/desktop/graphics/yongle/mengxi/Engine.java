@@ -4,7 +4,7 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -162,7 +161,6 @@ public class Engine implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font engine");
         this.cache.clear();
         this.renderer.close();
         this.layouts.close();

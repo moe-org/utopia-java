@@ -4,12 +4,10 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 
 import org.lwjgl.util.harfbuzz.HarfBuzz;
 
@@ -80,6 +78,5 @@ public class LayoutImpl implements LayoutEngine {
 
     @Override
     public void close() {
-        GlobalLogManager.GLOBAL_LOGGER.debug("destroy layout engine");
     }
 }

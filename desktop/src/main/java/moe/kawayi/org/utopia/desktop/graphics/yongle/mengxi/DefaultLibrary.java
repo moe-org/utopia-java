@@ -4,9 +4,8 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.PointerBuffer;
@@ -53,7 +52,6 @@ public class DefaultLibrary implements Library {
 
     @Override
     public void close() {
-        GlobalLogManager.GLOBAL_LOGGER.debug("destroy library");
         FreeType.FT_Done_FreeType(this.getFreetype());
         HarfBuzz.hb_buffer_destroy(this.getHarfbuzzBuffer());
         MemoryUtil.memFree(this.freetype);

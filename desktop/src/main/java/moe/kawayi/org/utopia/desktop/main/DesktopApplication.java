@@ -9,10 +9,10 @@ package moe.kawayi.org.utopia.desktop.main;
 import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.log.Logger;
 import moe.kawayi.org.utopia.core.resource.ResourceManager;
-import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.Engine;
-import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.FreetypeException;
-import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.HarfbuzzException;
-import moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype.Option;
+import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.Engine;
+import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.FreetypeException;
+import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.HarfbuzzException;
+import moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi.Option;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

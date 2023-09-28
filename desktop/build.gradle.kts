@@ -137,6 +137,9 @@ dependencies {
     implementation("com.badlogicgames.gdx:gdx:${ProjectDefinition.LIBGDX_VERSION}")
     api("com.badlogicgames.gdx:gdx-backend-lwjgl3:${ProjectDefinition.LIBGDX_VERSION}")
     api("com.badlogicgames.gdx:gdx-platform:${ProjectDefinition.LIBGDX_VERSION}:natives-desktop")
+
+    // TuningFork
+    implementation("com.github.Hangman:TuningFork:${ProjectDefinition.TUNINGFORK_VERSION}")
 }
 
 // 打包
@@ -150,17 +153,15 @@ tasks.register<Jar>("releaseJar") {
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
 
+    destinationDirectory.set(ProjectDefinition.getDesktopReleaseDir())
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 ConfigJar.configJarForDesktop(tasks.named<Jar>("releaseJar").get())
 
 // 发布
-tasks.register<ReleaseTask>("release") {
-    this.dependsOn(tasks.named("releaseJar"))
-    this.dependsOn(rootProject.tasks.named("allJavaSourceJar"))
-    this.dependsOn(rootProject.tasks.named("allJavadocJar"))
-
+tasks.register<ReleaseTask>("releaseFile") {
     this.initializeForProject(project,ProjectDefinition.getDesktopReleaseDir())
 
     //=====---------- copy source ----------=====
@@ -177,13 +178,26 @@ tasks.register<ReleaseTask>("release") {
             ProjectDefinition.getAssetsDir());
 }
 
-tasks.register<Exec>("run"){
+tasks.register("release"){
     this.dependsOn(tasks.named("releaseJar"))
+    this.dependsOn(rootProject.tasks.named("allJavaSourceJar"))
+    this.dependsOn(rootProject.tasks.named("allJavadocJar"))
+    this.dependsOn(rootProject.tasks.named("releaseFile"))
+}
+
+tasks.register<JavaExec>("run"){
+    this.dependsOn(tasks.named("releaseFile"))
+    this.dependsOn(tasks.named("compileJava"))
+
+     javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    })
 
     this.workingDir = ProjectDefinition.getDesktopReleaseDir()
-    this.executable = "java"
-    this.args = listOf<String>();
-    this.args("-Xmx2G","-Dfile.encoding=UTF-8","-jar","${ProjectDefinition.getDesktopReleaseDir()}/desktop-${project.version}-release.jar")
 
-    println("run:${this.executable} ${this.args.toString()}")
+    maxHeapSize = "2G"
+    systemProperties["file.encoding"] = "UTF-8"
+
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set(ProjectDefinition.DESKTOP_START_CLASS)
 }

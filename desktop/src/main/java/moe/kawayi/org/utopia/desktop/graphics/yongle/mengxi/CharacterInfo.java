@@ -4,7 +4,7 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
 /**
  * 字符信息

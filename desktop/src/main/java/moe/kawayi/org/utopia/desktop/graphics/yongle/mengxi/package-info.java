@@ -8,4 +8,4 @@
  * 这个包是yongle的字体引擎.包含字体的排版和渲染部分.
  * movable type即为"活字印刷术"
  */
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;

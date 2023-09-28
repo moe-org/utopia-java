@@ -4,11 +4,10 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.PointerBuffer;
@@ -82,7 +81,6 @@ public class FontFaceImpl implements FontFace {
 
     @Override
     public void close() {
-        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font face");
         FreeType.FT_Done_Face(this.freetypeFace);
         HarfBuzz.hb_font_destroy(this.harfbuzzFont);
         HarfBuzz.hb_face_destroy(this.harfbuzzFace);

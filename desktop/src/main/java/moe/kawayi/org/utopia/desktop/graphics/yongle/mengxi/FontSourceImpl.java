@@ -4,7 +4,7 @@
 // Copyright (c) 2021-2023 moe-org All rights reserved.
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-package moe.kawayi.org.utopia.desktop.graphics.yongle.movabletype;
+package moe.kawayi.org.utopia.desktop.graphics.yongle.mengxi;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import moe.kawayi.org.utopia.core.log.GlobalLogManager;
 import moe.kawayi.org.utopia.core.util.NotNull;
 
 import org.lwjgl.system.MemoryUtil;
@@ -64,7 +63,6 @@ public class FontSourceImpl implements FontSource {
 
     @Override
     public void close() throws Exception {
-        GlobalLogManager.GLOBAL_LOGGER.debug("destroy font source");
         HarfBuzz.hb_blob_destroy(this.getHarfbuzzBlob());
         MemoryUtil.memFree(this.buffer);
     }
