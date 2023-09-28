@@ -48,6 +48,7 @@ public class ProjectDefinition {
     public static final String JACOCO_VERSION = "0.8.10";
     public static final String CHECKSTYLE_VERSION = "10.12.1";
     public static final String TUNINGFORK_VERSION = "4.0.0";
+    public static final String NOISE_VERSION = "2.0.0-SNAPSHOT";
 
     //===========================================
     private static final String RELEASE_DIR_NAME = "release";

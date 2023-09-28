@@ -44,9 +44,6 @@ buildscript {
 plugins {
     id("java")
 
-    // 检查依赖许可证
-    id("com.github.jk1.dependency-license-report") version "2.5"
-
     id("checkstyle")
     id("jacoco")
     id("com.diffplug.spotless") version "6.19.0"

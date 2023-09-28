@@ -37,10 +37,13 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:${ProjectDefinition.LOG4J2_VERSION}")
 
     // 依赖注入
-    implementation("com.google.inject:guice:${ProjectDefinition.GUICE_VERSION}")
+    api("com.google.inject:guice:${ProjectDefinition.GUICE_VERSION}")
 
     // 日志彩色输出支持
     implementation("org.fusesource.jansi:jansi:${ProjectDefinition.JANSI_VERSION}")
+
+    // 噪音库
+    api("org.spongepowered:noise:${ProjectDefinition.NOISE_VERSION}")
 }
 
 tasks.register<GenerateVersion>("generateVersion"){
