@@ -60,7 +60,7 @@ jobs:
       - name: Set up zulu Java environment
         uses: actions/setup-java@v2
         with:
-          java-version: 18
+          java-version: 20
           distribution: zulu
 
       # 检查
@@ -78,7 +78,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '18' ]
+        java: [ '20' ]
         release: [ 'zulu', 'temurin' ]
 
     steps:
@@ -120,7 +120,7 @@ jobs:
       - name: Set up zulu Java environment
         uses: actions/setup-java@v2
         with:
-          java-version: 18
+          java-version: 20
           distribution: zulu
 
       # 配置git
@@ -165,7 +165,7 @@ jobs:
       - name: Set up zulu Java environment
         uses: actions/setup-java@v2
         with:
-          java-version: 18
+          java-version: 20
           distribution: zulu
 
       # 设置python
@@ -241,7 +241,7 @@ jobs:
       - name: Set up zulu Java environment
         uses: actions/setup-java@v2
         with:
-          java-version: 18
+          java-version: 20
           distribution: zulu
 
       # 测试
